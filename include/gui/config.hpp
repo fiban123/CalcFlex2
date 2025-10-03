@@ -1,0 +1,5 @@
+#pragma once
+
+#define BUTTON_OUTLINE_WIDTH 2.f
+#define BUTTON_BG_COLOR {120, 120, 120}
+#define BUTTON_OUTLINE_HOVER_COLOR {255, 255, 255}
