@@ -11,10 +11,14 @@ struct Button{
 
     std::function<void()> callback;
 
+    bool point_collide(sf::Vector2i pos);
+
 
     void draw(sf::RenderWindow* window);
 
-    void update(sf::RenderWindow* window);
+    void update(sf::Vector2i mouse_pos);
+
+    void update_click(sf::Vector2i click_pos);
 
     void set_text(std::string text);
 

@@ -24,17 +24,27 @@ void start_gui(std::function<std::string(std::string)> callback){
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-        }
 
-        if (event.type == sf::Event::Resized) {
-            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            else if (event.type == sf::Event::Resized) {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
             window.setView(sf::View(visibleArea));
+            }
+
+            else if (event.type == sf::Event::MouseButtonPressed){
+                if(event.mouseButton.button == sf::Mouse::Left){
+                    b1.update_click({event.mouseButton.x, event.mouseButton.y});
+                }
+            }
         }
 
         window.clear();
 
+        sf::Vector2i mouse_pos = sf::Mouse::getPosition();
+
+        std::cout << mouse_pos.x << " " << mouse_pos.y << "\n";
+
         b1.draw(&window);
-        b1.update(&window);
+        b1.update(mouse_pos);
 
         window.display();
     }

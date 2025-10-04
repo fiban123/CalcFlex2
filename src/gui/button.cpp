@@ -7,19 +7,26 @@ void Button::draw(sf::RenderWindow* window){
     window->draw(rect);
 }
 
-void Button::update(sf::RenderWindow* window){
-    sf::Vector2i mouse_pos = sf::Mouse::getPosition(*window);
+bool Button::point_collide(sf::Vector2i pos){
+    return pos.x > rect.getPosition().x && pos.x < rect.getPosition().x + rect.getSize().x &&
+           pos.y > rect.getPosition().y && pos.y < rect.getPosition().y + rect.getSize().y;
+}
 
-    if(
-        mouse_pos.x > rect.getPosition().x && mouse_pos.x < rect.getPosition().x + rect.getSize().x &&
-        mouse_pos.y > rect.getPosition().y && mouse_pos.y < rect.getPosition().y + rect.getSize().y ){
-            rect.setOutlineThickness(-BUTTON_OUTLINE_WIDTH);
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
-                callback();
-            }
+
+void Button::update(sf::Vector2i mouse_pos){
+
+    if(point_collide(mouse_pos)){
+        std::cout << "hj\n";
+        rect.setOutlineThickness(-BUTTON_OUTLINE_WIDTH);
     }
     else{
         rect.setOutlineThickness(0);
+    }
+}
+
+void Button::update_click(sf::Vector2i click_pos){
+    if (point_collide(click_pos)){
+        std::cout << "isjdisdj\n";
     }
 }
 
