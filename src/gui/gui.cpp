@@ -15,12 +15,12 @@ void test(){
 }
 
 void start_gui(std::function<std::string(std::string)> callback){
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "CalcFlex2");
+    sf::RenderWindow window(sf::VideoMode({1200, 1200}), "CalcFlex2");
 
     sf::Font font;
     font.loadFromFile(FONT);
 
-    Layout layout(font, window.getSize());
+    Layout layout(&font, window.getSize());
     layout.init();
 
     

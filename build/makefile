@@ -1,8 +1,18 @@
 # Compiler and flags
 CXX := g++
-SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s -lfreetype -lpng -lz -lbrotlidec -lbrotlicommon -lharfbuzz -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile -logg -lflac -lbz2 -lgraphite2 -lrpcrt4 -ldwrite
+SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s \
+          -lfreetype -lpng -lz -lbrotlidec -lbrotlicommon -lharfbuzz \
+          -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile \
+          -logg -lflac -lbz2 -lgraphite2 -lrpcrt4 -ldwrite
+
 LDFLAGS := $(SFMLLD) -lgmp -lmpfr -static -static-libgcc -static-libstdc++
-CXXFLAGS := -I../include -I ../include/gui -Wall -Wextra -std=c++26 -MMD -MP -static -static-libgcc -static-libstdc++
+
+# Base flags
+BASE_CXXFLAGS := -I../include -I ../include/gui -Wall -Wextra -std=c++26 -MMD -MP -static -static-libgcc -static-libstdc++
+
+# Release/Debug
+CXXFLAGS := $(BASE_CXXFLAGS) -O2
+DEBUGFLAGS := $(BASE_CXXFLAGS) -ggdb
 
 # Directories (relative to ./build/)
 SRC_DIRS := ../src ../src/gui
@@ -19,8 +29,11 @@ EXECUTABLE := $(BIN_DIR)/calcflex2.exe
 # Default target
 all: build
 
+build: CXXFLAGS := $(CXXFLAGS)
 build: $(EXECUTABLE)
-	echo $(SOURCES)
+
+debug: CXXFLAGS := $(DEBUGFLAGS)
+debug: $(EXECUTABLE)
 
 # Link objects into executable
 $(EXECUTABLE): $(OBJECTS)
@@ -46,6 +59,9 @@ clean:
 build-run: build
 	./$(EXECUTABLE)
 
-.PHONY: all clean build-run build
+debug-run: debug
+	gdb $(EXECUTABLE)
+
+.PHONY: all clean build build-run debug debug-run
 
 -include $(DEPENDS)

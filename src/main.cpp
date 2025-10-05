@@ -27,7 +27,7 @@ int main(){
     free(out);
 
     mpz_clear(a);
-    mpz_clear(result);
+    mpz_clear(result);;
 
     start_gui(evaluate_string);
 }
