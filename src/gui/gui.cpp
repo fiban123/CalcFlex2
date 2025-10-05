@@ -1,22 +1,29 @@
 #include "gui.hpp"
 #include "button.hpp"
 #include "config.hpp"
+#include "layout.hpp"
 
 #define SFML_STATIC
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
+#include <vector>
 
 void test(){
     std::cout << "sidjsidj\n";
 }
 
 void start_gui(std::function<std::string(std::string)> callback){
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
-    Button b1(BUTTON_BG_COLOR, BUTTON_OUTLINE_HOVER_COLOR, {100.0f, 100.0f}, {100.0f, 100.0f}, test);
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "CalcFlex2");
 
+    sf::Font font;
+    font.loadFromFile(FONT);
 
+    Layout layout(font, window.getSize());
+    layout.init();
+
+    
     while (window.isOpen()){
         sf::Event event;   
     
@@ -27,24 +34,25 @@ void start_gui(std::function<std::string(std::string)> callback){
 
             else if (event.type == sf::Event::Resized) {
                 sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-            window.setView(sf::View(visibleArea));
+                window.setView(sf::View(visibleArea));
+                layout.resize_update(window.getSize());
             }
 
-            else if (event.type == sf::Event::MouseButtonPressed){
+            else if (event.type == sf::Event::MouseButtonReleased){
                 if(event.mouseButton.button == sf::Mouse::Left){
-                    b1.update_click({event.mouseButton.x, event.mouseButton.y});
+                    layout.update_click({event.mouseButton.x, event.mouseButton.y});
                 }
             }
         }
 
         window.clear();
 
-        sf::Vector2i mouse_pos = sf::Mouse::getPosition();
+        sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
+        bool left_click = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 
-        std::cout << mouse_pos.x << " " << mouse_pos.y << "\n";
-
-        b1.draw(&window);
-        b1.update(mouse_pos);
+        //std::cout << mouse_pos.x << " " << mouse_pos.y << "\n";
+        layout.update(mouse_pos, left_click);
+        layout.draw(window);
 
         window.display();
     }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <gmp.h>
+#include <mpfr.h>
 
 #define SFML_STATIC
 #include <SFML/Audio.hpp>
@@ -29,5 +30,4 @@ int main(){
     mpz_clear(result);
 
     start_gui(evaluate_string);
-
 }

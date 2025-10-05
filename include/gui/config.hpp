@@ -2,4 +2,6 @@
 
 #define BUTTON_OUTLINE_WIDTH 2.f
 #define BUTTON_BG_COLOR {120, 120, 120}
+#define BUTTON_PRESS_BG_COLOR {255, 120, 120}
 #define BUTTON_OUTLINE_HOVER_COLOR {255, 255, 255}
+#define FONT "JetBrainsMono-Regular.ttf"

@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX := g++
-SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s -lfreetype -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile -logg -lflac
-LDFLAGS := $(SFMLLD) -lgmp -static -static-libgcc -static-libstdc++
+SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s -lfreetype -lpng -lz -lbrotlidec -lbrotlicommon -lharfbuzz -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile -logg -lflac -lbz2 -lgraphite2 -lrpcrt4 -ldwrite
+LDFLAGS := $(SFMLLD) -lgmp -lmpfr -static -static-libgcc -static-libstdc++
 CXXFLAGS := -I../include -I ../include/gui -Wall -Wextra -std=c++26 -MMD -MP -static -static-libgcc -static-libstdc++
 
 # Directories (relative to ./build/)
@@ -17,8 +17,7 @@ DEPENDS := $(OBJECTS:.o=.d)   # corresponding .d files
 EXECUTABLE := $(BIN_DIR)/calcflex2.exe
 
 # Default target
-all:
-	echo $(SOURCES)
+all: build
 
 build: $(EXECUTABLE)
 	echo $(SOURCES)
