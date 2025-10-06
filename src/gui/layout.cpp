@@ -1,13 +1,36 @@
-
-
-#include "layout.hpp";
+#include "layout.hpp"
 
 #include "config.hpp"
 
 #include <iostream>
 
-void callback(std::string s){
-    std::cout << s << std::endl;
+
+
+void Layout::button_callback(size_t bx, size_t by){
+    sf::Vector2u index{bx, by};
+
+    if (index == MAIN_BUTTONS_C_INDEX){
+        expression_input.string = "";
+        expression_input.update_text(
+            EXPRESSION_INPUT_FONT_SIZE, EXPRESSION_INPUT_BG_COLOR, TEXT_COLOR, *font, SPACING
+        );
+    }
+
+    else if (index == MAIN_BUTTONS_CE_INDEX){
+        //...
+    }
+    else if (index == MAIN_BUTTONS_BACKSPACE_INDEX){
+        
+    }
+
+    else{
+        expression_input.enter_text(
+        main_button_strings[by][bx], main_button_offsets[by][bx], TEXT_COLOR, SPACING,
+        EXPRESSION_INPUT_FONT_SIZE, EXPRESSION_INPUT_BG_COLOR, TEXT_COLOR, *font
+        );
+    }
+
+
 }
 
 void Layout::init(){
@@ -34,8 +57,8 @@ void Layout::init_buttons(){
 }
 
 void Layout::init_main_buttons(){
-    size_t main_button_x = main_buttons[0].size();
-    size_t main_button_y = main_buttons.size();
+    size_t main_button_x = main_button_labels[0].size();
+    size_t main_button_y = main_button_labels.size();
 
     size_t start_x = window_size.x - main_button_x * (BUTTON_SIZE + SPACING);
     size_t start_y = window_size.y - main_button_y * (BUTTON_SIZE + SPACING);
@@ -45,8 +68,8 @@ void Layout::init_main_buttons(){
             Button b(BUTTON_BG_COLOR, BUTTON_HOVER_OUTLINE_COLOR, BUTTON_PRESS_BG_COLOR, 
                 {start_x + bx * (BUTTON_SIZE + SPACING), start_y + by * (BUTTON_SIZE + SPACING)},
                 {BUTTON_SIZE, BUTTON_SIZE}, 
-                [=]{callback(main_buttons[by][bx]);}, 
-                main_buttons[by][bx], 
+                [this, bx, by]{button_callback(bx, by);}, 
+                main_button_labels[by][bx], 
                 font, 
                 BUTTON_FONT_SIZE
             );
@@ -68,12 +91,12 @@ void Layout::resize_update_buttons(){
 }
 
 void Layout::resize_update_expression_input(){
-    expression_input.resize({window_size.x - 2.0f * SPACING, EXPRESSION_INPUT_HEIGHT}, SPACING);
+    expression_input.resize({window_size.x - 2.0f * SPACING, EXPRESSION_INPUT_HEIGHT}, SPACING, TEXT_COLOR);
 }       
 
 void Layout::resize_update_main_buttons(){
-    size_t main_button_x = main_buttons[0].size();
-    size_t main_button_y = main_buttons.size();
+    size_t main_button_x = main_button_labels[0].size();
+    size_t main_button_y = main_button_labels.size();
 
     size_t start_x = window_size.x - main_button_x * (BUTTON_SIZE + SPACING);
     size_t start_y = window_size.y - main_button_y * (BUTTON_SIZE + SPACING);
@@ -86,6 +109,20 @@ void Layout::resize_update_main_buttons(){
             i++;
         }
     }
+}
+
+void Layout::text_entered(unsigned c){
+    expression_input.enter_unicode_char(
+        c, SPACING, EXPRESSION_INPUT_FONT_SIZE, 
+        EXPRESSION_INPUT_BG_COLOR, TEXT_COLOR, *font
+    );
+}
+
+void Layout::move_cursor(bool sign){
+    ssize_t new_pos = sign ? expression_input.cursor_string_index + 1 : expression_input.cursor_string_index - 1;
+    expression_input.cursor_string_index = std::clamp(new_pos, 0ll, (ssize_t) expression_input.string.length());
+
+    expression_input.update_cursor(TEXT_COLOR, SPACING);
 }
 
 void Layout::update(sf::Vector2i mouse_pos, bool left_click){

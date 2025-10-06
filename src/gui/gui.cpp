@@ -3,16 +3,8 @@
 #include "config.hpp"
 #include "layout.hpp"
 
-#define SFML_STATIC
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-
 #include <iostream>
 #include <vector>
-
-void test(){
-    std::cout << "sidjsidj\n";
-}
 
 void start_gui(std::function<std::string(std::string)> callback){
     sf::RenderWindow window(sf::VideoMode({1200, 1200}), "CalcFlex2");
@@ -41,6 +33,20 @@ void start_gui(std::function<std::string(std::string)> callback){
             else if (event.type == sf::Event::MouseButtonReleased){
                 if(event.mouseButton.button == sf::Mouse::Left){
                     layout.update_click({event.mouseButton.x, event.mouseButton.y});
+                }
+            }
+
+            else if (event.type == sf::Event::TextEntered){
+                std::cout << event.text.unicode << std::endl;
+                layout.text_entered( event.text.unicode);
+            }
+
+            else if (event.type == sf::Event::KeyPressed){
+                if (event.key.scancode == sf::Keyboard::Scan::Left){
+                    layout.move_cursor(0);
+                }
+                else if (event.key.scancode == sf::Keyboard::Scan::Right){
+                    layout.move_cursor(1);
                 }
             }
         }
