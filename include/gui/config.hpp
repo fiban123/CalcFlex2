@@ -39,11 +39,11 @@
 #define MAIN_BUTTONS_RIGHT_INDEX sf::Vector2u{3, 1}
 
 // colors
-#define DARK_CYAN {7, 31, 37}
-#define CYAN {9, 77, 94}
-#define BRIGHT_CYAN {51, 248, 255}
-#define BLACK {0, 0, 0}
-#define WHITE {255, 255, 255}
+#define DARK_CYAN {7, 31, 37, 255}
+#define CYAN {9, 77, 94, 255}
+#define BRIGHT_CYAN {51, 248, 255, 255}
+#define BLACK {0, 0, 0, 255}
+#define WHITE {255, 255, 255, 255}
 
 #define ELEMENT_BG_COLOR DARK_CYAN
 #define HIGHLIGHT_COLOR CYAN
@@ -59,11 +59,11 @@
 #define BUTTON_PRESS_BG_COLOR HIGHLIGHT_COLOR
 #define BUTTON_HOVER_OUTLINE_COLOR OUTLINE_HIGHLIGHT_COLOR
 #define BUTTON_SIZE 90.f
-#define BUTTON_FONT_SIZE 30.f
+#define BUTTON_FONT_SIZE 30
 // expression input
 #define EXPRESSION_INPUT_BG_COLOR ELEMENT_BG_COLOR
 #define EXPRESSION_INPUT_HEIGHT 45.f
-#define EXPRESSION_INPUT_FONT_SIZE 35.f
+#define EXPRESSION_INPUT_FONT_SIZE 35
 
 
 #define FONT "JetBrainsMono-Regular.ttf"

@@ -12,8 +12,7 @@ void start_gui(std::function<std::string(std::string)> callback){
     sf::Font font;
     font.loadFromFile(FONT);
 
-    Layout layout(&font, window.getSize());
-    layout.init();
+    Layout layout(&font, window.getSize(), &window);
 
     
     while (window.isOpen()){
