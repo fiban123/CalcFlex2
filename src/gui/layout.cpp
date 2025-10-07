@@ -6,7 +6,7 @@
 
 
 
-void Layout::button_callback(size_t bx, size_t by){
+void Layout::main_button_callback(size_t bx, size_t by){
     sf::Vector2u index{bx, by};
 
     if (index == MAIN_BUTTONS_C_INDEX){
@@ -30,15 +30,15 @@ void Layout::button_callback(size_t bx, size_t by){
     }
 
     else{
-
         expression_input.enter_text(
         main_button_strings[by][bx], main_button_offsets[by][bx]
        );
     }
-
-
 }
 
+void Layout::func_button_callback(std::string string, unsigned offset){
+    expression_input.enter_text(string, offset);
+}
 
 void Layout::resize_update(sf::Vector2u _window_size){
     window_size = _window_size;
@@ -61,9 +61,9 @@ void Layout::update(sf::Vector2i mouse_pos, bool left_click){
 }
 
 void Layout::draw(sf::RenderWindow& window){
+    func_buttons.draw();
     main_buttons.draw();
     expression_input.draw();
-    func_buttons.draw();
 }
 
 void Layout::update_click(sf::Vector2i click_pos){
@@ -71,15 +71,15 @@ void Layout::update_click(sf::Vector2i click_pos){
     func_buttons.update_click(click_pos);
 }
 
-void Layout::update_scroll(float delta){
-    func_buttons.update_scroll(delta);
+void Layout::update_scroll(sf::Vector2i mouse_pos, float delta){
+    func_buttons.update_scroll(mouse_pos, delta);
 }
 
 Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_window)
     : font(_font),
       window_size(_window_size),
       window(_window),
-      main_buttons(&window_size, _font, [this](size_t bx, size_t by){ button_callback(bx, by); }, _window),
-      func_buttons(_window, &window_size, _font),
+      main_buttons(&window_size, _font, [this](size_t bx, size_t by){ main_button_callback(bx, by); }, _window),
+      func_buttons(_window, &window_size, _font, [this](std::string string, unsigned offset){func_button_callback(string, offset);}),
       expression_input(_window, &window_size, _font)
       {}

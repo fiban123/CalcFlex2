@@ -18,9 +18,11 @@ void start_gui(std::function<std::string(std::string)> callback){
     
     while (window.isOpen()){
         sf::Event event;   
+
+        sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
+        bool left_click = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
     
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 window.close();
 
@@ -36,8 +38,7 @@ void start_gui(std::function<std::string(std::string)> callback){
             }
 
             else if (event.type == sf::Event::MouseWheelScrolled){
-                std::cout << event.mouseWheelScroll.delta << "\n";
-                layout.update_scroll(event.mouseWheelScroll.delta);
+                layout.update_scroll(mouse_pos, event.mouseWheelScroll.delta);
             }
 
             else if (event.type == sf::Event::MouseButtonReleased){
@@ -63,9 +64,6 @@ void start_gui(std::function<std::string(std::string)> callback){
         }
 
         window.clear();
-
-        sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
-        bool left_click = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 
         //std::cout << mouse_pos.x << " " << mouse_pos.y << "\n";
         layout.update(mouse_pos, left_click);

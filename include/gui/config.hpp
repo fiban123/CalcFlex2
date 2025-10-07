@@ -58,10 +58,37 @@
 #define FUNCTION_BUTTON_LABELS { \
     {"sqrt", "cbrt", "root", "ln", "log2", "log10", "log", "exp"}, \
     {"sin", "cos", "tan", "csc", "sec"}, \
-    {"pi", "e", "phi", "y"}, \
+    {"asin", "acos", "atan", "acsc", "asec"}, \
+    {"sinh", "cosh", "tanh", "csch", "sech"}, \
+    {"asinhh", "acosh", "atanh", "acsch", "asech"}, \
     {"round", "ceil", "floor"}, \
     {"int.", "sum", "prod"}, \
-    {"re", "im", "gamma", "fact", "magn", "abs", "conj", "prime", "r", "c"}, \
+    {"pi", "e", "phi", "y"}, \
+    {"re", "im", "gamma", "fact", "magn", "abs", "conj", "prime", "r", "c", "shutdown now"}, \
+}
+
+#define FUNCTION_BUTTON_STRINGS{ \
+    {"sqrt()", "cbrt()", "root()", "ln()", "log2()", "log10()", "log()", "exp()"}, \
+    {"sin()", "cos()", "tan()", "csc()", "sec()"}, \
+    {"asin()", "acos()", "atan()", "acsc()", "asec()"}, \
+    {"sinh()", "cosh()", "tanh()", "csch()", "sech()"}, \
+    {"asinh()", "acosh()", "atanh()", "acsch()", "asech()"}, \
+    {"round()", "ceil()", "floor()"}, \
+    {"integrate()", "sum()", "prod()"}, \
+    {"pi", "e", "phi", "y"}, \
+    {"re()", "im()", "gamma()", "fact()", "magn()", "abs()", "conj()", "prime()", "r()", "c()", ""}, \
+}
+
+#define FUNCTION_BUTTON_OFFSETS{ \
+    {5, 5, 5, 3, 5, 6, 4, 4}, \
+    {4, 4, 4, 4, 4}, \
+    {5, 5, 5, 5, 5}, \
+    {5, 5, 5, 5, 5}, \
+    {6, 6, 6, 6, 6}, \
+    {6, 5, 6}, \
+    {10, 4, 5}, \
+    {2, 1, 3, 1}, \
+    {3, 3, 6, 5, 5, 4, 5, 5, 2, 2}, \
 }
 #define FUNCTION_BUTTON_DIM sf::Vector2f(110.f, 45.f)
 #define FUNCTION_BUTTONS_MAX_TOP_OFFSET (EXPRESSION_INPUT_TOP_OFFSET + EXPRESSION_INPUT_HEIGHT + EXPRESSION_INPUT_SPACING)
@@ -70,13 +97,19 @@
 #define FUNCTION_GROUP_BUTTON_LABELS { \
     "exp", \
     "trig", \
-    "const", \
+    "a trig", \
+    "h trig", \
+    "a h trig", \
     "round", \
-    "calc.", \
+    "calculus", \
+    "const", \
     "other", \
 }
 
 #define FUNCTION_GROUP_BUTTON_STATES { \
+    false, \
+    false, \
+    false, \
     false, \
     false, \
     false, \
@@ -88,7 +121,7 @@
 #define FUNCTION_GROUP_BUTTON_FONT_SIZE 22
 #define FUNCTION_GROUP_DELIMIETER_LINE_COLOR ELEMENT_BG_COLOR
 #define FUNCTION_GROUP_SPACING 40.f
-#define FUNCTION_GROUP_BUTTON_DIM sf::Vector2f(140.f, 70.f)
+#define FUNCTION_GROUP_BUTTON_DIM sf::Vector2f(140.f, 56.6666666666666666666f)
 #define FUNCTION_GROUP_CHECKED_COLOR DIM_HIGHLIGHT_COLOR
 
 // all elements

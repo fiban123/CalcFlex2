@@ -31,9 +31,6 @@ void FunctionButtons::update(sf::Vector2i mouse_pos, bool left_click){
     for (FunctionButton& fb : func_buttons){
         fb.b.update(mouse_pos, left_click);
     }
-    if(rect_point_collide(mouse_pos, rect_pos, rect_size)){
-
-    }
     
 }
 
@@ -46,10 +43,12 @@ void FunctionButtons::update_click(sf::Vector2i click_pos){
     }
 }
 
-void FunctionButtons::update_scroll(float delta){
+void FunctionButtons::update_scroll(sf::Vector2i mouse_pos, float delta){
     // -1 = down, 1 = up
-    y_offset += delta * 50;
-    update_button_offsets();
+    if(rect_point_collide(mouse_pos, rect_pos_transformed, rect_size)){
+        y_offset += delta * 50;
+        update_button_offsets();
+    }
 }
 
 void FunctionButtons::resize_update(){
@@ -68,15 +67,23 @@ void FunctionButtons::update_button_offsets(){
     rect_pos_transformed = rect_pos;
     rect_pos_transformed.y += y_offset;
 
-    bool bi
+    bool big_function_buttons = rect_pos.y + rect_size.y > window_size->y;
 
-    if ()
+    float min_y_offset;
+    float max_y_offset;
 
-    float min_y_offset = window_size->y - rect_pos.y - rect_size.y;
+    if (big_function_buttons){
+        min_y_offset = window_size->y - rect_pos.y - rect_size.y;
+        max_y_offset = 0;
+    }
+    else{
+        min_y_offset = 0;
+        max_y_offset = window_size->y - rect_pos.y - rect_size.y; 
+    }
 
     y_offset = std::max(y_offset, min_y_offset);
+    y_offset = std::min(y_offset, max_y_offset);
 
-    std::cout << y_offset << std::endl;
 
     for (FunctionButton& fb : func_buttons){
         fb.b.update_pos({fb.pos.x, fb.pos.y + y_offset});
@@ -86,7 +93,6 @@ void FunctionButtons::update_button_offsets(){
     for (sf::Vertex& v : func_group_delimeters_transformed){
         v.position.y += y_offset;
     }
-    std::cout << "isjd" << std::endl;
 }
 
 void FunctionButtons::update_buttons(){
@@ -124,7 +130,7 @@ void FunctionButtons::update_buttons(){
             fb.b = Button(
                 {fb.pos.x, fb.pos.y - y_offset},
                 FUNCTION_BUTTON_DIM,
-                []{},
+                [this, group, func]{func_callback(func_button_strings[group][func], func_button_offsets[group][func]);},
                 fb.label,
                 &button_style
             );
@@ -161,8 +167,8 @@ void FunctionButtons::update_buttons(){
     update_button_offsets();
 }
 
-FunctionButtons::FunctionButtons(sf::RenderWindow *_window, sf::Vector2u *_window_size, sf::Font *_font)
-        : window(_window), window_size(_window_size), font(_font){
+FunctionButtons::FunctionButtons(sf::RenderWindow *_window, sf::Vector2u *_window_size, sf::Font *_font, std::function<void(std::string, unsigned)> _func_callback)
+        : window(_window), window_size(_window_size), font(_font), func_callback(_func_callback){
     
     checkbox_style = CheckboxStyle{
         .bg_color = BUTTON_BG_COLOR,
@@ -180,6 +186,8 @@ FunctionButtons::FunctionButtons(sf::RenderWindow *_window, sf::Vector2u *_windo
         .font = font,
         .font_size = FUNCTION_GROUP_BUTTON_FONT_SIZE
     };
+
+    y_offset = 0;
 
     // create func group buttons
     size_t func_group_button_y = func_group_button_labels.size();
@@ -206,6 +214,4 @@ FunctionButtons::FunctionButtons(sf::RenderWindow *_window, sf::Vector2u *_windo
     black_rect.setFillColor(sf::Color::Black);
 
     update_buttons();
-
-    
 }

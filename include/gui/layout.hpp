@@ -19,7 +19,8 @@ struct Layout{
     FunctionButtons func_buttons;
     ExpressionInput expression_input;
 
-    void button_callback(size_t bx, size_t by);
+    void main_button_callback(size_t bx, size_t by);
+    void func_button_callback(std::string string, unsigned offset);
 
     void resize_update(sf::Vector2u _window_size);
 
@@ -29,7 +30,7 @@ struct Layout{
     void update(sf::Vector2i mouse_pos, bool left_click);
     void draw(sf::RenderWindow& window);
     void update_click(sf::Vector2i click_pos);
-    void update_scroll(float delta);
+    void update_scroll(sf::Vector2i mouse_pos, float delta);
 
     Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window);
 };

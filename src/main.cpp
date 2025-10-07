@@ -11,6 +11,7 @@
 
 int main(){
 
+    // GMP test
     mpz_t a, result;
     mpz_init(a);
     mpz_init(result);
@@ -28,6 +29,7 @@ int main(){
 
     mpz_clear(a);
     mpz_clear(result);;
+
 
     start_gui(evaluate_string);
 }
