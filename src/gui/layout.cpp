@@ -71,7 +71,5 @@ Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_wi
     : font(_font),
       window_size(_window_size),
       window(_window),
-      main_buttons(&_window_size, _font, [this](size_t bx, size_t by){ button_callback(bx, by); }, _window),
-      expression_input(_window, &_window_size, _font)
-{
-}
+      main_buttons(&window_size, _font, [this](size_t bx, size_t by){ button_callback(bx, by); }, _window),
+      expression_input(_window, &window_size, _font){}
