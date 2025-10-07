@@ -4,7 +4,6 @@
 #include <iostream>
 
 void MainButtons::resize_update(){
-
     size_t main_button_x = main_button_labels[0].size();
     size_t main_button_y = main_button_labels.size();
 

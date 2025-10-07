@@ -50,7 +50,7 @@ ExpressionInput::ExpressionInput(sf::RenderWindow *_window, sf::Vector2u *_windo
 
     text_input = TextInput(
         "hallo", 
-        {SPACING, 3 * BUTTON_SIZE + 4 * SPACING},
+        {SPACING, 3 * BUTTON_SIZE + 3 * SPACING + EXPRESSION_INPUT_SPACING},
         {window_size->x -  2 * SPACING, EXPRESSION_INPUT_HEIGHT},
         &text_input_style
     );

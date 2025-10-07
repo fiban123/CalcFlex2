@@ -8,6 +8,7 @@
 
 void start_gui(std::function<std::string(std::string)> callback){
     sf::RenderWindow window(sf::VideoMode({1200, 1200}), "CalcFlex2");
+    sf::Vector2u min_size = {700, 700};
 
     sf::Font font;
     font.loadFromFile(FONT);
@@ -24,9 +25,19 @@ void start_gui(std::function<std::string(std::string)> callback){
                 window.close();
 
             else if (event.type == sf::Event::Resized) {
-                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                sf::Vector2u new_size = {
+                    std::max(event.size.width, min_size.x), 
+                    std::max(event.size.height, min_size.y)
+                };
+                sf::FloatRect visibleArea(0, 0, new_size.x, new_size.y);
                 window.setView(sf::View(visibleArea));
+                window.setSize(new_size);
                 layout.resize_update(window.getSize());
+            }
+
+            else if (event.type == sf::Event::MouseWheelScrolled){
+                std::cout << event.mouseWheelScroll.delta << "\n";
+                layout.update_scroll(event.mouseWheelScroll.delta);
             }
 
             else if (event.type == sf::Event::MouseButtonReleased){
@@ -34,6 +45,7 @@ void start_gui(std::function<std::string(std::string)> callback){
                     layout.update_click({event.mouseButton.x, event.mouseButton.y});
                 }
             }
+        
 
             else if (event.type == sf::Event::TextEntered){
                 std::cout << event.text.unicode << std::endl;

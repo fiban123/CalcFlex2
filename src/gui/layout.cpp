@@ -43,6 +43,7 @@ void Layout::button_callback(size_t bx, size_t by){
 void Layout::resize_update(sf::Vector2u _window_size){
     window_size = _window_size;
     main_buttons.resize_update();
+    func_buttons.resize_update();
     expression_input.resize_update();
 }
 
@@ -56,15 +57,22 @@ void Layout::move_cursor(bool sign){
 
 void Layout::update(sf::Vector2i mouse_pos, bool left_click){
     main_buttons.update(mouse_pos, left_click);
+    func_buttons.update(mouse_pos, left_click);
 }
 
 void Layout::draw(sf::RenderWindow& window){
     main_buttons.draw();
     expression_input.draw();
+    func_buttons.draw();
 }
 
 void Layout::update_click(sf::Vector2i click_pos){
     main_buttons.update_click(click_pos);
+    func_buttons.update_click(click_pos);
+}
+
+void Layout::update_scroll(float delta){
+    func_buttons.update_scroll(delta);
 }
 
 Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_window)
@@ -72,4 +80,6 @@ Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_wi
       window_size(_window_size),
       window(_window),
       main_buttons(&window_size, _font, [this](size_t bx, size_t by){ button_callback(bx, by); }, _window),
-      expression_input(_window, &window_size, _font){}
+      func_buttons(_window, &window_size, _font),
+      expression_input(_window, &window_size, _font)
+      {}

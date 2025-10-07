@@ -6,21 +6,24 @@
 #include <string>
 #include <functional>
 
-struct ButtonStyle{
+struct CheckboxStyle{
     sf::Color bg_color;
     sf::Color hover_border_color;
     sf::Color press_bg_color;
+    sf::Color checked_border_color;
     sf::Font* font;
     unsigned font_size;
 };
 
-struct Button{
+struct Checkbox{
     sf::RectangleShape rect;
     sf::Text label;
 
+    bool checked;
+
     std::function<void()> callback;
 
-    ButtonStyle* style;
+    CheckboxStyle* style;
 
     bool point_collide(sf::Vector2i pos);
 
@@ -33,7 +36,5 @@ struct Button{
     void update_pos(sf::Vector2f new_pos);
     void update_label(sf::String label_string);
 
-    Button(sf::Vector2f pos, sf::Vector2f size, std::function<void()> _callback, sf::String _label, ButtonStyle* style);
-
-    Button() = default;
+    Checkbox(sf::Vector2f pos, sf::Vector2f size, std::function<void()> _callback, sf::String _label, CheckboxStyle* style, bool checked);
 };

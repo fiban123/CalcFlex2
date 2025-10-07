@@ -2,6 +2,7 @@
 
 #include "text_input.hpp"
 #include "main_buttons.hpp"
+#include "func_buttons.hpp"
 #include "expression_input.hpp"
 #include "config.hpp"
 
@@ -15,7 +16,7 @@ struct Layout{
     sf::RenderWindow* window;
 
     MainButtons main_buttons;
-
+    FunctionButtons func_buttons;
     ExpressionInput expression_input;
 
     void button_callback(size_t bx, size_t by);
@@ -28,6 +29,7 @@ struct Layout{
     void update(sf::Vector2i mouse_pos, bool left_click);
     void draw(sf::RenderWindow& window);
     void update_click(sf::Vector2i click_pos);
+    void update_scroll(float delta);
 
     Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window);
 };
