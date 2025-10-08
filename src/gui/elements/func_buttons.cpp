@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+inline const std::vector<std::vector<std::string> > aux_menu_button_labels = AUX_MENU_BUTTON_LABELS;
+
 void FunctionButtons::group_button_callback(){
     update_buttons();
 }
@@ -142,7 +144,7 @@ void FunctionButtons::update_buttons(){
         
         // create group delimeter
         func_group_delimeters.push_back(sf::Vertex({start_x, cy}, FUNCTION_GROUP_DELIMIETER_LINE_COLOR, {0, 0}));
-        func_group_delimeters.push_back(sf::Vertex({end_x, cy}, FUNCTION_GROUP_DELIMIETER_LINE_COLOR, {0, 0}));
+        func_group_delimeters.push_back(sf::Vertex({end_x - SPACING, cy}, FUNCTION_GROUP_DELIMIETER_LINE_COLOR, {0, 0}));
         cy += FUNCTION_GROUP_SPACING / 2;
     }
 

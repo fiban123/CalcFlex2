@@ -5,7 +5,6 @@
 #include <iostream>
 
 void Button::draw(sf::RenderWindow& window){
-
     window.draw(rect);
     window.draw(label);
 }

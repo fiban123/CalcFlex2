@@ -12,6 +12,7 @@
 #define BRIGHT_CYAN {51, 248, 255}
 #define BLACK {0, 0, 0}
 #define WHITE {255, 255, 255}
+#define GREY {128, 128, 128}
 
 #define ELEMENT_BG_COLOR DARK_CYAN
 #define HIGHLIGHT_COLOR CYAN
@@ -20,6 +21,7 @@
 #define OUTLINE_HIGHLIGHT_COLOR BRIGHT_CYAN
 #define BG_COLOR BLACK
 #define TEXT_COLOR WHITE
+#define GREYED_TEXT_COLOR GREY
 
 // main buttons
 #define MAIN_BUTTON_LABELS { \
@@ -67,7 +69,7 @@
     {"re", "im", "gamma", "fact", "magn", "abs", "conj", "prime", "r", "c", "shutdown now"}, \
 }
 
-#define FUNCTION_BUTTON_STRINGS{ \
+#define FUNCTION_BUTTON_STRINGS { \
     {"sqrt()", "cbrt()", "root()", "ln()", "log2()", "log10()", "log()", "exp()"}, \
     {"sin()", "cos()", "tan()", "csc()", "sec()"}, \
     {"asin()", "acos()", "atan()", "acsc()", "asec()"}, \
@@ -79,7 +81,7 @@
     {"re()", "im()", "gamma()", "fact()", "magn()", "abs()", "conj()", "prime()", "r()", "c()", ""}, \
 }
 
-#define FUNCTION_BUTTON_OFFSETS{ \
+#define FUNCTION_BUTTON_OFFSETS { \
     {5, 5, 5, 3, 5, 6, 4, 4}, \
     {4, 4, 4, 4, 4}, \
     {5, 5, 5, 5, 5}, \
@@ -92,6 +94,7 @@
 }
 #define FUNCTION_BUTTON_DIM sf::Vector2f(110.f, 45.f)
 #define FUNCTION_BUTTONS_MAX_TOP_OFFSET (EXPRESSION_INPUT_TOP_OFFSET + EXPRESSION_INPUT_HEIGHT + EXPRESSION_INPUT_SPACING)
+#define FUNCTION_BUTTON_LEFT_SPACING 20.f
 
 // function group buttons
 #define FUNCTION_GROUP_BUTTON_LABELS { \
@@ -126,6 +129,7 @@
 
 // all elements
 #define SPACING 10.f
+#define FONT "JetBrainsMono-Regular.ttf"
 // buttons
 #define BUTTON_OUTLINE_WIDTH 2.f
 #define BUTTON_BG_COLOR ELEMENT_BG_COLOR
@@ -138,8 +142,35 @@
 #define EXPRESSION_INPUT_HEIGHT 45.f
 #define EXPRESSION_INPUT_FONT_SIZE 35
 #define EXPRESSION_INPUT_SPACING 20.f
-#define EXPRESSION_INPUT_TOP_OFFSET (3 * BUTTON_SIZE + 3 * SPACING + EXPRESSION_INPUT_SPACING)
+#define EXPRESSION_INPUT_TOP_OFFSET (INFO_BAR_TOP_OFFSET + SPACING + INFO_BAR_HEIGHT)
+// info bar
+#define INFO_BAR_BG_COLOR ELEMENT_BG_COLOR
+#define INFO_BAR_HEIGHT EXPRESSION_INPUT_HEIGHT
+#define INFO_BAR_FONT_SIZE EXPRESSION_INPUT_FONT_SIZE
+#define INFO_BAR_TEXT_COLOR GREYED_TEXT_COLOR
+#define INFO_BAR_TOP_OFFSET (HISTORY_HEIGHT + SPACING + HISTORY_TOP_SPACING)
+#define INFO_BAR_RIGHT_OFFSET (2 * SPACING + INFO_BUTTON_SIZE)
+// info button
+#define INFO_BUTTON_SIZE INFO_BAR_HEIGHT
+#define INFO_BUTTON_LABEL "i"
+#define INFO_BUTTON_FONT_SIZE 20
+// history
+#define HISTORY_HEIGHT 400.f
+#define HISTORY_TEXT_FONT_SIZE 20
+#define HISTORY_BG_COLOR ELEMENT_BG_COLOR
+#define HISTORY_LEFT_SPACING 20.f
+#define HISTORY_TOP_SPACING 20.f
+// aux menu buttons
+#define AUX_MENU_BUTTON_LABELS { \
+    {"clear", "menu>"}, \
+    {"config", "mode>"} \
+}
 
-
-#define FONT "JetBrainsMono-Regular.ttf"
-
+#define AUX_MENU_BUTTONS_CLEAR_INDEX = sf::Vector2u(0, 0)
+#define AUX_MENU_BUTTONS_CONFIG_INDEX = sf::Vector2u(0, 1)
+#define AUX_MENU_BUTTONS_MENU_INDEX = sf::Vector2u(1, 0)
+#define AUX_MENU_BUTTONS_MODE_INDEX = sf::Vector2u(1, 1)
+#define AUX_MENU_BUTTON_FONT_SIZE 20
+//lines
+#define N_LINES 6
+#define LINE_COLOR ELEMENT_BG_COLOR

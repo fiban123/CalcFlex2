@@ -50,8 +50,7 @@ void TextInput::update_text(){
     }
 }
 
-void TextInput::update_text_pos(
-){
+void TextInput::update_text_pos(){
     text.setPosition({rect.getPosition().x + rect.getSize().x - style->spacing, rect.getPosition().y + rect.getSize().y / 2.0f});
 }
 

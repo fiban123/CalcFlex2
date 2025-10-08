@@ -36,6 +36,10 @@ void Layout::main_button_callback(size_t bx, size_t by){
     }
 }
 
+void Layout::aux_menu_button_callback(size_t bx, size_t by){
+    std::cout << "aux button\n";
+}
+
 void Layout::func_button_callback(std::string string, unsigned offset){
     expression_input.enter_text(string, offset);
 }
@@ -43,12 +47,21 @@ void Layout::func_button_callback(std::string string, unsigned offset){
 void Layout::resize_update(sf::Vector2u _window_size){
     window_size = _window_size;
     main_buttons.resize_update();
+    aux_menu.resize_update();
     func_buttons.resize_update();
     expression_input.resize_update();
+    info_bar.resize_update();
+    history.resize_update();
+    lines.resize_update();
 }
 
 void Layout::text_entered(unsigned c){
-    expression_input.enter_unicode_char(c);
+    if (c == 127){
+        expression_input.clear_entry();
+    }
+    else{
+        expression_input.enter_unicode_char(c);
+    }
 }
 
 void Layout::move_cursor(bool sign){
@@ -57,18 +70,26 @@ void Layout::move_cursor(bool sign){
 
 void Layout::update(sf::Vector2i mouse_pos, bool left_click){
     main_buttons.update(mouse_pos, left_click);
+    aux_menu.update(mouse_pos, left_click);
     func_buttons.update(mouse_pos, left_click);
+    info_bar.update(mouse_pos, left_click);
 }
 
 void Layout::draw(sf::RenderWindow& window){
     func_buttons.draw();
     main_buttons.draw();
+    aux_menu.draw();
     expression_input.draw();
+    info_bar.draw();
+    history.draw();
+    lines.draw();
 }
 
 void Layout::update_click(sf::Vector2i click_pos){
     main_buttons.update_click(click_pos);
+    aux_menu.update_click(click_pos);
     func_buttons.update_click(click_pos);
+    info_bar.update_click(click_pos);
 }
 
 void Layout::update_scroll(sf::Vector2i mouse_pos, float delta){
@@ -80,6 +101,10 @@ Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_wi
       window_size(_window_size),
       window(_window),
       main_buttons(&window_size, _font, [this](size_t bx, size_t by){ main_button_callback(bx, by); }, _window),
+      aux_menu(&window_size, _font, [this](size_t bx, size_t by){ aux_menu_button_callback(bx, by); }, _window),
       func_buttons(_window, &window_size, _font, [this](std::string string, unsigned offset){func_button_callback(string, offset);}),
-      expression_input(_window, &window_size, _font)
+      expression_input(_window, &window_size, _font),
+      info_bar(_window, &window_size, _font),
+      history(_window, &window_size, _font),
+      lines(_window, &window_size)
       {}
