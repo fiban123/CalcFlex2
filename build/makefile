@@ -5,7 +5,7 @@ SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s \
           -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile \
           -logg -lflac -lbz2 -lgraphite2 -lrpcrt4 -ldwrite
 
-LDFLAGS := $(SFMLLD) -lgmp -lmpfr -static -static-libgcc -static-libstdc++
+LDFLAGS := $(SFMLLD) -lmpfr -lgmp -static -static-libgcc -static-libstdc++
 
 # Base flags
 BASE_CXXFLAGS := 	-I../include -I ../include/gui -I ../include/gui/elements \
