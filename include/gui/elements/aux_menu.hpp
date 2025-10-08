@@ -1,7 +1,7 @@
 #pragma once
 
 #include "button.hpp"
-#include "config.hpp"
+#include "gui_config.hpp"
 
 inline const std::vector<std::vector<std::string> > aux_menu_button_labels = AUX_MENU_BUTTON_LABELS;
 

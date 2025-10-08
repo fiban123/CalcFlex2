@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config.hpp"
+#include "gui_config.hpp"
 
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>

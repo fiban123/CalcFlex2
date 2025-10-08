@@ -1,7 +1,7 @@
 #pragma once
 
 #include "text_input.hpp"
-#include "config.hpp"
+#include "gui_config.hpp"
 
 struct ExpressionInput{
     TextInput text_input;

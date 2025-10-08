@@ -1,6 +1,6 @@
 #include "layout.hpp"
 
-#include "config.hpp"
+#include "gui_config.hpp"
 
 #include <iostream>
 
@@ -20,7 +20,10 @@ void Layout::main_button_callback(size_t bx, size_t by){
         expression_input.remove(1);
     }
     else if (index == MAIN_BUTTONS_EVALUATE_INDEX){
-        //...
+        std::string result = on_evaluate(expression_input.text_input.string);
+        std::string history_entry = expression_input.text_input.string + " = " + result;
+        history.add_entry(history_entry);
+        result_bar.set_string(result);
     }
     else if (index == MAIN_BUTTONS_LEFT_INDEX){
         expression_input.move_cursor(0);
@@ -53,6 +56,7 @@ void Layout::resize_update(sf::Vector2u _window_size){
     info_bar.resize_update();
     history.resize_update();
     lines.resize_update();
+    result_bar.resize_update();
 }
 
 void Layout::text_entered(unsigned c){
@@ -83,6 +87,7 @@ void Layout::draw(sf::RenderWindow& window){
     info_bar.draw();
     history.draw();
     lines.draw();
+    result_bar.draw();
 }
 
 void Layout::update_click(sf::Vector2i click_pos){
@@ -96,15 +101,17 @@ void Layout::update_scroll(sf::Vector2i mouse_pos, float delta){
     func_buttons.update_scroll(mouse_pos, delta);
 }
 
-Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_window)
+Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_window, std::function<std::string(std::string)> _on_evaluate)
     : font(_font),
       window_size(_window_size),
       window(_window),
+      on_evaluate(_on_evaluate),
       main_buttons(&window_size, _font, [this](size_t bx, size_t by){ main_button_callback(bx, by); }, _window),
-      aux_menu(&window_size, _font, [this](size_t bx, size_t by){ aux_menu_button_callback(bx, by); }, _window),
       func_buttons(_window, &window_size, _font, [this](std::string string, unsigned offset){func_button_callback(string, offset);}),
+      aux_menu(&window_size, _font, [this](size_t bx, size_t by){ aux_menu_button_callback(bx, by); }, _window),
       expression_input(_window, &window_size, _font),
       info_bar(_window, &window_size, _font),
       history(_window, &window_size, _font),
-      lines(_window, &window_size)
+      lines(_window, &window_size),
+      result_bar(_window, &window_size, _font)
       {}

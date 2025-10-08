@@ -1,5 +1,5 @@
 #include "button.hpp"
-#include "config.hpp"
+#include "gui_config.hpp"
 #include "point_collide.hpp"
 
 #include <iostream>

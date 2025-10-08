@@ -1,6 +1,6 @@
 #include "info_bar.hpp"
 
-#include "config.hpp"
+#include "gui_config.hpp"
 
 #include <iostream>
 
@@ -38,6 +38,7 @@ InfoBar::InfoBar(sf::RenderWindow *_window, sf::Vector2u *_window_size, sf::Font
         .text_color = INFO_BAR_TEXT_COLOR,
         .bg_color = INFO_BAR_BG_COLOR,
         .spacing = SPACING,
+        .entry_spacing = 0,
         .font_size = INFO_BAR_FONT_SIZE,
         .font = font
     };
@@ -51,7 +52,7 @@ InfoBar::InfoBar(sf::RenderWindow *_window, sf::Vector2u *_window_size, sf::Font
     };
 
     text_area = TextArea(
-        "hallo2", 
+        "", 
         {SPACING, INFO_BAR_TOP_OFFSET},
         {window_size->x - SPACING - INFO_BAR_RIGHT_OFFSET, EXPRESSION_INPUT_HEIGHT},
         &text_area_style,

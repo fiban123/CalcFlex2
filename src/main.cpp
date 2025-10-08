@@ -23,7 +23,7 @@ int main(){
 
     char* out = mpz_get_str(NULL, 10, result);
 
-    std::cout << out << std::endl;
+    std::cout << out << std::endl;;
 
     free(out);
 
@@ -31,5 +31,5 @@ int main(){
     mpz_clear(result);;
 
 
-    start_gui(evaluate_string);
+    start_gui(evaluate_string);;
 }

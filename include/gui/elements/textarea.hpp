@@ -3,17 +3,20 @@
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>
 
+#include <vector>
+
 struct TextAreaStyle{
     sf::Color text_color;
     sf::Color bg_color;
     float spacing;
+    float entry_spacing;
     unsigned font_size;
     sf::Font* font;
 };
 
 struct TextArea{
     std::string string;
-    sf::Text text;
+    std::vector<sf::Text> text_lines;
 
     bool centered;
     

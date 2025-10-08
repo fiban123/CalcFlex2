@@ -1,7 +1,8 @@
 #include "gui.hpp"
 #include "button.hpp"
-#include "config.hpp"
+#include "gui_config.hpp"
 #include "layout.hpp"
+#include "evaluate.hpp"
 
 #include <iostream>
 #include <vector>
@@ -13,7 +14,12 @@ void start_gui(std::function<std::string(std::string)> callback){
     sf::Font font;
     font.loadFromFile(FONT);
 
-    Layout layout(&font, window.getSize(), &window);
+    Layout layout(
+        &font, 
+        window.getSize(), 
+        &window, 
+        callback
+    );
 
     
     while (window.isOpen()){

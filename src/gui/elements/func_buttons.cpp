@@ -58,7 +58,7 @@ void FunctionButtons::resize_update(){
     size_t start_y = window_size->y - func_group_button_states.size() * (FUNCTION_GROUP_BUTTON_DIM.y + SPACING);
 
     for (size_t by = 0; by < func_group_button_labels.size(); by++){
-        func_groups[by].update_pos({x, start_y + by * (FUNCTION_GROUP_BUTTON_DIM.y + SPACING)});
+        func_groups[by].update_pos({(float) x, start_y + by * (FUNCTION_GROUP_BUTTON_DIM.y + SPACING)});
     }
 
     update_buttons();
@@ -200,7 +200,7 @@ FunctionButtons::FunctionButtons(sf::RenderWindow *_window, sf::Vector2u *_windo
     for (size_t by = 0; by < func_group_button_y; by++){
         std::string label = func_group_button_labels[by];;
         Checkbox b(
-            {x, start_y + by * (FUNCTION_GROUP_BUTTON_DIM.y + SPACING)},
+            {(float) x, start_y + by * (FUNCTION_GROUP_BUTTON_DIM.y + SPACING)},
             FUNCTION_GROUP_BUTTON_DIM,
             [this]{group_button_callback();},
             label,

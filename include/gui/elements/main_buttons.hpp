@@ -1,7 +1,7 @@
 #pragma once
 
 #include "button.hpp"
-#include "config.hpp"
+#include "gui_config.hpp"
 
 #include <vector>
 

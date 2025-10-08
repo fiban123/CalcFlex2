@@ -5,10 +5,11 @@
 #include "func_buttons.hpp"
 #include "expression_input.hpp"
 #include "aux_menu.hpp"
-#include "config.hpp"
+#include "gui_config.hpp"
 #include "info_bar.hpp"
 #include "history.hpp"
 #include "lines.hpp"
+#include "result_bar.hpp"
 
 #include <vector>
 #include <string>
@@ -26,6 +27,9 @@ struct Layout{
     AuxMenu aux_menu;
     History history;
     Lines lines;
+    ResultBar result_bar;
+
+    std::function<std::string(std::string)> on_evaluate;
 
     void main_button_callback(size_t bx, size_t by);
     void aux_menu_button_callback(size_t bx, size_t by);
@@ -41,5 +45,5 @@ struct Layout{
     void update_click(sf::Vector2i click_pos);
     void update_scroll(sf::Vector2i mouse_pos, float delta);
 
-    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window);
+    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window, std::function<std::string(std::string)> _on_evaluate);
 };

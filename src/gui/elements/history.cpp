@@ -1,6 +1,6 @@
 #include "history.hpp"
 
-#include "config.hpp"
+#include "gui_config.hpp"
 
 void History::draw(){
     text_area.draw(*window);
@@ -11,7 +11,7 @@ void History::resize_update(){
 }
 
 void History::add_entry(std::string string){
-    text_area.string += "\n" + string;
+    text_area.string.insert(0, string + "\n");
     text_area.update_text();
 }
 
@@ -22,6 +22,7 @@ History::History(sf::RenderWindow *_window, sf::Vector2u *_window_size, sf::Font
         .text_color = TEXT_COLOR,
         .bg_color = HISTORY_BG_COLOR,
         .spacing = SPACING,
+        .entry_spacing = HISTORY_ENTRY_SPACING,
         .font_size = HISTORY_TEXT_FONT_SIZE,
         .font = font
     };
@@ -29,8 +30,8 @@ History::History(sf::RenderWindow *_window, sf::Vector2u *_window_size, sf::Font
     text_area_pos_x = 2.f * BUTTON_SIZE + 2.f * SPACING + HISTORY_LEFT_SPACING;
 
     text_area = TextArea(
-        "hallo3\nhallo4", 
-        {text_area_pos_x, SPACING},
+        "", 
+        {text_area_pos_x, HISTORY_TOP_OFFSET},
         {window_size->x - text_area_pos_x - SPACING, HISTORY_HEIGHT},
         &text_area_style,
         false

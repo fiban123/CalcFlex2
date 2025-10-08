@@ -53,6 +53,7 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "queue": "cpp",
-        "cstdarg": "cpp"
+        "cstdarg": "cpp",
+        "sstream": "cpp"
     }
 }
