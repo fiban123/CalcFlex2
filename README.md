@@ -43,3 +43,26 @@ pi, e, phi, y
 
 z(z)
 f(z)
+
+## rules
+functions and constants cannot contain brackets, separators, or operators
+
+
+## tokenizer
+
+stages:
+1. number tokenizer
+2. bracket & separator tokenizer
+3. operator tokenizer
+4. function & constant tokenizer
+5. function bracket tokenizer
+
+token types
+- number
+- bracket
+- operator
+- function
+- constant
+- function bracket
+- separator
+- string (unknown type)
