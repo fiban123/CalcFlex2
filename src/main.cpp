@@ -1,6 +1,7 @@
 #include "gui.hpp"
 #include "evaluate.hpp"
-#include "dynamic_number.hpp"
+#include "dynamic_vec.hpp"
+#include "dynamic_vec_math.hpp"
 
 #include <iostream>
 #include <gmp.h>
@@ -13,9 +14,7 @@
 int main(){
 
     // math test
-    DynamicVector test{"7878", 0};
-
-    std::cout << test.get_str() << std::endl;
+    DynamicVec test1("1.0", 0);
 
 
     start_gui(evaluate_string);;
