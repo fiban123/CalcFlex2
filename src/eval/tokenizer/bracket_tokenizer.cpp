@@ -7,9 +7,14 @@ void tokenize_brackets(TokenPtrVec& tokens, std::string& expression){
         char c = expression[i];
 
         if (c == '(' || c == ')'){
-            std::string str(expression.begin() + string_start, expression.begin() + i - 1);
+            if (string_start != i - 1){
+                std::string str(expression.begin() + string_start, expression.begin() + i);
 
-            tokens.emplace_back(std::make_unique<StringToken>(str));
+                if (!str.empty()){
+                    tokens.emplace_back(new StringToken(str));
+                }
+            }
+
 
             if (c == '('){
                 tokens.emplace_back(std::make_unique<BracketToken>(BRACKET_OPENING));
@@ -21,4 +26,11 @@ void tokenize_brackets(TokenPtrVec& tokens, std::string& expression){
             string_start = i + 1;
         }
     }
+
+    if (string_start != expression.length()){
+        std::string str(expression.begin() + string_start, expression.end());
+    
+        tokens.emplace_back(std::make_unique<StringToken>(str));
+    }
+
 }

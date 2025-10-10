@@ -32,8 +32,10 @@ enum Operator{
     OPERATOR_ADD,
     OPERATOR_SUB,
     OPERATOR_MUL,
-    OPERATIR_DIV
+    OPERATOR_DIV
 };
+
+inline constexpr std::array<std::string_view, 5> OPERATORS = {"", "+", "-", "*", "/"};
 
 enum class Constant{
     NONE,
@@ -49,60 +51,63 @@ struct Token{
 };
 
 struct NumberToken : Token{
-    DynamicVec n;
+    std::unique_ptr<DynamicVec> n;
 
-    NumberToken(DynamicVec& _n): n(_n){};
+    NumberToken(std::unique_ptr<DynamicVec> _n): n(std::move(_n)){token_type = TokenType::NUMBER;};
     NumberToken(){token_type = TokenType::NUMBER;}
 };
 
 struct BracketToken : Token{
     BracketType type;
 
-    BracketToken(BracketType& _type) : type(_type){}
+    BracketToken(BracketType _type) : type(_type){token_type = TokenType::BRACKET;}
     BracketToken(){token_type = TokenType::BRACKET;}
 };
 
 struct OperatorToken : Token{
     Operator op;
 
-    OperatorToken(Operator& _op) : op(_op){};
+    OperatorToken(Operator _op) : op(_op){token_type = TokenType::OPERATOR;};
     OperatorToken(){token_type = TokenType::OPERATOR;}
 };
 
 struct FunctionToken : Token{
     std::string name;
 
-    FunctionToken(std::string& _name) : name(_name){};
+    FunctionToken(std::string _name) : name(_name){token_type = TokenType::FUNCTION;};
     FunctionToken(){token_type = TokenType::FUNCTION;}
 };
 
 struct ConstantToken : Token{
     Constant c;
 
-    ConstantToken(Constant& _c) : c(_c){}
+    ConstantToken(Constant _c) : c(_c){token_type = TokenType::CONSTANT;}
     ConstantToken(){token_type = TokenType::CONSTANT;}
 };
 
 struct FunctionBracketToken : Token{
     FunctionBracketType type;
 
-    FunctionBracketToken(FunctionBracketType& _type) : type(_type){}
+    FunctionBracketToken(FunctionBracketType _type) : type(_type){token_type = TokenType::FUNCTION_BRACKET;}
     FunctionBracketToken(){token_type = TokenType::FUNCTION_BRACKET;}
 };
 
 struct SeparatorToken : Token{
-    SeparatorToken() = default;
     SeparatorToken(){token_type = TokenType::SEPARATOR;}
 };
 
 struct StringToken : Token{
     std::string string;
 
-    StringToken(std::string& _string) : string(_string){}
+    StringToken(std::string _string) : string(_string){token_type = TokenType::STRING;}
     StringToken(){token_type = TokenType::STRING;}
 };
 
 typedef std::vector<std::unique_ptr<Token> > TokenPtrVec;
 typedef std::unique_ptr<Token> TokenPtr;
 
-TokenPtrVec tokenize(std::string& expression);
+void print_tokenptrvec(TokenPtrVec& tokens);
+
+void emplace_token(TokenPtrVec &tokens, size_t token_pos, std::unique_ptr<Token> new_token, std::string &left, std::string &right, size_t &i);
+
+TokenPtrVec tokenize(std::string &expression);

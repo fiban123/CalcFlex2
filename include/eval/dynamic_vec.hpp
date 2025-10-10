@@ -79,7 +79,8 @@ struct DynamicNum{ // can be real or rational
 struct DynamicVec{ // can store n-dimensional numbers
     std::vector<DynamicNum> dims;
 
-    void print();
+    void print_long();
+    void print_short();
 
     void set_dims(unsigned ndinms);
 
@@ -90,4 +91,6 @@ struct DynamicVec{ // can store n-dimensional numbers
     DynamicVec(DynamicNum& n, unsigned dim);
 
     DynamicVec() = default;
+
+    ~DynamicVec();
 };

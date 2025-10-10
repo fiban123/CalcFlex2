@@ -135,7 +135,7 @@ DynamicNum::DynamicNum(){
     set_rational(&q);
 }
 
-void DynamicVec::print(){
+void DynamicVec::print_long(){
 
     if (dims.empty()){
         std::cout << "empty vec\n";
@@ -149,6 +149,20 @@ void DynamicVec::print(){
         }
     }
     std::cout << "\n\n";
+}
+
+void DynamicVec::print_short(){
+    if (dims.empty()){
+        std::cout << "empty";
+        return;
+    }
+    for (unsigned i = 0; i < dims.size(); i++){
+        std::cout << dims[i].get_str() << "[" << i << "]";
+        if (i != dims.size() - 1){
+            std::cout << " and ";
+        }
+    }
+
 }
 
 void DynamicVec::set_dims(unsigned ndims){
@@ -197,4 +211,11 @@ DynamicVec::DynamicVec(DynamicNum& n, unsigned dim){
         dims.emplace_back(); // default-constructed dynamicnum
     }
     dims.emplace_back(n);
+}
+
+DynamicVec::~DynamicVec(){
+    for (size_t i = 0; i < dims.size(); i++){
+        dims[i].clear();
+    }
+    std::cout << "dynamicvec destructed\n";
 }

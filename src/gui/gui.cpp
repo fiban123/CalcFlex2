@@ -2,7 +2,6 @@
 #include "button.hpp"
 #include "gui_config.hpp"
 #include "layout.hpp"
-#include "evaluate.hpp"
 
 #include <iostream>
 #include <vector>
