@@ -11,6 +11,6 @@ inline const std::vector<std::vector<Operator> > OPERATOR_HIERARCHY = {
 
 size_t find_operator(TokenPtrVec &tokens, const std::vector<Operator> &hierarchy_level, size_t start);
 
-void evaluate_operator_at(TokenPtrVec &tokens, size_t i);
+void evaluate_operator_at(TokenPtrVec &tokens, size_t i, size_t &d);
 
-TokenPtrVec evaluate_flat_expression(TokenPtrVec &tokens);
+void evaluate_flat_expression(TokenPtrVec &tokens);

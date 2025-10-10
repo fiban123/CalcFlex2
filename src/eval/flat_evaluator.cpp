@@ -18,7 +18,7 @@ size_t find_operator(TokenPtrVec& tokens, const std::vector<Operator>& hierarchy
     return SIZE_MAX;
 }
 
-/* try evaluating an operator at a given index i*/
+/* try evaluating an operator at a given index i. decrements d depending on how many elements are erased*/
 void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d){
     d++;
     OperatorToken* ot = dynamic_cast<OperatorToken*>(tokens[i].get());
@@ -28,6 +28,8 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d){
         return;
     }
 
+    std::cout << "1\n";
+
     Token* left_tok = tokens[i - 1].get();
     Token* right_tok = tokens[i + 1].get();
 
@@ -36,11 +38,16 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d){
         return;
     }
 
+    std::cout << "2\n";
+
+
     NumberToken* left_num_tok = dynamic_cast<NumberToken*>(left_tok);
     NumberToken* right_num_tok = dynamic_cast<NumberToken*>(right_tok);
 
     DynamicVec& left_num = *left_num_tok->n;
-    DynamicVec& right_num = *right_num_tok->n;
+    DynamicVec& right_num = *right_num_tok->n;;
+    std::cout << "3\n";
+
 
     std::unique_ptr<DynamicVec> result_num;
 
@@ -50,29 +57,38 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d){
             break;
         }
     }
+    std::cout << "4\n";
+
 
     std::unique_ptr<NumberToken> result_tok = std::make_unique<NumberToken>(std::move(result_num));
 
     // delete old numbers & operators
     tokens.erase(tokens.begin() + i, tokens.begin() + i + 2);
-    d -= 2;
+    std::cout << "5\n";
+
+    d--;
     tokens[i - 1] = std::move(result_tok);
+
+    print_tokenptrvec(tokens);
 }
 
 /*evaluates a flat expression as far as possible. a flat expression is
 just an expression that contains only numbers and operators*/
-TokenPtrVec evaluate_flat_expression(TokenPtrVec &tokens){
-
+void evaluate_flat_expression(TokenPtrVec &tokens){
+ 
     for (const std::vector<Operator>& hierarchy_level : OPERATOR_HIERARCHY){
 
         size_t start = 0;
         size_t i = find_operator(tokens, hierarchy_level, start);
 
         while (i != SIZE_MAX){
-            evaluate_operator_at(tokens, i);
+            evaluate_operator_at(tokens, i, start);
 
-            size_t i = find_operator(tokens, hierarchy_level, start);
+            print_tokenptrvec(tokens);
+
+            i = find_operator(tokens, hierarchy_level, start);
         }
     }
-
+    std::cout << "end" << "\n";
+    print_tokenptrvec(tokens);
 }
