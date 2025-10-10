@@ -44,8 +44,8 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d){
     NumberToken* left_num_tok = dynamic_cast<NumberToken*>(left_tok);
     NumberToken* right_num_tok = dynamic_cast<NumberToken*>(right_tok);
 
-    DynamicVec& left_num = *left_num_tok->n;
-    DynamicVec& right_num = *right_num_tok->n;;
+    DynamicVec* left_num = left_num_tok->n.get();
+    DynamicVec* right_num = right_num_tok->n.get();
     std::cout << "3\n";
 
 
@@ -53,7 +53,7 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d){
 
     switch (ot->op){
         case OPERATOR_ADD: {
-            result_num = std::make_unique<DynamicVec>(left_num + right_num);
+            result_num = *left_num + *right_num;
             break;
         }
     }

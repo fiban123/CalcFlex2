@@ -189,6 +189,10 @@ void DynamicVec::set_dim(DynamicNum& n, unsigned dim){
     dims[dim].set(n);
 }
 
+void DynamicVec::deep_copy_from(DynamicVec &src)
+{
+}
+
 DynamicVec::DynamicVec(std::string str, unsigned dim)
 {
     if (dim == 0){
@@ -213,9 +217,22 @@ DynamicVec::DynamicVec(DynamicNum& n, unsigned dim){
     dims.emplace_back(n);
 }
 
-DynamicVec::~DynamicVec(){
+/*
+DynamicVec::DynamicVec(const DynamicVec &other){
+    print_short();
+    std::cout << " copied\n";
+}
+
+DynamicVec::DynamicVec(DynamicVec &&other){
+    print_short();
+    std::cout << " moved\n";
+}*/
+
+DynamicVec::~DynamicVec()
+{
     for (size_t i = 0; i < dims.size(); i++){
         dims[i].clear();
     }
-    std::cout << "dynamicvec destructed\n";
+    print_short();
+    std::cout << " destructed\n";
 }

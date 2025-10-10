@@ -86,11 +86,19 @@ struct DynamicVec{ // can store n-dimensional numbers
 
     void set_dim(DynamicNum& n, unsigned dim);
 
+    void deep_copy_from(DynamicVec& src);
+
     DynamicVec(std::string str, unsigned dim);
 
     DynamicVec(DynamicNum& n, unsigned dim);
 
     DynamicVec() = default;
+    // copy
+    DynamicVec(const DynamicVec& other) = delete;
+    // move
+    DynamicVec(DynamicVec&& other) = delete;
 
     ~DynamicVec();
 };
+
+typedef std::unique_ptr<DynamicVec> DynamicVecPtr;

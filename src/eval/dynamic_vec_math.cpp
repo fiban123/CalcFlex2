@@ -27,14 +27,14 @@ DynamicNum operator+(DynamicNum &l, DynamicNum& r){
     return result;
 }
 
-DynamicVec operator+(DynamicVec &lvec, DynamicVec &rvec){
-    DynamicVec result;
+DynamicVecPtr operator+(DynamicVec &lvec, DynamicVec &rvec){
+    DynamicVecPtr result;
     if (lvec.dims.size() == 1 && rvec.dims.size() == 1){
         // both arent complex
 
         DynamicNum rresult = lvec.dims[0] + rvec.dims[0];
 
-        result.set_dim(rresult, 0);
+        result = std::make_unique<DynamicVec>(rresult, 0);
     }
 
     return result;

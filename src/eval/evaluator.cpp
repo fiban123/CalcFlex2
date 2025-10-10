@@ -4,6 +4,10 @@
 
 
 #include <iostream>
+#include <sstream>
+
+std::string tokenptrvec_to_string(TokenPtrVec& tokens){
+}
 
 std::string evaluate_string(std::string out){
     TokenPtrVec tokens = tokenize(out);
