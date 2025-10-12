@@ -1,3 +1,13 @@
+ifeq ($(OS),Windows_NT)
+    RM = del /Q
+    EXE = .exe
+    PATHSEP = \\
+else
+    RM = rm -f
+    EXE =
+    PATHSEP = /
+endif
+
 # Compiler and flags
 CXX := g++
 SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s \
@@ -9,11 +19,11 @@ LDFLAGS := $(SFMLLD) -lmpfr -lgmp -static -static-libgcc -static-libstdc++
 
 # Base flags
 BASE_CXXFLAGS := 	-I../include -I ../include/gui -I ../include/gui/elements \
-					-I../include/eval -I../include/eval/tokenizer \
+									-I../include/eval -I../include/eval/tokenizer -I C:/msys64/ucrt64/include \
 					-Wall -Wextra -std=c++26 -MMD -MP -static -static-libgcc -static-libstdc++
 
 # Release/Debug
-CXXFLAGS := $(BASE_CXXFLAGS) -O2
+CXXFLAGS := $(BASE_CXXFLAGS) -O0
 DEBUGFLAGS := $(BASE_CXXFLAGS) -ggdb
 
 # Directories (relative to ./build/)
@@ -29,7 +39,8 @@ OBJECTS := $(patsubst ../src/%.cpp,$(OBJ_DIR)/%.o,$(wildcard ../src/*.cpp)) \
            $(patsubst ../src/eval/%.cpp,$(OBJ_DIR)/eval_%.o,$(wildcard ../src/eval/*.cpp)) \
            $(patsubst ../src/eval/tokenizer/%.cpp,$(OBJ_DIR)/eval_tokenizer_%.o,$(wildcard ../src/eval/tokenizer/*.cpp))
 DEPENDS := $(OBJECTS:.o=.d)   # corresponding .d files
-EXECUTABLE := $(BIN_DIR)/calcflex2.exe
+
+EXECUTABLE := $(BIN_DIR)/calcflex2$(EXE)
 
 # Default target
 all: build
@@ -68,10 +79,8 @@ $(OBJ_DIR)/eval_tokenizer_%.o: ../src/eval/tokenizer/%.cpp | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-# Clean build artifacts
 clean:
-	if exist obj\*.o del /Q obj\*.o
-	if exist calcflex2.exe del /Q calcflex2.exe
+	rm -f obj/*.o $(EXECUTABLE)
 
 build-run: build
 	./$(EXECUTABLE)

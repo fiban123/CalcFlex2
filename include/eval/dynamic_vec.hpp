@@ -10,7 +10,7 @@
 #include <iostream>
 
 void copy_mpq(mpq_t dest, mpq_t src);
-void copy_mpfr(mpfr_t dest, mpfr_t src);
+void copy_mpfr(mpfr_t dest, mpfr_t src);;;;;;
 
 typedef __mpfr_struct MPFloat;
 typedef __mpq_struct MPRational;
