@@ -11,9 +11,6 @@
 #include <vector>
 #include <iostream>
 
-void copy_mpq(mpq_t dest, mpq_t src);
-void copy_mpfr(mpfr_t dest, mpfr_t src);;;;;;
-
 typedef __mpfr_struct MPFloat;
 typedef __mpq_struct MPRational;
 
@@ -24,7 +21,7 @@ enum NumType{
     RATIONAL
 };
 
-void mp_string_remove_trailing_zeroes(std::string& s, mpfr_exp_t exp);
+void mp_string_remove_trailing_zeroes(std::string& s, long exp);
 
 std::string to_rational_string(std::string s);
 
@@ -115,3 +112,5 @@ struct DynamicVec{ // can store n-dimensional numbers
 };
 
 typedef std::unique_ptr<DynamicVec> DynamicVecPtr;
+
+DynamicNum to_float(DynamicNum& src);

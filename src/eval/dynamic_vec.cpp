@@ -3,16 +3,6 @@
 #include <sstream>
 #include <cstring>
 
-void copy_mpq(mpq_t dest, mpq_t src) {
-    mpq_init(dest);
-    mpq_set(dest, src);
-}
-
-void copy_mpfr(mpfr_t dest, mpfr_t src) {
-    mpfr_init2(dest, mpfr_get_prec(src));
-    mpfr_set(dest, src, MPFR_RNDN);
-}
-
 void mp_string_remove_trailing_zeroes(std::string& s, long exp) {
     // remove trailing zeroes
     long last_not_zero = (long) s.find_last_not_of('0');
@@ -165,6 +155,14 @@ std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits) {
 
         return numerator_str_sci + '/' + denominator_str_sci;
     }
+}
+
+DynamicNum to_float(DynamicNum& src) {
+    DynamicNum n = src.deep_copy();
+
+    n.to_float();
+
+    return n;
 }
 
 void DynamicNum::set(DynamicNum& src) {

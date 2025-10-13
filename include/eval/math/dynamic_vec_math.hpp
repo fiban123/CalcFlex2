@@ -29,8 +29,6 @@ DynamicNum operator-(DynamicNum &l, DynamicNum &r);
 DynamicNum operator*(DynamicNum &l, DynamicNum &r);
 DynamicNum operator/(DynamicNum &l, DynamicNum &r);
 
-DynamicNum pow(DynamicNum &l, DynamicNum &r);
-
 
 DynamicVecPtr operator+(DynamicVec &lvec, DynamicVec &rvec);
 DynamicVecPtr operator-(DynamicVec &lvec, DynamicVec &rvec);
