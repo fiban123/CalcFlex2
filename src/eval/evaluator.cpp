@@ -11,10 +11,11 @@ std::string tokenptrvec_to_string(TokenPtrVec& tokens){
 
 std::string evaluate_string(std::string out){
     TokenPtrVec tokens = tokenize(out);
-    print_tokenptrvec(tokens);
     evaluate_flat_expression(tokens);
-    print_tokenptrvec(tokens);;
+
+    std::cout << debug_tokens_to_string(tokens);
+    std::cout << tokens_to_string(tokens);
 
 
-    return "69420";
+    return tokens_to_string(tokens);
 }

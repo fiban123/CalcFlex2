@@ -106,7 +106,8 @@ struct StringToken : Token{
 typedef std::vector<std::unique_ptr<Token> > TokenPtrVec;
 typedef std::unique_ptr<Token> TokenPtr;
 
-void print_tokenptrvec(TokenPtrVec& tokens);
+std::string tokens_to_string(TokenPtrVec& tokens);
+std::string debug_tokens_to_string(TokenPtrVec &tokens);
 
 void emplace_token(TokenPtrVec &tokens, size_t token_pos, std::unique_ptr<Token> new_token, std::string &left, std::string &right, size_t &i);
 

@@ -1,0 +1,17 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+ColumnLimit: 200
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: false  
+  BeforeElse: true           
+  BeforeCatch: true         
+  BeforeWhile: true             
+
+SpaceBeforeParens: ControlStatements

@@ -5,50 +5,101 @@
 #include "operator_tokenizer.hpp"
 
 #include <vector>
+#include <sstream>
 
-std::string print_tokenptrvec(TokenPtrVec &tokens) {
-  std::cout << "{ ";
-  for (size_t i = 0; i < tokens.size(); i++) {
-    Token *t = tokens[i].get();
+std::string tokens_to_string(TokenPtrVec &tokens){
+    std::ostringstream out;
 
-    switch (t->token_type) {
-    case TokenType::NONE: {
-      std::cout << "None";
-      break;
+    for (size_t i = 0; i < tokens.size(); i++){
+        Token *t = tokens[i].get();
+
+        switch (t->token_type){
+            case TokenType::NONE:{
+                out << "None";
+                break;
+            }
+
+            case TokenType::NUMBER:{
+                NumberToken *np = dynamic_cast<NumberToken *>(t);
+                out << np->n->get_str_short(eval_config);
+                break;
+            }
+
+            case TokenType::BRACKET:{
+                BracketToken *bt = dynamic_cast<BracketToken *>(t);
+                char bracket_char = bt->type == BRACKET_OPENING ? '(' : ')';
+                out << bracket_char;
+                break;
+            }
+
+            case TokenType::OPERATOR:{
+                OperatorToken *ot = dynamic_cast<OperatorToken *>(t);
+                std::string operator_string(OPERATORS[static_cast<size_t>(ot->op)]);
+                out << operator_string;
+                break;
+            }
+
+            case TokenType::STRING:{
+                StringToken *st = dynamic_cast<StringToken *>(t);
+                out << st->string;
+                break;
+            }
+        }
+        if (i != tokens.size() - 1){
+            out << " ";
+        }
     }
 
-    case TokenType::NUMBER: {
-      NumberToken *np = dynamic_cast<NumberToken *>(t);
-      np->n->print_short();
-      break;
-    }
+    return out.str();
+}
 
-    case TokenType::BRACKET: {
-      BracketToken *bt = dynamic_cast<BracketToken *>(t);
-      char bracket_char = bt->type == BRACKET_OPENING ? '(' : ')';
-      std::cout << bracket_char;
-      break;
-    }
+std::string debug_tokens_to_string(TokenPtrVec &tokens){
+    std::ostringstream out;
 
-    case TokenType::OPERATOR: {
-      OperatorToken *ot = dynamic_cast<OperatorToken *>(t);
-      std::string operator_string(OPERATORS[static_cast<size_t>(ot->op)]);
-      std::cout << operator_string;
-      break;
-    }
+    out << "{ ";
+    for (size_t i = 0; i < tokens.size(); i++){
+        Token *t = tokens[i].get();
 
-    case TokenType::STRING: {
-      StringToken *st = dynamic_cast<StringToken *>(t);
-      std::cout << "[str]" << st->string;
-      break;
+        switch (t->token_type){
+            case TokenType::NONE:{
+                out << "None";
+                break;
+            }
+
+            case TokenType::NUMBER:{
+                NumberToken *np = dynamic_cast<NumberToken *>(t);
+                out << np->n->get_str_short(debug_eval_config);
+                break;
+            }
+
+            case TokenType::BRACKET:{
+                BracketToken *bt = dynamic_cast<BracketToken *>(t);
+                char bracket_char = bt->type == BRACKET_OPENING ? '(' : ')';
+                out << bracket_char;
+                break;
+            }
+
+            case TokenType::OPERATOR:{
+                OperatorToken *ot = dynamic_cast<OperatorToken *>(t);
+                std::string operator_string(OPERATORS[static_cast<size_t>(ot->op)]);
+                out << operator_string;
+                break;
+            }
+
+            case TokenType::STRING:{
+                StringToken *st = dynamic_cast<StringToken *>(t);
+                out << "[str]" << st->string;
+                break;
+            }
+        }
+        if (i != tokens.size() - 1){
+            out << ", ";
+        }
     }
-    }
-    if (i != tokens.size() - 1) {
-      std::cout << ", ";
-    }
-  }
-  std::cout << " }";
-  std::cout << "\n";
+    out << " }";
+    out << "\n";
+
+    return out.str();
 }
 
 /* emplaces a new token new_token into a string token such that new_token is in

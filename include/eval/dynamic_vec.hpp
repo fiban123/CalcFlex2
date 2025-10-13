@@ -1,5 +1,7 @@
 #pragma once
 
+#include "eval_config.hpp"
+
 #include <gmp.h>
 #include <mpfr.h>
 
@@ -22,7 +24,16 @@ enum NumType{
     RATIONAL
 };
 
+void mp_string_remove_trailing_zeroes(std::string& s, mpfr_exp_t exp);
+
 std::string to_rational_string(std::string s);
+
+std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec);
+std::string mpfr_get_str_sci(mpfr_t src, size_t mantissa_digits);
+
+std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits); 
+
+std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits);
 
 struct DynamicNum{ // can be real or rational
     void* nptr = nullptr;
@@ -46,6 +57,7 @@ struct DynamicNum{ // can be real or rational
             mpq_clear(q);
         }
         free(nptr);
+        type = NONE;
     }
 
     inline void set_float(MPFloat* f){
@@ -66,7 +78,7 @@ struct DynamicNum{ // can be real or rational
     void to_float();
     void to_rational();
 
-    std::string get_str();
+    std::string get_str(EvalConfig &config);
 
     DynamicNum deep_copy();
 
@@ -79,8 +91,9 @@ struct DynamicNum{ // can be real or rational
 struct DynamicVec{ // can store n-dimensional numbers
     std::vector<DynamicNum> dims;
 
-    void print_long();
-    void print_short();
+    std::string get_str_long(EvalConfig &config);
+
+    std::string get_str_short(EvalConfig &config);
 
     void set_dims(unsigned ndinms);
 
