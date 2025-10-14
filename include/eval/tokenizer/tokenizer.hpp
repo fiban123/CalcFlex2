@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dynamic_vec.hpp"
+#include "functions.hpp"
 
 
 enum class TokenType{
@@ -73,16 +74,16 @@ struct OperatorToken : Token{
 };
 
 struct FunctionToken : Token{
-    std::string name;
+    MathPrimitive func;
 
-    FunctionToken(std::string _name) : name(_name){token_type = TokenType::FUNCTION;};
+    FunctionToken(MathPrimitive _func) : func(_func){token_type = TokenType::FUNCTION;};
     FunctionToken(){token_type = TokenType::FUNCTION;}
 };
 
 struct ConstantToken : Token{
-    Constant c;
+    MathPrimitive c;
 
-    ConstantToken(Constant _c) : c(_c){token_type = TokenType::CONSTANT;}
+    ConstantToken(MathPrimitive _c) : c(_c){token_type = TokenType::CONSTANT;}
     ConstantToken(){token_type = TokenType::CONSTANT;}
 };
 

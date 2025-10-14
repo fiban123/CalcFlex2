@@ -55,6 +55,7 @@
         "queue": "cpp",
         "cstdarg": "cpp",
         "sstream": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "cinttypes": "cpp"
     }
 }

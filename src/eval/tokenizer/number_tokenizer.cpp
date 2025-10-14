@@ -17,7 +17,7 @@ void create_number_token(TokenPtrVec& tokens, StringToken* str_token, size_t str
     std::string left(str_token->string.begin(), str_token->string.begin() + start);
     std::string right(str_token->string.begin() + start + numstr_len, str_token->string.end());
 
-    std::cout << left << numstr << right << "\n";
+    //std::cout << left << numstr << right << "\n";
 
 
     emplace_token(tokens, token_i, std::move(num_token), left, right, token_i);

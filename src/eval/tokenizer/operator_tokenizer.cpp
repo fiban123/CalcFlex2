@@ -1,6 +1,6 @@
 #include "operator_tokenizer.hpp"
 
-void create_operator_token(TokenPtrVec& tokens, size_t token_pos, std::string string, size_t string_pos, Operator op, size_t& i){
+void create_operator_token(TokenPtrVec& tokens, size_t token_pos, std::string& string, size_t string_pos, Operator op, size_t& i){
     // [str]1+1 -> [str]1, [op]+, [str]1
 
     unsigned op_len = std::string(OPERATORS[static_cast<size_t>(op)]).length();
@@ -26,7 +26,6 @@ size_t find_operator(std::string& s, Operator& op_type){
 }
 
 void tokenize_operators(TokenPtrVec &tokens){
-    std::cout << "sdsdsd" << "\n";
     for (size_t i = 0; i < tokens.size(); i++){
         Token* t = tokens[i].get();
 

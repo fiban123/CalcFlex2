@@ -45,15 +45,16 @@ z(z)
 f(z)
 
 ## rules
-functions and constants cannot contain brackets, separators, or operators
+functions and constants cannot contain brackets, separators, or operators, or have a postfix operator present
 
 
 ## tokenizer
 
 stages:
-1. number tokenizer
-2. bracket & separator tokenizer
-3. operator tokenizer
+1. number tokenizer (done)
+2. bracket & separator tokenizer (done)
+3. operator tokenizer (done)
+6. postfix function tokenizer
 4. function & constant tokenizer
 5. function bracket tokenizer
 

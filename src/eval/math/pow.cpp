@@ -32,8 +32,8 @@ DynamicNum float_pow(DynamicNum& base, DynamicNum& exponent) {
     result.set_float(fresult);
 
 
-    //base_float.clear();
-    //exponent_float.clear();
+    base_float.clear();
+    exponent_float.clear();
 
     return result;
 }
@@ -119,7 +119,7 @@ DynamicNum z_pow(DynamicNum& base, mpz_t exponent){
         mpfr_t fresult;
         mpfr_init2(fresult, eval_config.math_prec);
 
-        mpfr_pow_z(fresult, fresult, exponent, MPFR_RNDN);
+        mpfr_pow_z(fresult, base.get_float(), exponent, MPFR_RNDN);
 
         result.set_float(fresult);
     }
@@ -138,6 +138,8 @@ DynamicNum num_pow(DynamicNum& base, DynamicNum& exponent) {
             result = z_pow(base, mpq_numref(exponent.get_rational()));
         }
         else{
+
+
             result = float_pow(base, exponent);
         }
     }
@@ -157,6 +159,5 @@ DynamicVecPtr vec_pow(DynamicVec& base, DynamicVec& exponent) {
 
         result = std::make_unique<DynamicVec>(rresult, 0);
     }
-
     return result;
 }
