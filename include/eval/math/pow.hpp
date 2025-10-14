@@ -5,7 +5,9 @@
 
 DynamicNum float_pow(DynamicNum& base, DynamicNum & exponent);
 
-void mpz_pow_z(mpz_ptr out, mpz_src_ptr base, mpz_srcptr exponent);
+void mpz_pow_z(mpz_ptr out, mpz_srcptr base, mpz_srcptr exponent);
+
+DynamicNum z_pow(DynamicNum& base, mpz_t exponent);
 
 DynamicNum num_pow(DynamicNum& base, DynamicNum& exponent);
 

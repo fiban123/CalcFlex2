@@ -5,6 +5,7 @@
 #include <array>
 
 inline const std::vector<std::vector<Operator> > OPERATOR_HIERARCHY = {
+    {OPERATOR_POW},
     {OPERATOR_MUL, OPERATOR_DIV},
     {OPERATOR_ADD, OPERATOR_SUB}
 };

@@ -4,6 +4,10 @@
 #include <cstring>
 
 void mp_string_remove_trailing_zeroes(std::string& s, long exp) {
+    if (exp > s.length()){
+        return;
+    }
+
     // remove trailing zeroes
     long last_not_zero = (long) s.find_last_not_of('0');
     // make sure to not remove anything before the .
@@ -52,6 +56,9 @@ std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec) {
     mpfr_free_str(mantissa_buf);
 
     bool negative = mantissa[0] == '-';
+
+    std::cout << exp << "asd" << std::endl;
+    std::cout << mantissa.length() << "asd2" << std::endl;
 
     mp_string_remove_trailing_zeroes(mantissa, exp);
 
@@ -207,11 +214,7 @@ std::string DynamicNum::get_str(EvalConfig& config) {
     if (type == FLOAT) {
         MPFloat* f = get_float();
         if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL) {
-            char* float_str = mpfr_get_str(NULL, NULL, 10, 0, f, MPFR_RNDN);
-
-            out << float_str;
-
-            mpfr_free_str(float_str);
+            out << mpfr_get_str_formatted(f, eval_config.representation_prec);
         }
         else {
             out << mpfr_get_str_sci(f, config.sci_representation_n_digits);

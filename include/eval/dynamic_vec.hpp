@@ -42,18 +42,17 @@ struct DynamicNum{ // can be real or rational
     inline MPRational* get_rational(){return reinterpret_cast<MPRational*>(nptr);}
 
     inline void clear(){
-        if (!nptr){
-            return;
+        if (nptr){
+            if (type == FLOAT){
+                MPFloat* f = get_float();
+                mpfr_clear(f);
+            }
+            else if (type == RATIONAL){
+                MPRational* q = get_rational();
+                mpq_clear(q);
+            }
+            free(nptr);
         }
-        if (type == FLOAT){
-            MPFloat* f = get_float();
-            mpfr_clear(f);
-        }
-        else if (type == RATIONAL){
-            MPRational* q = get_rational();
-            mpq_clear(q);
-        }
-        free(nptr);
         type = NONE;
     }
 

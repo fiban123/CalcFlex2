@@ -21,17 +21,17 @@ struct EvalConfig{
 };
 
 inline EvalConfig eval_config{
-    REPRESENTATION_TYPE_FLOAT,
+    REPRESENTATION_TYPE_EXACT,
     REPRESENTATION_FORMAT_NORMAL,
-    2048, 
-    1024, 
+    2048,
+    1024,
     12,
 };
 
 inline EvalConfig debug_eval_config{
-    REPRESENTATION_TYPE_FLOAT, 
+    REPRESENTATION_TYPE_EXACT, 
     REPRESENTATION_FORMAT_NORMAL,
-    2048, 
+    2048,
     1024,
     12,
 };

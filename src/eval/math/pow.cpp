@@ -10,6 +10,9 @@ DynamicNum float_pow(DynamicNum& base, DynamicNum& exponent) {
     DynamicNum* baseptr = &base;
     DynamicNum* exponentptr = &exponent;
 
+    std::cout << base.get_str(eval_config) << std::endl;
+    std::cout << exponent.get_str(eval_config) << std::endl;
+
     if (base.type == RATIONAL){
         base_float = to_float(base);
         baseptr = &base_float;
@@ -24,10 +27,15 @@ DynamicNum float_pow(DynamicNum& base, DynamicNum& exponent) {
     // perform pow()
     mpfr_pow(fresult, baseptr->get_float(), exponentptr->get_float(), MPFR_RNDN);
 
+    std::string a = mpfr_get_str_formatted(fresult, eval_config.representation_prec);
+
     result.set_float(fresult);
 
-    base_float.clear();
-    exponent_float.clear();
+
+    //base_float.clear();
+    //exponent_float.clear();
+
+    return result;
 }
 
 void mpz_pow_z(mpz_ptr out, mpz_srcptr base, mpz_srcptr exponent){
@@ -94,8 +102,29 @@ void mpq_pow_z(mpq_ptr out, mpq_srcptr base, mpz_srcptr exponent){
 }
 
 DynamicNum z_pow(DynamicNum& base, mpz_t exponent){
+    DynamicNum result;
+
     if (base.type == RATIONAL){
+        mpq_t qresult;
+        mpq_init(qresult);
+
+        mpq_pow_z(qresult, base.get_rational(), exponent);
+
+        mpq_canonicalize(qresult);
+
+        result.set_rational(qresult);
     }
+
+    else if (base.type == FLOAT){
+        mpfr_t fresult;
+        mpfr_init2(fresult, eval_config.math_prec);
+
+        mpfr_pow_z(fresult, fresult, exponent, MPFR_RNDN);
+
+        result.set_float(fresult);
+    }
+
+    return result;
 }
 
 DynamicNum num_pow(DynamicNum& base, DynamicNum& exponent) {
@@ -106,14 +135,17 @@ DynamicNum num_pow(DynamicNum& base, DynamicNum& exponent) {
 
         if (mpz_cmp_ui(mpq_denref(exponent.get_rational()), 1) == 0){
             // it is one
+            result = z_pow(base, mpq_numref(exponent.get_rational()));
         }
         else{
-            return float_pow(base, exponent);
+            result = float_pow(base, exponent);
         }
     }
     else{
-        return float_pow(base, exponent);
+        result = float_pow(base, exponent);
     }
+
+    return result;
 }
 
 DynamicVecPtr vec_pow(DynamicVec& base, DynamicVec& exponent) { 

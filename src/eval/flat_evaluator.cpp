@@ -1,10 +1,9 @@
 #include "flat_evaluator.hpp"
 
 #include "dynamic_vec_math.hpp"
+#include "pow.hpp"
 
-size_t find_operator(TokenPtrVec& tokens,
-                     const std::vector<Operator>& hierarchy_level,
-                     size_t start) {
+size_t find_operator(TokenPtrVec& tokens, const std::vector<Operator>& hierarchy_level, size_t start) {
     for (size_t i = start; i < tokens.size(); i++) {
         if (tokens[i]->token_type == TokenType::OPERATOR) {
             // found operator token
@@ -37,8 +36,7 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d) {
     Token* left_tok = tokens[i - 1].get();
     Token* right_tok = tokens[i + 1].get();
 
-    if (left_tok->token_type != TokenType::NUMBER ||
-        right_tok->token_type != TokenType::NUMBER) {
+    if (left_tok->token_type != TokenType::NUMBER || right_tok->token_type != TokenType::NUMBER) {
         // left and right are not numbers
         return;
     }
@@ -55,26 +53,29 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d) {
     std::unique_ptr<DynamicVec> result_num;
 
     switch (ot->op) {
-        case OPERATOR_ADD: {
-            result_num = *left_num + *right_num;
-            break;
-        }
-        case OPERATOR_SUB: {
-            result_num = *left_num - *right_num;
-            break;
-        }
-        case OPERATOR_MUL: {
-            result_num = *left_num * *right_num;
-            break;
-        }
-        case OPERATOR_DIV: {
-            result_num = *left_num / *right_num;
-            break;
-        }
+    case OPERATOR_ADD: {
+        result_num = *left_num + *right_num;
+        break;
+    }
+    case OPERATOR_SUB: {
+        result_num = *left_num - *right_num;
+        break;
+    }
+    case OPERATOR_MUL: {
+        result_num = *left_num * *right_num;
+        break;
+    }
+    case OPERATOR_DIV: {
+        result_num = *left_num / *right_num;
+        break;
+    }
+    case OPERATOR_POW: {
+        result_num = vec_pow(*left_num, *right_num);
+        break;
+    }
     }
 
-    std::unique_ptr<NumberToken> result_tok =
-        std::make_unique<NumberToken>(std::move(result_num));
+    std::unique_ptr<NumberToken> result_tok = std::make_unique<NumberToken>(std::move(result_num));
 
     // delete old numbers & operators
     tokens.erase(tokens.begin() + i, tokens.begin() + i + 2);

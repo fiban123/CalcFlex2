@@ -32,10 +32,11 @@ enum Operator{
     OPERATOR_ADD,
     OPERATOR_SUB,
     OPERATOR_MUL,
-    OPERATOR_DIV
+    OPERATOR_DIV,
+    OPERATOR_POW
 };
 
-inline constexpr std::array<std::string_view, 5> OPERATORS = {"", "+", "-", "*", "/"};
+inline constexpr std::array<std::string_view, 6> OPERATORS = {"", "+", "-", "*", "/", "^"};
 
 enum class Constant{
     NONE,
