@@ -5,6 +5,7 @@
 #include "operator_tokenizer.hpp"
 #include "separator_tokenizer.hpp"
 #include "primitive_tokenizer.hpp"
+#include "postfix_tokenizer.hpp"
 
 #include <sstream>
 #include <vector>
@@ -61,6 +62,12 @@ std::string tokens_to_string(TokenPtrVec& tokens) {
             case TokenType::CONSTANT:{
                 ConstantToken* ct = dynamic_cast<ConstantToken*>(t);
                 out << MATH_PRIMITIVES[static_cast<size_t>(ct->c)];
+                break;
+            }
+
+            case TokenType::POSTFIX_OPERATOR:{
+                PostfixOperatorToken* ct = dynamic_cast<PostfixOperatorToken*>(t);
+                out << POSTFIX_OPERATORS[static_cast<size_t>(ct->pop)];
                 break;
             }
 
@@ -131,6 +138,12 @@ std::string debug_tokens_to_string(TokenPtrVec& tokens) {
                 break;
             }
 
+            case TokenType::POSTFIX_OPERATOR:{
+                PostfixOperatorToken* ct = dynamic_cast<PostfixOperatorToken*>(t);
+                out << "[pop]" << POSTFIX_OPERATORS[static_cast<size_t>(ct->pop)];
+                break;
+            }
+
             default: {
                 out << "????";
             }
@@ -174,9 +187,11 @@ TokenPtrVec tokenize(std::string& expression) {
 
     tokenize_brackets(tokens, expression);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
+    tokenize_numbers(tokens);
+    std::cout << debug_tokens_to_string(tokens) << std::endl;
     tokenize_operators(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
-    tokenize_numbers(tokens);
+    tokenize_postfix_operator(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
     tokenize_primitive(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;

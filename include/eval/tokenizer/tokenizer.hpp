@@ -3,6 +3,20 @@
 #include "dynamic_vec.hpp"
 #include "functions.hpp"
 
+#define OPERATORS_MACRO \
+    X(OPERATOR_NONE, "") \
+    X(OPERATOR_ADD, "+") \
+    X(OPERATOR_SUB, "-") \
+    X(OPERATOR_MUL, "*") \
+    X(OPERATOR_DIV, "/") \
+    X(OPERATOR_POW, "^")
+
+#define POSTFIX_OPERATORS_MACRO \
+    X(POSTFIX_FACTORIAL, "*") \
+    X(POSTFIX_PERCENT, "%") \
+    X(POSTFIX_DEG, "°") \
+    X(POSTFIX_PRIMORIAL, "#") 
+
 
 enum class TokenType{
     NONE,
@@ -11,6 +25,7 @@ enum class TokenType{
     OPERATOR,
     FUNCTION,
     CONSTANT,
+    POSTFIX_OPERATOR,
     FUNCTION_BRACKET,
     SEPARATOR,
     STRING
@@ -29,21 +44,30 @@ enum BracketType{
 };
 
 enum Operator{
-    OPERATOR_NONE,
-    OPERATOR_ADD,
-    OPERATOR_SUB,
-    OPERATOR_MUL,
-    OPERATOR_DIV,
-    OPERATOR_POW
+    #define X(a, b) a,
+    OPERATORS_MACRO
+    #undef X
+    OPERATOR_COUNT
 };
 
-inline constexpr std::array<std::string_view, 6> OPERATORS = {"", "+", "-", "*", "/", "^"};
+enum PostfixOperator{
+    #define X(a, b) a,
+    POSTFIX_OPERATORS_MACRO
+    #undef X
+    POSTFIX_OPERATOR_COUNT
+};
 
-enum class Constant{
-    NONE,
-    PI,
-    E,
-    PHI
+
+inline constexpr std::array<std::string_view, OPERATOR_COUNT> OPERATORS = {
+    #define X(a, b) b,
+    OPERATORS_MACRO
+    #undef x
+};
+
+inline constexpr std::array<std::string_view, POSTFIX_OPERATOR_COUNT> POSTFIX_OPERATORS = {
+    #define X(a, b) b,
+    POSTFIX_OPERATORS_MACRO
+    #undef x
 };
 
 struct Token{
@@ -85,6 +109,13 @@ struct ConstantToken : Token{
 
     ConstantToken(MathPrimitive _c) : c(_c){token_type = TokenType::CONSTANT;}
     ConstantToken(){token_type = TokenType::CONSTANT;}
+};
+
+struct PostfixOperatorToken : Token{
+    PostfixOperator pop;
+
+    PostfixOperatorToken(PostfixOperator _pop) : pop(_pop){token_type = TokenType::POSTFIX_OPERATOR;}
+    PostfixOperatorToken(){token_type = TokenType::POSTFIX_OPERATOR;}
 };
 
 struct FunctionBracketToken : Token{
