@@ -4,6 +4,8 @@
 void create_primitive_token(TokenPtrVec& tokens, size_t token_pos, std::string& string, size_t string_pos, MathPrimitive p, size_t& i){
     unsigned op_len = MATH_PRIMITIVES[static_cast<size_t>(p)].length();
 
+    std::cout << "sdsdsd" << MATH_PRIMITIVES[static_cast<size_t>(p)] << std::endl;
+
     // split string token into left and right part
     std::string left(string.begin(), string.begin() + string_pos);
     std::string right(string.begin() + string_pos + op_len, string.end());

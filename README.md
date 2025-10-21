@@ -51,12 +51,13 @@ functions and constants cannot contain brackets, separators, or operators, or ha
 ## tokenizer
 
 stages:
-2. bracket & separator tokenizer (done)
-1. number tokenizer (done)
+1. bracket & separator tokenizer (done)
+2. number tokenizer (done)
 3. operator tokenizer (done)
-6. postfix operator tokenizer
-4. primitive tokenizer (done)
-5. function bracket tokenizer
+4. postfix operator tokenizer (done)
+5. Negation tokenizer (done)
+6. primitive tokenizer (done)
+7. function bracket tokenizer
 
 token types
 - number

@@ -2,6 +2,8 @@
 
 #include "dynamic_vec_math.hpp"
 #include "pow.hpp"
+#include "negate.hpp"
+#include "factorial.hpp"
 
 size_t find_operator(TokenPtrVec& tokens, const std::vector<Operator>& hierarchy_level, size_t start) {
     for (size_t i = start; i < tokens.size(); i++) {
@@ -85,10 +87,67 @@ void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d) {
     tokens[i - 1] = std::move(result_tok);
 }
 
+void evaluate_negation_at(TokenPtrVec& tokens, size_t& i){
+    // make sure next token is a number
+    if (tokens[i + 1]->token_type != TokenType::NUMBER){
+        return;
+    }
+
+    NumberToken* num = dynamic_cast<NumberToken*>(tokens[i + 1].get());
+
+    vec_negate(*(num->n));
+
+    //num->n = std::make_unique<DynamicVec>("78", 0);
+
+    tokens.erase(tokens.begin() + i);
+
+    i--;
+}
+
+void evaluate_postfix_operator_at(TokenPtrVec& tokens, size_t& i){
+    // check if previous token is a number
+    if (tokens[i - 1]->token_type == TokenType::NUMBER){
+        NumberToken* num = dynamic_cast<NumberToken*>(tokens[i - 1].get());
+
+        std::cout << "aaaa" << num->n->get_str_short(eval_config) << std::endl;
+
+        vec_factorial(*(num->n));
+
+        // remove factorial
+        tokens.erase(tokens.begin() + 1);
+    }
+}
+
+void evaluate_negation(TokenPtrVec& tokens){
+    for (size_t i = 0; i < tokens.size() - 1; i++){
+        if (tokens[i]->token_type == TokenType::NEGATION){
+            evaluate_negation_at(tokens, i);
+        }
+    }
+}
+
+void evaluate_postfix_operators(TokenPtrVec& tokens){
+    for (size_t i = 1; i < tokens.size(); i++){
+        if (tokens[i]->token_type == TokenType::POSTFIX_OPERATOR){
+            evaluate_postfix_operator_at(tokens, i);
+        }
+    }
+}
+
 /*evaluates a flat expression as far as possible. a flat expression is
-just an expression that contains only numbers and operators*/
+just an expression that does not contain brackets or functions*/
 void evaluate_flat_expression(TokenPtrVec& tokens) {
-    for (const std::vector<Operator>& hierarchy_level : OPERATOR_HIERARCHY) {
+    for (size_t l = 0; l < OPERATOR_HIERARCHY.size(); l++){
+        const std::vector<Operator>& hierarchy_level = OPERATOR_HIERARCHY[l];
+
+        if (l == NEGATION_PRECEDENCE){
+            evaluate_negation(tokens);
+        }
+
+        else if (l == POSTFIX_OPERATOR_PRECEDENCE){
+            evaluate_postfix_operators(tokens);
+        }
+
         size_t start = 0;
         size_t i = find_operator(tokens, hierarchy_level, start);
 

@@ -56,9 +56,10 @@ std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec) {
     mpfr_free_str(mantissa_buf);
 
     bool negative = mantissa[0] == '-';
-
-    std::cout << exp << "asd" << std::endl;
-    std::cout << mantissa.length() << "asd2" << std::endl;
+    if (negative){
+        mantissa = std::string(mantissa.begin() + 1, mantissa.end());
+        out += '-';
+    }
 
     mp_string_remove_trailing_zeroes(mantissa, exp);
 
@@ -95,14 +96,18 @@ std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec) {
 std::string mpfr_get_str_sci(mpfr_t src, size_t mantissa_digits) {
     std::string out;
 
-    std::cout << "iwsjdij" << mantissa_digits << std::endl;
-
     mp_exp_t exp;
     char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, mantissa_digits, src, MPFR_RNDN);
 
     std::string mantissa(mantissa_buf);
 
     mpfr_free_str(mantissa_buf);
+
+    bool negative = mantissa[0] == '-';
+    if (negative){
+        mantissa = std::string(mantissa.begin() + 1, mantissa.end());
+        out += '-';
+    }
 
     mp_string_remove_trailing_zeroes(mantissa, exp);
 
@@ -124,9 +129,22 @@ std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits) {
 
     std::string num(num_buf);
 
+    bool negative = num[0] == '-';
+    if (negative){
+        num = std::string(num.begin() + 1, num.end());
+        out += '-';
+    }
+    
     size_t exp = num.length();
 
+    if (num.length() > mantissa_digits){
+        num.resize(mantissa_digits);
+    }
+
+
     free(num_buf);
+
+    mp_string_remove_trailing_zeroes(num, 1);
 
     out += num[0];
     out += '.';
@@ -162,6 +180,10 @@ std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits) {
 
         return numerator_str_sci + '/' + denominator_str_sci;
     }
+}
+
+bool mpq_is_den_one(mpq_ptr q){
+    return mpz_cmp_ui(mpq_denref(q), 1) == 0;
 }
 
 DynamicNum to_float(DynamicNum& src) {

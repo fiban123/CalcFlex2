@@ -6,6 +6,8 @@
 #include "separator_tokenizer.hpp"
 #include "primitive_tokenizer.hpp"
 #include "postfix_tokenizer.hpp"
+#include "negation_tokenizer.hpp"
+#include "func_bracket_tokenizer.hpp"
 
 #include <sstream>
 #include <vector>
@@ -35,10 +37,22 @@ std::string tokens_to_string(TokenPtrVec& tokens) {
                 break;
             }
 
+            case TokenType::FUNCTION_BRACKET: {
+                FunctionBracketToken* bt = dynamic_cast<FunctionBracketToken*>(t);
+                char bracket_char = bt->type == FUNCTION_BRACKET_OPENING ? '(' : ')';
+                out << bracket_char;
+                break;
+            }
+
             case TokenType::OPERATOR: {
                 OperatorToken* ot = dynamic_cast<OperatorToken*>(t);
                 std::string operator_string(OPERATORS[static_cast<size_t>(ot->op)]);
                 out << operator_string;
+                break;
+            }
+
+            case TokenType::NEGATION: {
+                out << '-';
                 break;
             }
 
@@ -49,7 +63,7 @@ std::string tokens_to_string(TokenPtrVec& tokens) {
             }
 
             case TokenType::SEPARATOR: {
-                out << ",";
+                out << ',';
                 break;
             }
 
@@ -109,10 +123,22 @@ std::string debug_tokens_to_string(TokenPtrVec& tokens) {
                 break;
             }
 
+            case TokenType::FUNCTION_BRACKET: {
+                FunctionBracketToken* bt = dynamic_cast<FunctionBracketToken*>(t);
+                char bracket_char = bt->type == FUNCTION_BRACKET_OPENING ? '(' : ')';
+                out << "[fb]" << bracket_char;
+                break;
+            }
+
             case TokenType::OPERATOR: {
                 OperatorToken* ot = dynamic_cast<OperatorToken*>(t);
                 std::string operator_string(OPERATORS[static_cast<size_t>(ot->op)]);
                 out << operator_string;
+                break;
+            }
+
+            case TokenType::NEGATION: {
+                out << "[neg]";
                 break;
             }
 
@@ -187,13 +213,19 @@ TokenPtrVec tokenize(std::string& expression) {
 
     tokenize_brackets(tokens, expression);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
+    tokenize_separators(tokens);
+    std::cout << debug_tokens_to_string(tokens) << std::endl;
     tokenize_numbers(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
     tokenize_operators(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
     tokenize_postfix_operator(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
+    tokenize_negation(tokens);
+    std::cout << debug_tokens_to_string(tokens) << std::endl;
     tokenize_primitive(tokens);
+    std::cout << debug_tokens_to_string(tokens) << std::endl;
+    tokenize_func_brackets(tokens);
     std::cout << debug_tokens_to_string(tokens) << std::endl;
 
 

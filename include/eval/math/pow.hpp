@@ -1,7 +1,7 @@
 #pragma once
 
-#include <dynamic_vec.hpp>
-#include <dynamic_vec_math.hpp>
+#include "dynamic_vec.hpp"
+#include "dynamic_vec_math.hpp"
 
 DynamicNum float_pow(DynamicNum& base, DynamicNum & exponent);
 

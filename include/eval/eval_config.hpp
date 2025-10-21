@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <mpfr.h>
 
 enum NumberRepresentationType{
     REPRESENTATION_TYPE_EXACT,
@@ -23,15 +24,15 @@ struct EvalConfig{
 inline EvalConfig eval_config{
     REPRESENTATION_TYPE_EXACT,
     REPRESENTATION_FORMAT_NORMAL,
-    2048,
-    1024,
+    8192,
+    128,
     12,
 };
 
 inline EvalConfig debug_eval_config{
     REPRESENTATION_TYPE_EXACT, 
     REPRESENTATION_FORMAT_NORMAL,
-    2048,
-    1024,
+    8192,
+    128,
     12,
 };

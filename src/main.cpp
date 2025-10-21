@@ -12,10 +12,5 @@
 #include <SFML/Graphics.hpp>
 
 int main(){
-
-    // math test
-    DynamicVec test1("1.0", 0);
-
-
     start_gui(evaluate_string);;
 }

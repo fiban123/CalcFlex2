@@ -32,6 +32,8 @@ std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits);
 
 std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits);
 
+bool mpq_is_den_one(mpq_ptr q);
+
 struct DynamicNum{ // can be real or rational
     void* nptr = nullptr;
     NumType type = NONE;

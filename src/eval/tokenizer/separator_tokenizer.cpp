@@ -20,15 +20,11 @@ void tokenize_separators(TokenPtrVec &tokens){
         if (t->token_type == TokenType::STRING){
             StringToken* st = dynamic_cast<StringToken*>(t);
 
-            size_t start = 0;
-            size_t j = st->string.find(',', start);
+            size_t j = st->string.find(',');
 
-            while (j != std::string::npos){
+            if (j != std::string::npos){
                 create_separator_token(tokens, i, st->string, j, i);
-                j = st->string.find(',', start);
-                start = j + 1;
             }
-
         }
     }
 }

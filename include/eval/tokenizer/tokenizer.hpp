@@ -12,9 +12,7 @@
     X(OPERATOR_POW, "^")
 
 #define POSTFIX_OPERATORS_MACRO \
-    X(POSTFIX_FACTORIAL, "*") \
-    X(POSTFIX_PERCENT, "%") \
-    X(POSTFIX_DEG, "°") \
+    X(POSTFIX_FACTORIAL, "!") \
     X(POSTFIX_PRIMORIAL, "#") 
 
 
@@ -23,6 +21,7 @@ enum class TokenType{
     NUMBER,
     BRACKET,
     OPERATOR,
+    NEGATION,
     FUNCTION,
     CONSTANT,
     POSTFIX_OPERATOR,
@@ -95,6 +94,10 @@ struct OperatorToken : Token{
 
     OperatorToken(Operator _op) : op(_op){token_type = TokenType::OPERATOR;};
     OperatorToken(){token_type = TokenType::OPERATOR;}
+};
+
+struct NegationToken : Token{
+    NegationToken(){token_type = TokenType::NEGATION;}
 };
 
 struct FunctionToken : Token{
