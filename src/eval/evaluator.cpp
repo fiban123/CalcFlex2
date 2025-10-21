@@ -1,6 +1,7 @@
 #include "evaluator.hpp"
 #include "flat_evaluator.hpp"
 #include "tokenizer.hpp"
+#include "evaluate_tokens.hpp"
 
 
 #include <iostream>
@@ -15,7 +16,7 @@ std::string evaluate_string(std::string out){
     out.erase(std::remove(out.begin(), out.end(), ' '), out.end());
 
     TokenPtrVec tokens = tokenize(out);
-    evaluate_flat_expression(tokens);
+    evaluate_tokens(tokens);
 
     std::cout << debug_tokens_to_string(tokens);
     std::cout << tokens_to_string(tokens);

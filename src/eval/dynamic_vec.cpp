@@ -134,7 +134,7 @@ std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits) {
         num = std::string(num.begin() + 1, num.end());
         out += '-';
     }
-    
+
     size_t exp = num.length();
 
     if (num.length() > mantissa_digits){
@@ -429,9 +429,9 @@ DynamicVec::DynamicVec(DynamicVec &&other){
 }*/
 
 DynamicVec::~DynamicVec() {
+    std::cout << "destructing" << get_str_short(eval_config) << "...";
     for (size_t i = 0; i < dims.size(); i++) {
         dims[i].clear();
     }
-    get_str_short(eval_config);
-    std::cout << " destructed\n";
+    std::cout << "D" << std::endl;
 }

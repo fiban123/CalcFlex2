@@ -23,7 +23,7 @@ struct EvalConfig{
 
 inline EvalConfig eval_config{
     REPRESENTATION_TYPE_EXACT,
-    REPRESENTATION_FORMAT_NORMAL,
+    REPRESENTATION_FORMAT_SCI,
     8192,
     128,
     12,
@@ -31,7 +31,7 @@ inline EvalConfig eval_config{
 
 inline EvalConfig debug_eval_config{
     REPRESENTATION_TYPE_EXACT, 
-    REPRESENTATION_FORMAT_NORMAL,
+    REPRESENTATION_FORMAT_SCI,
     8192,
     128,
     12,

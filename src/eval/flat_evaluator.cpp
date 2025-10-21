@@ -114,7 +114,7 @@ void evaluate_postfix_operator_at(TokenPtrVec& tokens, size_t& i){
         vec_factorial(*(num->n));
 
         // remove factorial
-        tokens.erase(tokens.begin() + 1);
+        tokens.erase(tokens.begin() + i);
     }
 }
 

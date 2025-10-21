@@ -141,6 +141,7 @@ struct StringToken : Token{
 
 typedef std::vector<std::unique_ptr<Token> > TokenPtrVec;
 typedef std::unique_ptr<Token> TokenPtr;
+typedef std::vector<TokenPtrVec> Args;
 
 std::string tokens_to_string(TokenPtrVec& tokens);
 std::string debug_tokens_to_string(TokenPtrVec &tokens);

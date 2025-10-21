@@ -18,7 +18,7 @@ void create_primitive_token(TokenPtrVec& tokens, size_t token_pos, std::string& 
         token = std::make_unique<FunctionToken>(p);
     }
     else{
-        token = std::make_unique<ConstantToken>(p);
+        token = std::make_unique<ConstantToken>(p);;
     }
 
     emplace_token(tokens, token_pos, std::move(token), left, right, i);
@@ -47,12 +47,10 @@ void tokenize_primitive(TokenPtrVec &tokens){
             size_t start = 0;
             size_t j = find_primitive(st->string, p);
 
-            while (j != std::string::npos){
+            if (j != std::string::npos){
                 create_primitive_token(tokens, i, st->string, j, p, i);
-                j = st->string.find(',', start);
-                start = j + 1;
+                i--;
             }
-
         }
     }
 }
