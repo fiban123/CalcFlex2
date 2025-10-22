@@ -43,13 +43,20 @@ std::string to_rational_string(std::string s) {
     return out;
 }
 
-std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec) {
+std::string mpfr_get_str_normal(mpfr_t src, EvalConfig& config) {
     std::string out;
 
-    size_t ndigits = mpfr_get_str_ndigits(10, prec);
+    size_t ndigits = mpfr_get_str_ndigits(10, config.representation_prec);
 
     mp_exp_t exp;
     char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, ndigits - 2, src, MPFR_RNDN);
+
+    if (config.auto_sci){
+        if (exp > config.auto_sci_threshold_n_digits){
+            free(mantissa_buf);
+            return mpfr_get_str_sci(src, config);
+        }
+    }
 
     std::string mantissa(mantissa_buf);
 
@@ -93,11 +100,17 @@ std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec) {
     return out;
 }
 
-std::string mpfr_get_str_sci(mpfr_t src, size_t mantissa_digits) {
+std::string mpfr_get_str_sci(mpfr_t src, EvalConfig& config) {
+
     std::string out;
 
     mp_exp_t exp;
-    char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, mantissa_digits, src, MPFR_RNDN);
+    char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, config.sci_representation_n_digits, src, MPFR_RNDN);
+
+    if (exp < config.sci_min_n_digits){
+        free(mantissa_buf);
+        return mpfr_get_str_normal(src, config);
+    }
 
     std::string mantissa(mantissa_buf);
 
@@ -122,7 +135,11 @@ std::string mpfr_get_str_sci(mpfr_t src, size_t mantissa_digits) {
     return out;
 }
 
-std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits) {
+std::string mpz_get_str_sci(mpz_t src, EvalConfig& config) {
+    if (mpz_sizeinbase(src, 10) < config.sci_min_n_digits){
+        return mpz_get_str_normal(src);
+    }
+
     std::string out;
 
     char* num_buf = mpz_get_str(NULL, 10, src);
@@ -137,8 +154,8 @@ std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits) {
 
     size_t exp = num.length();
 
-    if (num.length() > mantissa_digits){
-        num.resize(mantissa_digits);
+    if (num.length() > config.sci_representation_n_digits){
+        num.resize(config.sci_representation_n_digits);
     }
 
 
@@ -156,7 +173,39 @@ std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits) {
     return out;
 }
 
-std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits) {
+std::string mpz_get_str_normal(mpz_ptr src){
+    char* buf = mpz_get_str(NULL, 10, src);
+
+    std::string str(buf);
+
+    free(buf);
+
+    return str;
+}
+
+std::string mpz_get_cppstr(mpz_t src, EvalConfig& config){
+    if (config.auto_sci){
+        if (mpz_sizeinbase(src, 10) > config.auto_sci_threshold_n_digits){
+            return mpz_get_str_sci(src, config);
+        }
+    }
+
+    if (config.out_representation_format == REPRESENTATION_FORMAT_SCI){
+        return mpz_get_str_sci(src, config);
+    }
+
+    return mpz_get_str_normal(src);
+}
+
+std::string mpq_get_cppstr(mpq_t src, EvalConfig& config){
+
+    if (mpq_is_den_one(src)){
+        return mpz_get_cppstr(mpq_numref(src), config);
+    }
+    return mpz_get_cppstr(mpq_numref(src), config) + "/" + mpz_get_cppstr(mpq_denref(src), config);
+}
+
+std::string mpq_get_str_sci(mpq_t src, EvalConfig& config) {
 
     mpz_t one;
     mpz_init_set_ui(one, 1);
@@ -169,16 +218,16 @@ std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits) {
     mpq_get_num(num, src);
     mpq_get_den(den, src);
 
-    std::string numerator_str_sci = mpz_get_str_sci(num, mantissa_digits);
+    std::string numerator_str_sci = mpz_get_str_sci(num, config);
 
     if (mpz_cmp(den, one) == 0){
         // denominator is one
         return numerator_str_sci;
     }
     else{
-        std::string denominator_str_sci = mpz_get_str_sci(den, mantissa_digits);
+        std::string denominator_str_sci = mpz_get_str_sci(den, config);
 
-        return numerator_str_sci + '/' + denominator_str_sci;
+        return '(' + numerator_str_sci + '/' + denominator_str_sci + ')';
     }
 }
 
@@ -236,10 +285,10 @@ std::string DynamicNum::get_str(EvalConfig& config) {
     if (type == FLOAT) {
         MPFloat* f = get_float();
         if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL) {
-            out << mpfr_get_str_formatted(f, eval_config.representation_prec);
+            out << mpfr_get_str_normal(f, config);
         }
         else {
-            out << mpfr_get_str_sci(f, config.sci_representation_n_digits);
+            out << mpfr_get_str_sci(f, config);
         }
     }
     else {
@@ -250,14 +299,10 @@ std::string DynamicNum::get_str(EvalConfig& config) {
             // exact
             if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL){
                 // normal
-                char* rational_str = mpq_get_str(NULL, 10, q);
-    
-                out << '(' << rational_str << ')';
-    
-                free(rational_str);
+                out << mpq_get_cppstr(q, config);
             }
             else{
-                out << '(' << mpq_get_str_sci(q, config.sci_representation_n_digits) << ')';
+                out << mpq_get_str_sci(q, config);
             }
         }
         else {
@@ -269,11 +314,11 @@ std::string DynamicNum::get_str(EvalConfig& config) {
 
             if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL){
                 // normal
-                out << mpfr_get_str_formatted(f, config.representation_prec);
+                out << mpfr_get_str_normal(f, config);
             }
             else{
                 // sci
-                out << mpfr_get_str_sci(f, config.sci_representation_n_digits);
+                out << mpfr_get_str_sci(f, config);
             }
 
             mpfr_clear(f);
@@ -306,6 +351,8 @@ DynamicNum DynamicNum::deep_copy() {
 }
 
 DynamicNum::DynamicNum(std::string str) {
+    std::cout << "new dynamicnum" << std::endl;
+
     std::string rational_string = to_rational_string(str);
 
     // always initialize strings as rationals

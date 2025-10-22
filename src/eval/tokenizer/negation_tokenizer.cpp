@@ -13,12 +13,35 @@ void tokenize_negation(TokenPtrVec &tokens){
                 OperatorToken* ot = dynamic_cast<OperatorToken*>(t);
 
                 if (ot->op == NEGATION_OPERATOR){
-                    // check if previous token is also an operator
+                    // check if previous token is also an operator or an opening bracket
+                    std::cout <<"c" << (size_t) tokens[i - 1]->token_type << std::endl;
                     if (i == 0){
                         create_negation_token(tokens, i);
                     }
-                    else if (tokens[i - 1]->token_type == TokenType::OPERATOR || tokens[i - 1]->token_type == TokenType::NEGATION){
+                    else if (
+                        std::cout << "operator" << std::endl;
+                        tokens[i - 1]->token_type == TokenType::OPERATOR || 
+                        tokens[i - 1]->token_type == TokenType::NEGATION){
                         create_negation_token(tokens, i);
+                    }
+                    else if (tokens[i - i]->token_type == TokenType::BRACKET){
+                        std::cout << "bracket" << std::endl;
+                        BracketToken* bt = dynamic_cast<BracketToken*>(t);
+
+                        if (bt->type == BRACKET_OPENING){
+                            create_negation_token(tokens, i);
+                        }
+                    }
+                    else if (tokens[i - i]->token_type == TokenType::FUNCTION_BRACKET){
+                        std::cout << "function bracket" << std::endl;
+                        FunctionBracketToken* bt = dynamic_cast<FunctionBracketToken*>(t);
+
+                        if (bt->type == FUNCTION_BRACKET_OPENING){
+                            create_negation_token(tokens, i);
+                        }
+                    }
+                    else{
+                        std::cout <<"cc" << (size_t) tokens[i - 1]->token_type << std::endl;
                     }
 
                 }

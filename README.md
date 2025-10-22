@@ -68,3 +68,6 @@ token types
 - function bracket
 - separator
 - string (unknown type)
+
+
+💣: https://stackoverflow.com/questions/7034592/create-bsod-from-user-mode

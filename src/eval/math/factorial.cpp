@@ -1,7 +1,13 @@
 #include "factorial.hpp"
 
-void f_factorial(mpfr_ptr f){
-    mpfr_gamma(f, f, MPFR_RNDN);
+void f_factorial(mpfr_ptr f) {
+    mpfr_t tmp;
+    mpfr_init2(tmp, eval_config.math_prec);
+
+    mpfr_add_ui(tmp, f, 1, MPFR_RNDN);  // tmp = f + 1
+    mpfr_gamma(f, tmp, MPFR_RNDN);      // f = gamma(tmp)
+
+    mpfr_clear(tmp);
 }
 
 void pos_z_factorial(mpz_ptr z){
@@ -50,8 +56,6 @@ void num_factorial(DynamicNum& num){
             mpfr_t f;
             mpfr_init2(f, eval_config.math_prec);
             mpfr_set_q(f, q, MPFR_RNDN);
-
-            num.clear();
 
             f_factorial(f);
 

@@ -10,15 +10,19 @@
 #include "history.hpp"
 #include "lines.hpp"
 #include "result_bar.hpp"
+#include "eval_config.hpp"
+
+#include "interface.hpp"
 
 #include <vector>
 #include <string>
-
 
 struct Layout{
     sf::Font* font;
     sf::Vector2u window_size;
     sf::RenderWindow* window;
+
+    std::pair<std::string, Result> result;
 
     MainButtons main_buttons;
     FunctionButtons func_buttons;
@@ -29,7 +33,7 @@ struct Layout{
     Lines lines;
     ResultBar result_bar;
 
-    std::function<std::string(std::string)> on_evaluate;
+    std::function<Result(std::string)> on_evaluate;
 
     void main_button_callback(size_t bx, size_t by);
     void aux_menu_button_callback(size_t bx, size_t by);
@@ -45,5 +49,7 @@ struct Layout{
     void update_click(sf::Vector2i click_pos);
     void update_scroll(sf::Vector2i mouse_pos, float delta);
 
-    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window, std::function<std::string(std::string)> _on_evaluate);
+    void update_result();
+
+    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window, std::function<Result(std::string)> _on_evaluate);
 };

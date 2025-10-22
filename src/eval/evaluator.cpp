@@ -2,13 +2,14 @@
 #include "flat_evaluator.hpp"
 #include "tokenizer.hpp"
 #include "evaluate_tokens.hpp"
+#include "interface.hpp"
 
 
 #include <iostream>
 #include <sstream>
-#include <algorithm> 
+#include <algorithm>
 
-std::string evaluate_string(std::string out){
+Result evaluate_string(std::string out){
     // remove whitespaces
     out.erase(std::remove(out.begin(), out.end(), ' '), out.end());
 
@@ -18,6 +19,13 @@ std::string evaluate_string(std::string out){
     std::cout << debug_tokens_to_string(tokens);
     std::cout << tokens_to_string(tokens);
 
+    Result r;
+    r.tokens = std::move(tokens);
+    return r;
 
+
+}
+
+std::string Result::get_string() {
     return tokens_to_string(tokens);
 }

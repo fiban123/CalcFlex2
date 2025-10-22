@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-
-
 void Layout::main_button_callback(size_t bx, size_t by){
     sf::Vector2u index{bx, by};
 
@@ -20,10 +18,14 @@ void Layout::main_button_callback(size_t bx, size_t by){
         expression_input.remove(1);
     }
     else if (index == MAIN_BUTTONS_EVALUATE_INDEX){
-        std::string result = on_evaluate(expression_input.text_input.string);
-        std::string history_entry = expression_input.text_input.string + " = " + result;
+        Result eval_result = on_evaluate(expression_input.text_input.string);
+        
+        result = std::make_pair(expression_input.text_input.string, std::move(eval_result));
+
+        std::string result_str = result.second.get_string();
+        std::string history_entry = expression_input.text_input.string + " = " + result_str;
+        result_bar.set_string(result_str);
         history.add_entry(history_entry);
-        result_bar.set_string(result);
     }
     else if (index == MAIN_BUTTONS_LEFT_INDEX){
         expression_input.move_cursor(0);
@@ -41,6 +43,14 @@ void Layout::main_button_callback(size_t bx, size_t by){
 
 void Layout::aux_menu_button_callback(size_t bx, size_t by){
     std::cout << "aux button\n";
+
+    sf::Vector2u index = sf::Vector2u(bx, by);
+
+    if (index == sf::Vector2u(1, 1)){
+        std::cout << "toggled scientific mode";
+        set_scientific_mode(!get_scientific_mode());
+        update_result();
+    }
 }
 
 void Layout::func_button_callback(std::string string, unsigned offset){
@@ -101,7 +111,12 @@ void Layout::update_scroll(sf::Vector2i mouse_pos, float delta){
     func_buttons.update_scroll(mouse_pos, delta);
 }
 
-Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_window, std::function<std::string(std::string)> _on_evaluate)
+void Layout::update_result() {
+    std::string result_str = result.second.get_string();
+    result_bar.set_string(result_str);
+}
+
+Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_window, std::function<Result(std::string)> _on_evaluate)
     : font(_font),
       window_size(_window_size),
       window(_window),

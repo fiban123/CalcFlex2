@@ -1,13 +1,15 @@
 #include "gui.hpp"
 #include "button.hpp"
 #include "gui_config.hpp"
-#include "layout.hpp"
+
+#include "evaluator.hpp"
 
 #include <iostream>
 #include <vector>
 
-void start_gui(std::function<std::string(std::string)> callback){
+void start_gui(std::function<Result(std::string)> callback){
     sf::RenderWindow window(sf::VideoMode({1200, 1200}), "CalcFlex2");
+    window.setVerticalSyncEnabled(true);
     sf::Vector2u min_size = {700, 700};
 
     sf::Font font;

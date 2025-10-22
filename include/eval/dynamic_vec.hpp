@@ -25,12 +25,19 @@ void mp_string_remove_trailing_zeroes(std::string& s, long exp);
 
 std::string to_rational_string(std::string s);
 
-std::string mpfr_get_str_formatted(mpfr_t src, mpfr_prec_t prec);
-std::string mpfr_get_str_sci(mpfr_t src, size_t mantissa_digits);
+std::string mpfr_get_str_normal(mpfr_t src, EvalConfig& config);
 
-std::string mpz_get_str_sci(mpz_t src, size_t mantissa_digits); 
+std::string mpfr_get_str_sci(mpfr_t src, EvalConfig& config);
 
-std::string mpq_get_str_sci(mpq_t src, size_t mantissa_digits);
+std::string mpz_get_str_sci(mpz_t src, EvalConfig& config);
+
+std::string mpz_get_str_normal(mpz_ptr src);
+
+std::string mpz_get_cppstr(mpz_t src, EvalConfig& config);
+
+std::string mpq_get_cppstr(mpq_t src, EvalConfig& config);
+
+std::string mpq_get_str_sci(mpq_t src, EvalConfig& config);
 
 bool mpq_is_den_one(mpq_ptr q);
 
@@ -44,16 +51,21 @@ struct DynamicNum{ // can be real or rational
     inline MPRational* get_rational(){return reinterpret_cast<MPRational*>(nptr);}
 
     inline void clear(){
+        std::cout << "clear" << std::endl;
         if (nptr){
             if (type == FLOAT){
+                std::cout << "float C" << std::endl;
                 MPFloat* f = get_float();
                 mpfr_clear(f);
             }
             else if (type == RATIONAL){
+                std::cout << "rational C" << std::endl;
                 MPRational* q = get_rational();
                 mpq_clear(q);
             }
-            free(nptr);
+            if (nptr){
+                free(nptr);;;
+            }
         }
         type = NONE;
     }

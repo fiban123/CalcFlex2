@@ -27,8 +27,6 @@ DynamicNum float_pow(DynamicNum& base, DynamicNum& exponent) {
     // perform pow()
     mpfr_pow(fresult, baseptr->get_float(), exponentptr->get_float(), MPFR_RNDN);
 
-    std::string a = mpfr_get_str_formatted(fresult, eval_config.representation_prec);
-
     result.set_float(fresult);
 
 

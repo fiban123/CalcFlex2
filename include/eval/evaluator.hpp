@@ -1,7 +1,10 @@
 #pragma once
 
+#include "tokenizer.hpp"
+#include "interface.hpp"
+
 #include <gmp.h>
 
 #include <string>
 
-std::string evaluate_string(std::string out);
+Result evaluate_string(std::string out);

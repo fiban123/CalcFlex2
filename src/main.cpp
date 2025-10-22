@@ -12,5 +12,10 @@
 #include <SFML/Graphics.hpp>
 
 int main(){
-    start_gui(evaluate_string);;
+    int 💣 = 23;
+    💣+= 1000;
+    std::cout << 💣 << "\n";
+    std::cout << "💣" << std::endl;
+
+    start_gui(evaluate_string);
 }
