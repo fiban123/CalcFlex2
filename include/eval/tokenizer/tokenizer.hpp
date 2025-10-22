@@ -1,5 +1,6 @@
 #pragma once
 
+#include "token_types.hpp"
 #include "dynamic_vec.hpp"
 #include "functions.hpp"
 
@@ -15,20 +16,6 @@
     X(POSTFIX_FACTORIAL, "!") \
     X(POSTFIX_PRIMORIAL, "#") 
 
-
-enum class TokenType{
-    NONE,
-    NUMBER,
-    BRACKET,
-    OPERATOR,
-    NEGATION,
-    FUNCTION,
-    CONSTANT,
-    POSTFIX_OPERATOR,
-    FUNCTION_BRACKET,
-    SEPARATOR,
-    STRING
-};
 
 enum FunctionBracketType{
     FUNCTION_BRACKET_NONE,
@@ -67,12 +54,6 @@ inline constexpr std::array<std::string_view, POSTFIX_OPERATOR_COUNT> POSTFIX_OP
     #define X(a, b) b,
     POSTFIX_OPERATORS_MACRO
     #undef x
-};
-
-struct Token{
-    TokenType token_type = TokenType::NONE;
-    virtual ~Token() = default;
-    Token() = default;
 };
 
 struct NumberToken : Token{
@@ -138,10 +119,6 @@ struct StringToken : Token{
     StringToken(std::string _string) : string(_string){token_type = TokenType::STRING;}
     StringToken(){token_type = TokenType::STRING;}
 };
-
-typedef std::vector<std::unique_ptr<Token> > TokenPtrVec;
-typedef std::unique_ptr<Token> TokenPtr;
-typedef std::vector<TokenPtrVec> Args;
 
 std::string tokens_to_string(TokenPtrVec& tokens);
 std::string debug_tokens_to_string(TokenPtrVec &tokens);

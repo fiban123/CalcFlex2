@@ -2,9 +2,9 @@
 #include "functions.hpp"
 
 void create_primitive_token(TokenPtrVec& tokens, size_t token_pos, std::string& string, size_t string_pos, MathPrimitive p, size_t& i){
-    unsigned op_len = MATH_PRIMITIVES[static_cast<size_t>(p)].length();
+    unsigned op_len = MATH_PRIMITIVE_STRINGS[static_cast<size_t>(p)].length();
 
-    std::cout << "sdsdsd" << MATH_PRIMITIVES[static_cast<size_t>(p)] << std::endl;
+    std::cout << "sdsdsd" << MATH_PRIMITIVE_STRINGS[static_cast<size_t>(p)] << std::endl;
 
     // split string token into left and right part
     std::string left(string.begin(), string.begin() + string_pos);
@@ -25,8 +25,8 @@ void create_primitive_token(TokenPtrVec& tokens, size_t token_pos, std::string& 
 }
 
 size_t find_primitive(std::string& s, MathPrimitive& func_type){
-    for (size_t i = 0; i < MATH_PRIMITIVES.size(); i++){
-        size_t index = s.find(MATH_PRIMITIVES[i]);
+    for (size_t i = 0; i < MATH_PRIMITIVE_STRINGS.size(); i++){
+        size_t index = s.find(MATH_PRIMITIVE_STRINGS[i]);
         if (index != std::string::npos){
             func_type = static_cast<MathPrimitive>(i);
             return index;

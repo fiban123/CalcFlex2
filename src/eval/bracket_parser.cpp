@@ -22,6 +22,8 @@ size_t arb_find_closing_bracket(TokenPtrVec& tokens, size_t i){
             return j;
         }
     }
+
+    return SIZE_MAX;
 }
 
 size_t find_closing_bracket(TokenPtrVec& tokens, size_t i) {

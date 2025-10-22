@@ -8,9 +8,6 @@
 #include <sstream>
 #include <algorithm> 
 
-std::string tokenptrvec_to_string(TokenPtrVec& tokens){
-}
-
 std::string evaluate_string(std::string out){
     // remove whitespaces
     out.erase(std::remove(out.begin(), out.end(), ' '), out.end());

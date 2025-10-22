@@ -1,29 +1,37 @@
 #pragma once
 
+#include "trig.hpp"
+
+
 #include <array>
 #include <string>
+#include <functional>
+
 
 // use X-macros to define math primitives
 
 #define TRIG_FUNCTIONS \
-        X(SIN, "sin") \
-        X(COS, "cos") \
-        X(TAN, "tan") \
+        X(SIN, "sin", TrigFunctions::tok_sin) \
+        X(COS, "cos", TrigFunctions::tok_cos) \
+        X(TAN, "tan", TrigFunctions::tok_tan) \
+        X(SEC, "sec", TrigFunctions::tok_sec) \
+        X(COT, "cot", TrigFunctions::tok_cot) \
+        X(CSC, "csc", TrigFunctions::tok_csc) \
 
 #define INV_TRIG_FUNCTIONS \
-        X(ASIN, "asin") \
-        X(ACOS, "acos") \
-        X(ATAN, "atan") \
+        X(ASIN, "asin", TrigFunctions::tok_sin) \
+        X(ACOS, "acos", TrigFunctions::tok_sin) \
+        X(ATAN, "atan", TrigFunctions::tok_sin) \
 
 #define HYP_TRIG_FUNCTIONS /*...*/
 
 #define HYP_INV_TRIG_FUNCTIONS /*...*/
 
 #define LOG_FUNCTIONS \
-        X(LOG2, "log2") \
-        X(LOG10, "log10") \
-        X(LOG, "log") \
-        X(LN, "ln")
+        X(LOG2, "log2", TrigFunctions::tok_sin) \
+        X(LOG10, "log10", TrigFunctions::tok_sin) \
+        X(LOG, "log", TrigFunctions::tok_sin) \
+        X(LN, "ln", TrigFunctions::tok_sin)
 
 #define ROOT_FUNCTIONS /*...*/
 
@@ -32,10 +40,10 @@
 
 
 #define CONSTANTS \
-        X(PI, "pi") \
-        X(E, "e") \
-        X(PHI, "phi") \
-        X(Y, "y")
+        X(PI, "pi", TrigFunctions::tok_sin) \
+        X(E, "e", TrigFunctions::tok_sin) \
+        X(PHI, "phi", TrigFunctions::tok_sin) \
+        X(Y, "y", TrigFunctions::tok_sin)
 
 
 
@@ -58,21 +66,27 @@ enum class MathPrimitiveType{
 };
 
 enum class MathPrimitive{
-    #define X(a, b) a,
+    #define X(a, b, c) a,
     MATH_PRIMITIVES_MACRO
     #undef X
     COUNT
 };
 
 
-inline const std::array<std::string, (size_t) MathPrimitive::COUNT> MATH_PRIMITIVES = {
-    #define X(a, b) b,
+inline const std::array<std::string, (size_t) MathPrimitive::COUNT> MATH_PRIMITIVE_STRINGS = {
+    #define X(a, b, c) b,
+    MATH_PRIMITIVES_MACRO
+    #undef X
+};
+
+inline const std::array<std::function<TokenPtrVec(Args&)>, (size_t) MathPrimitive::COUNT> MATH_PRIMITIVE_FUNCS = {
+    #define X(a, b, c) c,
     MATH_PRIMITIVES_MACRO
     #undef X
 };
 
 constexpr size_t CONSTANT_COUNT = 
-#define X(a, b) 1+
+#define X(a, b, c) 1+
     CONSTANTS
 #undef X
 0;

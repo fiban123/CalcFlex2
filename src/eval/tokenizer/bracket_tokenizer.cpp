@@ -7,7 +7,7 @@ void tokenize_brackets(TokenPtrVec& tokens, std::string& expression){
         char c = expression[i];
 
         if (c == '(' || c == ')'){
-            if (string_start != i - 1){
+            if (string_start != i){
                 std::string str(expression.begin() + string_start, expression.begin() + i);
 
                 if (!str.empty()){

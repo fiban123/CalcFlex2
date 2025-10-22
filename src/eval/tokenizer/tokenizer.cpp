@@ -69,13 +69,13 @@ std::string tokens_to_string(TokenPtrVec& tokens) {
 
             case TokenType::FUNCTION:{
                 FunctionToken* ft = dynamic_cast<FunctionToken*>(t);
-                out << MATH_PRIMITIVES[static_cast<size_t>(ft->func)];
+                out << MATH_PRIMITIVE_STRINGS[static_cast<size_t>(ft->func)];
                 break;
             }
 
             case TokenType::CONSTANT:{
                 ConstantToken* ct = dynamic_cast<ConstantToken*>(t);
-                out << MATH_PRIMITIVES[static_cast<size_t>(ct->c)];
+                out << MATH_PRIMITIVE_STRINGS[static_cast<size_t>(ct->c)];
                 break;
             }
 
@@ -154,13 +154,13 @@ std::string debug_tokens_to_string(TokenPtrVec& tokens) {
 
             case TokenType::FUNCTION:{
                 FunctionToken* ft = dynamic_cast<FunctionToken*>(t);
-                out << "[fn]" << MATH_PRIMITIVES[static_cast<size_t>(ft->func)];
+                out << "[fn]" << MATH_PRIMITIVE_STRINGS[static_cast<size_t>(ft->func)];
                 break;
             }
 
             case TokenType::CONSTANT:{
                 ConstantToken* ct = dynamic_cast<ConstantToken*>(t);
-                out << "[cn]" << MATH_PRIMITIVES[static_cast<size_t>(ct->c)];
+                out << "[cn]" << MATH_PRIMITIVE_STRINGS[static_cast<size_t>(ct->c)];
                 break;
             }
 
