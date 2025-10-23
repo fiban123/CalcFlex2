@@ -52,7 +52,7 @@ std::string mpfr_get_str_normal(mpfr_t src, EvalConfig& config) {
     char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, ndigits - 2, src, MPFR_RNDN);
 
     if (config.auto_sci){
-        if (exp > config.auto_sci_threshold_n_digits){
+        if (exp > (ssize_t) config.auto_sci_threshold_n_digits){
             free(mantissa_buf);
             return mpfr_get_str_sci(src, config);
         }

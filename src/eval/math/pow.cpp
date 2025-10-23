@@ -81,6 +81,7 @@ void mpq_pow_z(mpq_ptr out, mpq_srcptr base, mpz_srcptr exponent){
         mpq_set_ui(out, 1, 1);
     }
     else{
+        // exponent is negative
         mpz_t abs_exponent;
         mpz_init(abs_exponent);
         mpz_abs(abs_exponent, exponent);
@@ -92,8 +93,8 @@ void mpq_pow_z(mpq_ptr out, mpq_srcptr base, mpz_srcptr exponent){
         }
         else{
             // small exponent
-            mpz_pow_ui(mpq_numref(out), mpq_numref(base), mpz_get_ui(abs_exponent));
-            mpz_pow_ui(mpq_denref(out), mpq_denref(base), mpz_get_ui(abs_exponent));
+            mpz_pow_ui(mpq_numref(out), mpq_denref(base), mpz_get_ui(abs_exponent));
+            mpz_pow_ui(mpq_denref(out), mpq_numref(base), mpz_get_ui(abs_exponent));
         }
         mpz_clear(abs_exponent);
     }

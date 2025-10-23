@@ -143,7 +143,7 @@ std::string debug_tokens_to_string(TokenPtrVec& tokens) {
             }
 
             case TokenType::STRING: {
-                StringToken* st = dynamic_cast<StringToken*>(t);
+                StringToken* st = dynamic_cast<StringToken*>(t);;
                 out << "[str]" << st->string;
                 break;
             }
