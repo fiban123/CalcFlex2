@@ -15,12 +15,12 @@ SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s \
           -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile \
           -logg -lflac -lbz2 -lgraphite2 -lrpcrt4 -ldwrite
 
-LDFLAGS := $(SFMLLD) -lmpfr -lgmp -static -static-libgcc -static-libstdc++
+LDFLAGS := -static $(SFMLLD) -lmpfr -lgmp -static-libgcc -static-libstdc++
 
 # Base flags
 BASE_CXXFLAGS := 	-I../include -I ../include/gui -I ../include/gui/elements \
                     -I../include/eval -I../include/eval/tokenizer -I C:/msys64/ucrt64/include -I ../include/eval/math \
-					-Wall -Wextra -std=c++26 -MMD -MP -static -static-libgcc -static-libstdc++
+					-Wall -Wextra -std=c++26 -MMD -MP -static-libgcc -static-libstdc++
 
 # Release/Debug
 CXXFLAGS := $(BASE_CXXFLAGS) -O0

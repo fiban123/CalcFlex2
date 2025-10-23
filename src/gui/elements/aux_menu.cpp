@@ -4,7 +4,7 @@ void AuxMenu::resize_update(){}
 
 void AuxMenu::update(sf::Vector2i mouse_pos, bool left_click){
     for (Button& b : buttons){
-        b.update(mouse_pos, left_click);;
+        b.update(mouse_pos, left_click);
     }
 }
 

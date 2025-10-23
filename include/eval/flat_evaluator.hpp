@@ -17,7 +17,7 @@ size_t find_operator_reverse(TokenPtrVec& tokens, const std::vector<Operator>& h
 
 size_t find_operator(TokenPtrVec& tokens, const std::vector<Operator>& hierarchy_level, size_t start);
 
-void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d, short dec);
+void evaluate_operator_at(TokenPtrVec& tokens, size_t i, size_t& d, bool rev);
 
 void evaluate_negation_at(TokenPtrVec& tokens, size_t i, size_t& d);
 
