@@ -19,13 +19,28 @@
         X(CSC, "csc", TrigFunctions::tok_csc) \
 
 #define INV_TRIG_FUNCTIONS \
-        X(ASIN, "asin", TrigFunctions::tok_sin) \
-        X(ACOS, "acos", TrigFunctions::tok_sin) \
-        X(ATAN, "atan", TrigFunctions::tok_sin) \
+        X(ASIN, "asin", TrigFunctions::tok_asin) \
+        X(ACOS, "acos", TrigFunctions::tok_acos) \
+        X(ATAN, "atan", TrigFunctions::tok_atan) \
+        X(ASEC, "asec", TrigFunctions::tok_asec) \
+        X(ACOT, "acot", TrigFunctions::tok_acot) \
+        X(ACSC, "acsc", TrigFunctions::tok_acsc) \
 
-#define HYP_TRIG_FUNCTIONS /*...*/
+#define HYP_TRIG_FUNCTIONS \
+        X(SINH, "sinh", TrigFunctions::tok_sinh) \
+        X(COSH, "cosh", TrigFunctions::tok_cosh) \
+        X(TANH, "tanh", TrigFunctions::tok_tanh) \
+        X(SECH, "sech", TrigFunctions::tok_sech) \
+        X(COTH, "coth", TrigFunctions::tok_coth) \
+        X(CSCH, "csch", TrigFunctions::tok_csch) \
 
-#define HYP_INV_TRIG_FUNCTIONS /*...*/
+#define HYP_INV_TRIG_FUNCTIONS \
+        X(ASINH, "asinh", TrigFunctions::tok_asinh) \
+        X(ACOSH, "acosh", TrigFunctions::tok_acosh) \
+        X(ATANH, "atanh", TrigFunctions::tok_atanh) \
+        X(ASECH, "asech", TrigFunctions::tok_asech) \
+        X(ACOTH, "acoth", TrigFunctions::tok_acoth) \
+        X(ACSCH, "acsch", TrigFunctions::tok_acsch) \
 
 #define LOG_FUNCTIONS \
         X(LOG2, "log2", TrigFunctions::tok_sin) \

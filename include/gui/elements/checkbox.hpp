@@ -11,6 +11,7 @@ struct CheckboxStyle{
     sf::Color hover_border_color;
     sf::Color press_bg_color;
     sf::Color checked_border_color;
+    sf::Color unchecked_border_color;
     sf::Font* font;
     unsigned font_size;
 };
@@ -20,6 +21,7 @@ struct Checkbox{
     sf::Text label;
 
     bool checked;
+    bool hovering;
 
     std::function<void()> callback;
 

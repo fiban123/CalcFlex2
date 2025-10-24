@@ -22,13 +22,15 @@ void Checkbox::update(sf::Vector2i mouse_pos, bool left_click){
             rect.setFillColor(style->bg_color);
         }
         rect.setOutlineColor(style->hover_border_color);
+        hovering = true;
     }
     else{
-        rect.setOutlineColor(sf::Color::Transparent);
+        rect.setOutlineColor(style->unchecked_border_color);
         if (checked){
             rect.setOutlineColor(style->checked_border_color);
         }
         rect.setFillColor(style->bg_color);
+        hovering = false;
     }
 }
 

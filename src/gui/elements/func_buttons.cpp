@@ -177,6 +177,7 @@ FunctionButtons::FunctionButtons(sf::RenderWindow *_window, sf::Vector2u *_windo
         .hover_border_color = BUTTON_HOVER_OUTLINE_COLOR,
         .press_bg_color = BUTTON_PRESS_BG_COLOR,
         .checked_border_color = DIM_HIGHLIGHT_COLOR,
+        .unchecked_border_color = BUTTON_BG_COLOR,
         .font = font,
         .font_size = FUNCTION_GROUP_BUTTON_FONT_SIZE
     };

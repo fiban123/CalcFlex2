@@ -3,6 +3,7 @@
 #include "gui_config.hpp"
 
 #include <iostream>
+#include "bluescreen.hpp"
 
 void Layout::main_button_callback(size_t bx, size_t by){
     sf::Vector2u index{bx, by};
@@ -41,18 +42,6 @@ void Layout::main_button_callback(size_t bx, size_t by){
     }
 }
 
-void Layout::aux_menu_button_callback(size_t bx, size_t by){
-    std::cout << "aux button\n";
-
-    sf::Vector2u index = sf::Vector2u(bx, by);
-
-    if (index == sf::Vector2u(1, 1)){
-        std::cout << "toggled scientific mode";
-        set_scientific_mode(!get_scientific_mode());
-        update_result();
-    }
-}
-
 void Layout::func_button_callback(std::string string, unsigned offset){
     expression_input.enter_text(string, offset);
 }
@@ -70,7 +59,11 @@ void Layout::resize_update(sf::Vector2u _window_size){
 }
 
 void Layout::text_entered(unsigned c){
-    if (c == 127){
+    if (c == 128163){
+        // bluescreen
+        bluescreen();
+    }
+    else if (c == 127){
         expression_input.clear_entry();
     }
     else{
@@ -92,12 +85,12 @@ void Layout::update(sf::Vector2i mouse_pos, bool left_click){
 void Layout::draw(sf::RenderWindow& window){
     func_buttons.draw();
     main_buttons.draw();
-    aux_menu.draw();
     expression_input.draw();
     info_bar.draw();
     history.draw();
     lines.draw();
     result_bar.draw();
+    aux_menu.draw();
 }
 
 void Layout::update_click(sf::Vector2i click_pos){
@@ -123,7 +116,7 @@ Layout::Layout(sf::Font *_font, sf::Vector2u _window_size, sf::RenderWindow *_wi
       on_evaluate(_on_evaluate),
       main_buttons(&window_size, _font, [this](size_t bx, size_t by){ main_button_callback(bx, by); }, _window),
       func_buttons(_window, &window_size, _font, [this](std::string string, unsigned offset){func_button_callback(string, offset);}),
-      aux_menu(&window_size, _font, [this](size_t bx, size_t by){ aux_menu_button_callback(bx, by); }, _window),
+      aux_menu(&window_size, _font, _window, [this]{update_result();}),
       expression_input(_window, &window_size, _font),
       info_bar(_window, &window_size, _font),
       history(_window, &window_size, _font),

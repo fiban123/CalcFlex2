@@ -36,7 +36,6 @@ struct Layout{
     std::function<Result(std::string)> on_evaluate;
 
     void main_button_callback(size_t bx, size_t by);
-    void aux_menu_button_callback(size_t bx, size_t by);
     void func_button_callback(std::string string, unsigned offset);
 
     void resize_update(sf::Vector2u _window_size);
