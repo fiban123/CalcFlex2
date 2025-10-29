@@ -54,12 +54,9 @@ DynamicNum operator-(DynamicNum& l, DynamicNum& r) { return perform_operation(l,
 DynamicNum operator*(DynamicNum& l, DynamicNum& r) { return perform_operation(l, r, op_mul); }
 
 DynamicNum operator/(DynamicNum& l, DynamicNum& r) {
-    std::cout << "shduhd\n";
+    // convert to 0 if 2nd operand is 0 to avoid division by 0
+
     if (r.type == RATIONAL) {
-        std::cout << "ffshduhd\n";
-        std::cout << mpz_cmp_ui(mpq_numref(r.get_rational()), 0) << "\n";
-        std::cout << r.get_str(eval_config) << "\n";
-        std::cout << "\naaa\n";
         if (mpz_cmp_ui(mpq_numref(r.get_rational()), 0) == 0) {
             r.to_float();
         }

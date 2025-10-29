@@ -1,4 +1,4 @@
-#include "layout.hpp"
+#include "main_layout.hpp"
 
 #include <iostream>
 
@@ -115,9 +115,7 @@ void Layout::update_result() {
 
 Layout::Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window,
                std::function<Result(std::string)> _on_evaluate)
-    : font(_font),
-      window_size(_window_size),
-      window(_window),
+    : LayoutBase(_font, _window_size, _window),
       on_evaluate(_on_evaluate),
       main_buttons(
           &window_size, _font, [this](size_t bx, size_t by) { main_button_callback(bx, by); }, _window),

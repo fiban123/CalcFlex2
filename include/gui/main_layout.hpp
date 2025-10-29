@@ -1,26 +1,19 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 #include "aux_menu.hpp"
-#include "eval_config.hpp"
 #include "expression_input.hpp"
 #include "func_buttons.hpp"
-#include "gui_config.hpp"
 #include "history.hpp"
 #include "info_bar.hpp"
 #include "interface.hpp"
+#include "layout_base.hpp"
 #include "lines.hpp"
 #include "main_buttons.hpp"
 #include "result_bar.hpp"
-#include "text_input.hpp"
 
-struct Layout {
-    sf::Font* font;
-    sf::Vector2u window_size;
-    sf::RenderWindow* window;
-
+struct Layout : LayoutBase {
     std::pair<std::string, Result> result;
 
     MainButtons main_buttons;
