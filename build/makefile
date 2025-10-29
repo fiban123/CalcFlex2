@@ -23,9 +23,16 @@ BASE_CXXFLAGS := 	-I../include -I ../include/gui -I ../include/gui/elements \
 					-Wall -Wextra -std=c++26 -MMD -MP -static-libgcc -static-libstdc++
 
 # Release/Debug
-CXXFLAGS := $(BASE_CXXFLAGS) -O0
-DEBUGFLAGS := $(BASE_CXXFLAGS) -ggdb
+CXXFLAGS := $(BASE_CXXFLAGS)
 
+ifeq ($(release), true)
+	CXXFLAGS += -O3 -Ofast
+	LDFLAGS += -flto
+else
+	CXXFLAGS += -O0
+endif	
+
+DEBUGFLAGS := $(BASE_CXXFLAGS) -ggdb
 # Directories (relative to ./build/)
 SRC_DIRS := ../src ../src/gui ../src/gui/elements ../src/evaluate ../src/eval/tokenizer ../src/eval/math
 OBJ_DIR := obj

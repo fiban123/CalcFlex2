@@ -10,13 +10,13 @@ void f_factorial(mpfr_ptr f) {
     mpfr_clear(tmp);
 }
 
-void pos_z_factorial(mpz_ptr z){
+void pos_z_factorial(mpz_ptr z) {
     // handle 0 and 1
-    if (mpz_cmp_ui(z, 0) == 0){
+    if (mpz_cmp_ui(z, 0) == 0) {
         mpz_set_ui(z, 1);
         return;
     }
-    else if (mpz_cmp_ui(z, 1) == 0){
+    else if (mpz_cmp_ui(z, 1) == 0) {
         mpz_set_ui(z, 1);
         return;
     }
@@ -30,28 +30,31 @@ void pos_z_factorial(mpz_ptr z){
 
     unsigned long g = 0;
 
-    while(mpz_cmp_ui(i, 1) > 0){
-        mpz_mul(z, z, i); // z = z * i
-        mpz_sub_ui(i, i, 1); // i--
-        std::cout << g << std::endl;
+    while (mpz_cmp_ui(i, 1) > 0) {
+        mpz_mul(z, z, i);     // z = z * i
+        mpz_sub_ui(i, i, 1);  // i--
+        // std::cout << g << std::endl;
+        if (g % 1000 == 0) {
+            std::cout << g << "\n";
+        }
         g++;
     }
 
     mpz_clear(i);
 }
 
-void num_factorial(DynamicNum& num){
-    if (num.type == FLOAT){
+void num_factorial(DynamicNum& num) {
+    if (num.type == FLOAT) {
         f_factorial(num.get_float());
     }
-    else if (num.type == RATIONAL){
+    else if (num.type == RATIONAL) {
         MPRational* q = num.get_rational();
 
         // check if denominator is one and is positive
-        if (mpq_is_den_one(q) && mpq_sgn(q) == 1){
+        if (mpq_is_den_one(q) && mpq_sgn(q) == 1) {
             pos_z_factorial(mpq_numref(q));
         }
-        else{
+        else {
             // convert to float
             mpfr_t f;
             mpfr_init2(f, eval_config.math_prec);
@@ -64,8 +67,8 @@ void num_factorial(DynamicNum& num){
     }
 }
 
-void vec_factorial(DynamicVec& vec){
-    if (vec.dims.size() == 1){
+void vec_factorial(DynamicVec& vec) {
+    if (vec.dims.size() == 1) {
         num_factorial(vec.dims[0]);
     }
 }

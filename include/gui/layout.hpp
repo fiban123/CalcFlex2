@@ -1,23 +1,22 @@
 #pragma once
 
-#include "text_input.hpp"
-#include "main_buttons.hpp"
-#include "func_buttons.hpp"
-#include "expression_input.hpp"
-#include "aux_menu.hpp"
-#include "gui_config.hpp"
-#include "info_bar.hpp"
-#include "history.hpp"
-#include "lines.hpp"
-#include "result_bar.hpp"
-#include "eval_config.hpp"
-
-#include "interface.hpp"
-
-#include <vector>
 #include <string>
+#include <vector>
 
-struct Layout{
+#include "aux_menu.hpp"
+#include "eval_config.hpp"
+#include "expression_input.hpp"
+#include "func_buttons.hpp"
+#include "gui_config.hpp"
+#include "history.hpp"
+#include "info_bar.hpp"
+#include "interface.hpp"
+#include "lines.hpp"
+#include "main_buttons.hpp"
+#include "result_bar.hpp"
+#include "text_input.hpp"
+
+struct Layout {
     sf::Font* font;
     sf::Vector2u window_size;
     sf::RenderWindow* window;
@@ -35,6 +34,8 @@ struct Layout{
 
     std::function<Result(std::string)> on_evaluate;
 
+    void evaluate();
+
     void main_button_callback(size_t bx, size_t by);
     void func_button_callback(std::string string, unsigned offset);
 
@@ -43,12 +44,14 @@ struct Layout{
     void text_entered(unsigned c);
     void move_cursor(bool sign);
 
-    void update(sf::Vector2i mouse_pos, bool left_click);;
+    void update(sf::Vector2i mouse_pos, bool left_click);
+    ;
     void draw(sf::RenderWindow& window);
     void update_click(sf::Vector2i click_pos);
     void update_scroll(sf::Vector2i mouse_pos, float delta);
 
     void update_result();
 
-    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window, std::function<Result(std::string)> _on_evaluate);
+    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window,
+           std::function<Result(std::string)> _on_evaluate);
 };

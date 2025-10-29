@@ -1,19 +1,17 @@
 #pragma once
 
-#include <iostream>
 #include <mpfr.h>
 
-enum NumberRepresentationType{
+#include <iostream>
+
+enum NumberRepresentationType {
     REPRESENTATION_TYPE_EXACT,
     REPRESENTATION_TYPE_FLOAT,
 };
 
-enum NumberRepresentationFormat{
-    REPRESENTATION_FORMAT_NORMAL,
-    REPRESENTATION_FORMAT_SCI
-};
+enum NumberRepresentationFormat { REPRESENTATION_FORMAT_NORMAL, REPRESENTATION_FORMAT_SCI };
 
-struct EvalConfig{
+struct EvalConfig {
     NumberRepresentationType out_representation_type;
     NumberRepresentationFormat out_representation_format;
 
@@ -40,7 +38,7 @@ inline EvalConfig eval_config{
 };
 
 inline EvalConfig debug_eval_config{
-    REPRESENTATION_TYPE_EXACT, 
+    REPRESENTATION_TYPE_EXACT,
     REPRESENTATION_FORMAT_SCI,
 
     12,

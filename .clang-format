@@ -1,11 +1,11 @@
-BasedOnStyle: LLVM
+BasedOnStyle: Google
 IndentWidth: 4
 UseTab: Never
 
 PointerAlignment: Left
 ReferenceAlignment: Left
 
-ColumnLimit: 200
+ColumnLimit: 120
 
 BreakBeforeBraces: Custom
 BraceWrapping:
