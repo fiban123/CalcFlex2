@@ -10,7 +10,9 @@ void ConfigLayout::text_entered(unsigned c) {}
 
 void ConfigLayout::move_cursor(bool sign) {}
 
-void ConfigLayout::update(sf::Vector2i mouse_pos, bool left_click) {}
+void ConfigLayout::update(sf::Vector2i mouse_pos, bool left_click) {
+    s.update(mouse_pos, left_click);
+}
 
 void ConfigLayout::draw(sf::RenderWindow& window) { s.draw(window); }
 

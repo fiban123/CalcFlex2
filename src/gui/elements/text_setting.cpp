@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-void TextSetting::update(sf::Vector2i mouse_pos, bool left_click) {}
+void TextSetting::update(sf::Vector2i mouse_pos, bool left_click) {
+    info_button.update(mouse_pos, left_click);
+}
 
 TextSetting::TextSetting(std::string& label_string, std::string& setting_str,
                          std::string& info_str, sf::Vector2f pos,
