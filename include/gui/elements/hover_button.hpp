@@ -2,38 +2,34 @@
 
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>
-#include <functional>
 #include <string>
 
-struct ButtonStyle {
+struct HoverButtonStyle {
     sf::Color bg_color;
     sf::Color hover_border_color;
-    sf::Color press_bg_color;
+    sf::Color text_color;
     sf::Font* font;
+    float outline_thickness;
+    float spacing;
     unsigned font_size;
 };
 
-struct Button {
+struct HoverButton {
     sf::RectangleShape rect;
     sf::Text label;
 
-    std::function<void()> callback;
-
-    ButtonStyle* style;
+    bool hovering = false;
+    HoverButtonStyle* style;
 
     bool point_collide(sf::Vector2i pos);
-
     void draw(sf::RenderWindow& window);
-
     void update(sf::Vector2i mouse_pos, bool left_click);
 
-    void update_click(sf::Vector2i click_pos);
-
     void update_pos(sf::Vector2f new_pos);
-    void update_label(sf::String label_string);
+    void update_label(std::string new_label);
 
-    Button(sf::Vector2f pos, sf::Vector2f size, std::function<void()> _callback,
-           sf::String _label, ButtonStyle* style);
+    HoverButton(sf::Vector2f pos, sf::Vector2f size, std::string _label,
+                HoverButtonStyle* _style);
 
-    Button() = default;
+    HoverButton() = default;
 };

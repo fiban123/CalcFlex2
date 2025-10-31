@@ -1,0 +1,13 @@
+{
+    "eval":{
+        "representation_type": "exact",
+        "representation_format": "normal",
+
+        "sci_representation_n_digits": 12,
+        "auto_sci_threshold_n_digits": 70,
+        "sci_min_n_digits": 3,
+        "auto_sci": true,
+        "math_prec": 8192,
+        "out_prec": 128
+    }
+}

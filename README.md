@@ -71,3 +71,24 @@ token types
 
 
 💣: https://stackoverflow.com/questions/7034592/create-bsod-from-user-mode
+
+
+
+
+internal config opt:
+
+eval:
+- out_representation_type
+- out_representation_format
+- sci_representation_n_digits
+- auto_sci_threshold_n_digits
+- sci_min_n_digits
+- auto_sci
+- math_prec
+- out prec
+
+theme:
+-  theme
+
+
+

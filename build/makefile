@@ -15,7 +15,7 @@ SFMLLD := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s \
           -lopengl32 -lwinmm -lgdi32 -ljpeg -lvorbisenc -lvorbis -lvorbisfile \
           -logg -lflac -lbz2 -lgraphite2 -lrpcrt4 -ldwrite
 
-LDFLAGS := -static $(SFMLLD) -lmpfr -lgmp -static-libgcc -static-libstdc++
+LDFLAGS := -static $(SFMLLD) -lmpfr -lgmp -static-libgcc -static-libstdc++ -lsimdjson
 
 # Base flags
 BASE_CXXFLAGS := 	-I../include -I ../include/gui -I ../include/gui/elements \

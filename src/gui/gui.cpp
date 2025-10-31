@@ -5,10 +5,13 @@
 
 #include "button.hpp"
 #include "config_layout.hpp"
+#include "config_loader.hpp"
 #include "evaluator.hpp"
 #include "gui_config.hpp"
 
 void start_gui(std::function<Result(std::string)> callback) {
+    load_config("../config.json");
+
     sf::RenderWindow window(sf::VideoMode({1200, 1200}), "CalcFlex2");
     window.setVerticalSyncEnabled(true);
     sf::Vector2u min_size = {700, 700};
@@ -16,7 +19,8 @@ void start_gui(std::function<Result(std::string)> callback) {
     sf::Font font;
     font.loadFromFile(FONT);
 
-    std::unique_ptr<LayoutBase> layout = std::make_unique<Layout>(&font, window.getSize(), &window, callback);
+    std::unique_ptr<LayoutBase> layout =
+        std::make_unique<Layout>(&font, window.getSize(), &window, callback);
 
     while (window.isOpen()) {
         sf::Event event;

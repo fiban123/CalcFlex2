@@ -21,7 +21,7 @@ struct EvalConfig {
     bool auto_sci;
 
     size_t math_prec;
-    size_t representation_prec;
+    size_t out_prec;
 };
 
 inline EvalConfig eval_config{

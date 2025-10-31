@@ -1,6 +1,11 @@
 #include "layout_base.hpp"
+#include "text_setting.hpp"
 
 struct ConfigLayout : LayoutBase {
+    TextSetting s;
+
+    TextSettingStyle style;
+
     void resize_update(sf::Vector2u);
 
     void text_entered(unsigned c);
@@ -15,6 +20,5 @@ struct ConfigLayout : LayoutBase {
 
     void update_scroll(sf::Vector2i mouse_pos, float delta);
 
-    ConfigLayout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window)
-        : LayoutBase(_font, _window_size, _window) {}
+    ConfigLayout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window);
 };

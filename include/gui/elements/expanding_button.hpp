@@ -2,12 +2,12 @@
 
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>
+#include <functional>
+#include <string>
 
 #include "checkbox.hpp"
-#include <string>
-#include <functional>
 
-struct ExpandingButton{
+struct ExpandingButton {
     sf::RectangleShape rect;
     sf::Vector2f expanded_bound_rect_pos;
     sf::Vector2f expanded_bound_rect_size;
@@ -20,7 +20,9 @@ struct ExpandingButton{
 
     std::function<void(size_t, size_t)> callback;
     std::vector<std::vector<std::string> >* labels;
-    std::vector<std::vector<bool*> >* states;;;
+    std::vector<std::vector<bool*> >* states;
+    ;
+    ;
 
     bool hovering = false;
     bool expanded = false;
@@ -36,9 +38,12 @@ struct ExpandingButton{
     void update_pos(sf::Vector2f new_pos);
     void update_label(sf::String label_string);
 
-    ExpandingButton(sf::Vector2f pos, sf::Vector2f size, std::function<void(size_t, size_t)> _callback, 
-                    sf::String _label, CheckboxStyle* _style, std::vector<std::vector<std::string> >* _labels,
-                    std::vector<std::vector<bool> >& initial_states, std::vector<std::vector<bool*> >* _states);
+    ExpandingButton(sf::Vector2f pos, sf::Vector2f size,
+                    std::function<void(size_t, size_t)> _callback, sf::String _label,
+                    CheckboxStyle* _style,
+                    std::vector<std::vector<std::string> >* _labels,
+                    std::vector<std::vector<bool> >& initial_states,
+                    std::vector<std::vector<bool*> >* _states);
 
     ExpandingButton() = default;
 };

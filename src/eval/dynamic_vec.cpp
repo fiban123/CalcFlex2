@@ -1,15 +1,15 @@
 #include "dynamic_vec.hpp"
 
-#include <sstream>
 #include <cstring>
+#include <sstream>
 
 void mp_string_remove_trailing_zeroes(std::string& s, long exp) {
-    if (exp > s.length()){
+    if (exp > s.length()) {
         return;
     }
 
     // remove trailing zeroes
-    long last_not_zero = (long) s.find_last_not_of('0');
+    long last_not_zero = (long)s.find_last_not_of('0');
     // make sure to not remove anything before the .
     last_not_zero = std::max(std::max(last_not_zero + 1, exp), 0L);
     s.erase(s.begin() + last_not_zero, s.end());
@@ -46,13 +46,13 @@ std::string to_rational_string(std::string s) {
 std::string mpfr_get_str_normal(mpfr_t src, EvalConfig& config) {
     std::string out;
 
-    size_t ndigits = mpfr_get_str_ndigits(10, config.representation_prec);
+    size_t ndigits = mpfr_get_str_ndigits(10, config.out_prec);
 
     mp_exp_t exp;
     char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, ndigits - 2, src, MPFR_RNDN);
 
-    if (config.auto_sci){
-        if (exp > (ssize_t) config.auto_sci_threshold_n_digits){
+    if (config.auto_sci) {
+        if (exp > (ssize_t)config.auto_sci_threshold_n_digits) {
             free(mantissa_buf);
             return mpfr_get_str_sci(src, config);
         }
@@ -63,33 +63,33 @@ std::string mpfr_get_str_normal(mpfr_t src, EvalConfig& config) {
     mpfr_free_str(mantissa_buf);
 
     bool negative = mantissa[0] == '-';
-    if (negative){
+    if (negative) {
         mantissa = std::string(mantissa.begin() + 1, mantissa.end());
         out += '-';
     }
 
     mp_string_remove_trailing_zeroes(mantissa, exp);
 
-    if (exp <= 0){
-        //0.abc
+    if (exp <= 0) {
+        // 0.abc
         out += "0.";
 
-        for (size_t i = 0; i < -exp; i++){
+        for (size_t i = 0; i < -exp; i++) {
             out += '0';
         }
 
         out += mantissa;
     }
-    else if (exp >= mantissa.length()){
-        //abc0000
+    else if (exp >= mantissa.length()) {
+        // abc0000
         out += mantissa;
 
-        for (size_t i = 0; i < exp - mantissa.length(); i++){
+        for (size_t i = 0; i < exp - mantissa.length(); i++) {
             out += '0';
         }
     }
-    else{
-        //abc.abc
+    else {
+        // abc.abc
         out.append(mantissa.begin(), mantissa.begin() + exp);
         out += '.';
         out.append(mantissa.begin() + exp, mantissa.end());
@@ -101,13 +101,12 @@ std::string mpfr_get_str_normal(mpfr_t src, EvalConfig& config) {
 }
 
 std::string mpfr_get_str_sci(mpfr_t src, EvalConfig& config) {
-
     std::string out;
 
     mp_exp_t exp;
     char* mantissa_buf = mpfr_get_str(NULL, &exp, 10, config.sci_representation_n_digits, src, MPFR_RNDN);
 
-    if (exp < config.sci_min_n_digits){
+    if (exp < config.sci_min_n_digits) {
         free(mantissa_buf);
         return mpfr_get_str_normal(src, config);
     }
@@ -117,7 +116,7 @@ std::string mpfr_get_str_sci(mpfr_t src, EvalConfig& config) {
     mpfr_free_str(mantissa_buf);
 
     bool negative = mantissa[0] == '-';
-    if (negative){
+    if (negative) {
         mantissa = std::string(mantissa.begin() + 1, mantissa.end());
         out += '-';
     }
@@ -136,7 +135,7 @@ std::string mpfr_get_str_sci(mpfr_t src, EvalConfig& config) {
 }
 
 std::string mpz_get_str_sci(mpz_t src, EvalConfig& config) {
-    if (mpz_sizeinbase(src, 10) < config.sci_min_n_digits){
+    if (mpz_sizeinbase(src, 10) < config.sci_min_n_digits) {
         return mpz_get_str_normal(src);
     }
 
@@ -147,17 +146,16 @@ std::string mpz_get_str_sci(mpz_t src, EvalConfig& config) {
     std::string num(num_buf);
 
     bool negative = num[0] == '-';
-    if (negative){
+    if (negative) {
         num = std::string(num.begin() + 1, num.end());
         out += '-';
     }
 
     size_t exp = num.length();
 
-    if (num.length() > config.sci_representation_n_digits){
+    if (num.length() > config.sci_representation_n_digits) {
         num.resize(config.sci_representation_n_digits);
     }
-
 
     free(num_buf);
 
@@ -173,7 +171,7 @@ std::string mpz_get_str_sci(mpz_t src, EvalConfig& config) {
     return out;
 }
 
-std::string mpz_get_str_normal(mpz_ptr src){
+std::string mpz_get_str_normal(mpz_ptr src) {
     char* buf = mpz_get_str(NULL, 10, src);
 
     std::string str(buf);
@@ -183,30 +181,28 @@ std::string mpz_get_str_normal(mpz_ptr src){
     return str;
 }
 
-std::string mpz_get_cppstr(mpz_t src, EvalConfig& config){
-    if (config.auto_sci){
-        if (mpz_sizeinbase(src, 10) > config.auto_sci_threshold_n_digits){
+std::string mpz_get_cppstr(mpz_t src, EvalConfig& config) {
+    if (config.auto_sci) {
+        if (mpz_sizeinbase(src, 10) > config.auto_sci_threshold_n_digits) {
             return mpz_get_str_sci(src, config);
         }
     }
 
-    if (config.out_representation_format == REPRESENTATION_FORMAT_SCI){
+    if (config.out_representation_format == REPRESENTATION_FORMAT_SCI) {
         return mpz_get_str_sci(src, config);
     }
 
     return mpz_get_str_normal(src);
 }
 
-std::string mpq_get_cppstr(mpq_t src, EvalConfig& config){
-
-    if (mpq_is_den_one(src)){
+std::string mpq_get_cppstr(mpq_t src, EvalConfig& config) {
+    if (mpq_is_den_one(src)) {
         return mpz_get_cppstr(mpq_numref(src), config);
     }
     return mpz_get_cppstr(mpq_numref(src), config) + "/" + mpz_get_cppstr(mpq_denref(src), config);
 }
 
 std::string mpq_get_str_sci(mpq_t src, EvalConfig& config) {
-
     mpz_t one;
     mpz_init_set_ui(one, 1);
 
@@ -220,20 +216,18 @@ std::string mpq_get_str_sci(mpq_t src, EvalConfig& config) {
 
     std::string numerator_str_sci = mpz_get_str_sci(num, config);
 
-    if (mpz_cmp(den, one) == 0){
+    if (mpz_cmp(den, one) == 0) {
         // denominator is one
         return numerator_str_sci;
     }
-    else{
+    else {
         std::string denominator_str_sci = mpz_get_str_sci(den, config);
 
         return '(' + numerator_str_sci + '/' + denominator_str_sci + ')';
     }
 }
 
-bool mpq_is_den_one(mpq_ptr q){
-    return mpz_cmp_ui(mpq_denref(q), 1) == 0;
-}
+bool mpq_is_den_one(mpq_ptr q) { return mpz_cmp_ui(mpq_denref(q), 1) == 0; }
 
 DynamicNum to_float(DynamicNum& src) {
     DynamicNum n = src.deep_copy();
@@ -297,11 +291,11 @@ std::string DynamicNum::get_str(EvalConfig& config) {
 
         if (config.out_representation_type == REPRESENTATION_TYPE_EXACT) {
             // exact
-            if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL){
+            if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL) {
                 // normal
                 out << mpq_get_cppstr(q, config);
             }
-            else{
+            else {
                 out << mpq_get_str_sci(q, config);
             }
         }
@@ -309,14 +303,14 @@ std::string DynamicNum::get_str(EvalConfig& config) {
             // float
             // convert rational to float
             mpfr_t f;
-            mpfr_init2(f, config.representation_prec);
+            mpfr_init2(f, config.out_prec);
             mpfr_set_q(f, q, MPFR_RNDN);
 
-            if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL){
+            if (config.out_representation_format == REPRESENTATION_FORMAT_NORMAL) {
                 // normal
                 out << mpfr_get_str_normal(f, config);
             }
-            else{
+            else {
                 // sci
                 out << mpfr_get_str_sci(f, config);
             }
@@ -399,7 +393,7 @@ std::string DynamicVec::get_str_short(EvalConfig& config) {
     if (dims.empty()) {
         return "empty";
     }
-    if (dims.size() > 1){
+    if (dims.size() > 1) {
         out << '(';
     }
     for (unsigned i = 0; i < dims.size(); i++) {
@@ -408,7 +402,7 @@ std::string DynamicVec::get_str_short(EvalConfig& config) {
             out << " and ";
         }
     }
-    if (dims.size() > 1){
+    if (dims.size() > 1) {
         out << ')';
     }
 
@@ -459,7 +453,7 @@ DynamicVec::DynamicVec(DynamicNum& n, unsigned dim) {
     }
 
     for (unsigned i = 0; i < dim; i++) {
-        dims.emplace_back(); // default-constructed dynamicnum
+        dims.emplace_back();  // default-constructed dynamicnum
     }
     dims.emplace_back(n);
 }

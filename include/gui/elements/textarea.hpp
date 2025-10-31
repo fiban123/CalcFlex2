@@ -2,10 +2,12 @@
 
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>
-
 #include <vector>
 
-struct TextAreaStyle{
+enum class YBound { TOP, BOTTOM, CENTER };
+enum class XBound { LEFT, RIGHT, CENTER };
+
+struct TextAreaStyle {
     sf::Color text_color;
     sf::Color bg_color;
     float spacing;
@@ -14,13 +16,15 @@ struct TextAreaStyle{
     sf::Font* font;
 };
 
-struct TextArea{
+struct TextArea {
     std::string string;
     std::vector<sf::Text> text_lines;
-
     bool centered;
-    
+
     TextAreaStyle* style;
+
+    XBound xbound;
+    YBound ybound;
 
     sf::RectangleShape rect;
 
@@ -31,7 +35,8 @@ struct TextArea{
 
     void resize(sf::Vector2f new_size);
 
-    TextArea(std::string start_text, sf::Vector2f pos, sf::Vector2f size, TextAreaStyle *_style, bool _centered);
+    TextArea(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
+             TextAreaStyle* _style, XBound _xbounds, YBound _ybound);
 
     TextArea() = default;
 };
