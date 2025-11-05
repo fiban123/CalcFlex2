@@ -15,8 +15,6 @@ void TextArea::update_text() {
 
         lineText.setFillColor(style->text_color);
 
-        std::cout << line << "->" << lineText.getLocalBounds().width << std::endl;
-
         text_lines.push_back(lineText);
     }
 
@@ -97,6 +95,8 @@ TextArea::TextArea(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
     rect.setPosition(pos);
     rect.setSize(size);
     rect.setFillColor(style->bg_color);
+    rect.setOutlineColor(style->outline_color);
+    rect.setOutlineThickness(style->outline_width);
 
     update_text();
 }

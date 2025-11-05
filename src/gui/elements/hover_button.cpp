@@ -1,6 +1,7 @@
 #include "hover_button.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <iostream>
 
 #include "point_collide.hpp"
 
@@ -42,9 +43,11 @@ void HoverButton::update_label(std::string label_string) {
 
     label.setPosition({rect.getPosition().x + rect.getSize().x / 2.0f,
                        rect.getPosition().y + rect.getSize().y / 2.0f});
+
+    std::cout << label.getPosition().x << " " << label.getLocalBounds().width << "jjjj\n";
 }
 
-HoverButton::HoverButton(sf::Vector2f pos, sf::Vector2f size, std::string label,
+HoverButton::HoverButton(sf::Vector2f pos, sf::Vector2f size, std::string label_str,
                          HoverButtonStyle* _style)
     : style(_style) {
     rect.setFillColor(style->bg_color);
@@ -52,5 +55,5 @@ HoverButton::HoverButton(sf::Vector2f pos, sf::Vector2f size, std::string label,
     rect.setPosition(pos);
     rect.setSize(size);
 
-    update_label(label);
+    update_label(label_str);
 }

@@ -10,6 +10,8 @@ enum class XBound { LEFT, RIGHT, CENTER };
 struct TextAreaStyle {
     sf::Color text_color;
     sf::Color bg_color;
+    sf::Color outline_color;
+    float outline_width;
     float spacing;
     float entry_spacing;
     unsigned font_size;
@@ -36,7 +38,7 @@ struct TextArea {
     void resize(sf::Vector2f new_size);
 
     TextArea(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
-             TextAreaStyle* _style, XBound _xbounds, YBound _ybound);
+             TextAreaStyle* _style, XBound _xbound, YBound _ybound);
 
     TextArea() = default;
 };

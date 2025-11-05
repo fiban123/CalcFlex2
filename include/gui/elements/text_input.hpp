@@ -2,34 +2,31 @@
 
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>
-
-#include <string>
 #include <array>
+#include <string>
 
-struct TextInputStyle{
-    sf::Color text_color;
-    sf::Color bg_color;
+#include "textarea.hpp"
+
+struct TextInputStyle {
     sf::Color cursor_color;
-    float spacing;
-    unsigned font_size;
-    sf::Font* font;
+    TextAreaStyle text_area_style;
 };
 
-struct TextInput{
-    std::string string;
-    sf::Text text;
+struct TextInput {
+    TextArea text_area;
+
     unsigned character_width;
     size_t cursor_string_index = 0;
-    
+    bool selected = false;
+
     TextInputStyle* style;
 
     std::array<sf::Vertex, 2> cursor_line_vertices;
 
-    sf::RectangleShape rect;
-
     void remove(unsigned n);
     void enter_unicode_char(unsigned c);
     void enter_text(std::string text, unsigned offset);
+    void move_cursor(bool sign);
 
     void update_text();
     void update_text_pos();
@@ -39,7 +36,8 @@ struct TextInput{
 
     void resize(sf::Vector2f new_size);
 
-    TextInput(std::string start_text, sf::Vector2f pos, sf::Vector2f size, TextInputStyle* _style);
+    TextInput(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
+              TextInputStyle* _style, bool _selected, XBound _xbound, YBound _ybound);
 
     TextInput() = default;
 };

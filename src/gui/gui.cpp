@@ -57,7 +57,10 @@ void start_gui(std::function<Result(std::string)> callback) {
             }
 
             else if (event.type == sf::Event::KeyPressed) {
-                layout = std::make_unique<ConfigLayout>(&font, window.getSize(), &window);
+                if (event.key.scancode == sf::Keyboard::Scan::F10) {
+                    layout =
+                        std::make_unique<ConfigLayout>(&font, window.getSize(), &window);
+                }
 
                 if (event.key.scancode == sf::Keyboard::Scan::Left) {
                     layout->move_cursor(0);

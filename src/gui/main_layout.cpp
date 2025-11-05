@@ -7,12 +7,14 @@
 #include "info.hpp"
 
 void Layout::evaluate() {
-    Result eval_result = on_evaluate(expression_input.text_input.string);
+    Result eval_result = on_evaluate(expression_input.text_input.text_area.string);
 
-    result = std::make_pair(expression_input.text_input.string, std::move(eval_result));
+    result = std::make_pair(expression_input.text_input.text_area.string,
+                            std::move(eval_result));
 
     std::string result_str = result.second.get_string();
-    std::string history_entry = expression_input.text_input.string + " = " + result_str;
+    std::string history_entry =
+        expression_input.text_input.text_area.string + " = " + result_str;
     result_bar.set_string(result_str);
     history.add_entry(history_entry);
 }
@@ -41,11 +43,14 @@ void Layout::main_button_callback(size_t bx, size_t by) {
     }
 
     else {
-        expression_input.enter_text(main_button_strings[by][bx], main_button_offsets[by][bx]);
+        expression_input.enter_text(main_button_strings[by][bx],
+                                    main_button_offsets[by][bx]);
     }
 }
 
-void Layout::func_button_callback(std::string string, unsigned offset) { expression_input.enter_text(string, offset); }
+void Layout::func_button_callback(std::string string, unsigned offset) {
+    expression_input.enter_text(string, offset);
+}
 
 void Layout::resize_update(sf::Vector2u _window_size) {
     window_size = _window_size;
@@ -73,12 +78,14 @@ void Layout::text_entered(unsigned c) {
     else {
         expression_input.enter_unicode_char(c);
     }
-    info_bar.set_string(get_info(expression_input.text_input.string, expression_input.text_input.cursor_string_index));
+    info_bar.set_string(get_info(expression_input.text_input.text_area.string,
+                                 expression_input.text_input.cursor_string_index));
 }
 
 void Layout::move_cursor(bool sign) {
     expression_input.move_cursor(sign);
-    info_bar.set_string(get_info(expression_input.text_input.string, expression_input.text_input.cursor_string_index));
+    info_bar.set_string(get_info(expression_input.text_input.text_area.string,
+                                 expression_input.text_input.cursor_string_index));
 }
 
 void Layout::update(sf::Vector2i mouse_pos, bool left_click) {
@@ -106,7 +113,9 @@ void Layout::update_click(sf::Vector2i click_pos) {
     info_bar.update_click(click_pos);
 }
 
-void Layout::update_scroll(sf::Vector2i mouse_pos, float delta) { func_buttons.update_scroll(mouse_pos, delta); }
+void Layout::update_scroll(sf::Vector2i mouse_pos, float delta) {
+    func_buttons.update_scroll(mouse_pos, delta);
+}
 
 void Layout::update_result() {
     std::string result_str = result.second.get_string();
@@ -118,9 +127,12 @@ Layout::Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _wi
     : LayoutBase(_font, _window_size, _window),
       on_evaluate(_on_evaluate),
       main_buttons(
-          &window_size, _font, [this](size_t bx, size_t by) { main_button_callback(bx, by); }, _window),
+          &window_size, _font,
+          [this](size_t bx, size_t by) { main_button_callback(bx, by); }, _window),
       func_buttons(_window, &window_size, _font,
-                   [this](std::string string, unsigned offset) { func_button_callback(string, offset); }),
+                   [this](std::string string, unsigned offset) {
+                       func_button_callback(string, offset);
+                   }),
       aux_menu(&window_size, _font, _window, [this] { update_result(); }),
       expression_input(_window, &window_size, _font),
       info_bar(_window, &window_size, _font),
