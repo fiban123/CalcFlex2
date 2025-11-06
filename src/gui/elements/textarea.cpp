@@ -4,6 +4,13 @@
 #include <iostream>
 #include <sstream>
 
+void TextArea::update_style() {
+    rect.setFillColor(style->bg_color);
+    rect.setOutlineColor(style->outline_color);
+    rect.setOutlineThickness(style->outline_width);
+    update_text();
+}
+
 void TextArea::update_text() {
     text_lines.clear();
 
@@ -11,7 +18,8 @@ void TextArea::update_text() {
     std::string line;
 
     while (std::getline(iss, line)) {
-        sf::Text lineText = sf::Text(line, *style->font, style->font_size);
+        sf::Text lineText =
+            sf::Text(line, *style->font, style->font_size);
 
         lineText.setFillColor(style->text_color);
 
@@ -27,7 +35,8 @@ void TextArea::update_text_pos() {
     }
 
     // compute total height of text
-    float total_height = (text_lines[0].getLocalBounds().height + style->entry_spacing) *
+    float total_height = (text_lines[0].getLocalBounds().height +
+                          style->entry_spacing) *
                          text_lines.size();
     total_height -= style->entry_spacing;  // remove last spacing
 
@@ -38,12 +47,13 @@ void TextArea::update_text_pos() {
             break;
         }
         case YBound::BOTTOM: {
-            start_y =
-                rect.getPosition().y + rect.getSize().y - total_height - style->spacing;
+            start_y = rect.getPosition().y + rect.getSize().y -
+                      total_height - style->spacing;
             break;
         }
         case YBound::CENTER: {
-            start_y = rect.getPosition().y + (rect.getSize().y - total_height) / 2.f;
+            start_y = rect.getPosition().y +
+                      (rect.getSize().y - total_height) / 2.f;
             break;
         }
     }
@@ -89,14 +99,19 @@ void TextArea::resize(sf::Vector2f new_size) {
     update_text_pos();
 }
 
-TextArea::TextArea(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
-                   TextAreaStyle* _style, XBound _xbound, YBound _ybound)
-    : style(_style), string(start_text), xbound(_xbound), ybound(_ybound) {
+TextArea::TextArea(std::string start_text,
+                   sf::Vector2f pos,
+                   sf::Vector2f size,
+                   TextAreaStyle* _style,
+                   XBound _xbound,
+                   YBound _ybound)
+    : style(_style),
+      string(start_text),
+      xbound(_xbound),
+      ybound(_ybound) {
     rect.setPosition(pos);
     rect.setSize(size);
-    rect.setFillColor(style->bg_color);
-    rect.setOutlineColor(style->outline_color);
-    rect.setOutlineThickness(style->outline_width);
 
+    update_style();
     update_text();
 }

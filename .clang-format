@@ -5,7 +5,7 @@ UseTab: Never
 PointerAlignment: Left
 ReferenceAlignment: Left
 
-ColumnLimit: 90 
+ColumnLimit: 70
 
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -13,5 +13,11 @@ BraceWrapping:
   BeforeElse: true           
   BeforeCatch: true         
   BeforeWhile: true             
+
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: true
+BinPackArguments: false
+BinPackParameters: false
+ReflowComments: false
 
 SpaceBeforeParens: ControlStatements

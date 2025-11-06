@@ -8,7 +8,9 @@
 #include "textarea.hpp"
 
 struct TextInputStyle {
+    sf::Color selected_cursor_color;
     sf::Color cursor_color;
+    TextAreaStyle selected_text_area_style;
     TextAreaStyle text_area_style;
 };
 
@@ -28,6 +30,8 @@ struct TextInput {
     void enter_text(std::string text, unsigned offset);
     void move_cursor(bool sign);
 
+    void update_style();
+    void update_selected();
     void update_text();
     void update_text_pos();
     void update_cursor();
@@ -36,8 +40,13 @@ struct TextInput {
 
     void resize(sf::Vector2f new_size);
 
-    TextInput(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
-              TextInputStyle* _style, bool _selected, XBound _xbound, YBound _ybound);
+    TextInput(std::string start_text,
+              sf::Vector2f pos,
+              sf::Vector2f size,
+              TextInputStyle* _style,
+              bool _selected,
+              XBound _xbound,
+              YBound _ybound);
 
     TextInput() = default;
 };

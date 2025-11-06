@@ -2,7 +2,8 @@
 #include "text_setting.hpp"
 
 struct ConfigLayout : LayoutBase {
-    TextSetting s;
+    std::vector<TextArea> setting_group_labels;
+    std::vector<TextSetting> settings;
 
     TextSettingStyle style;
 
@@ -20,5 +21,7 @@ struct ConfigLayout : LayoutBase {
 
     void update_scroll(sf::Vector2i mouse_pos, float delta);
 
-    ConfigLayout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window);
+    ConfigLayout(sf::Font* _font,
+                 sf::Vector2u _window_size,
+                 sf::RenderWindow* _window);
 };

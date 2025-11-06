@@ -32,9 +32,13 @@ struct TextSetting {
     void update_click(sf::Vector2i mouse_pos);
     void move_cursor(bool sign);
 
-    TextSetting(std::string& label_string, std::string& setting_str,
-                std::string& info_str, sf::Vector2f pos, TextSettingStyle* style,
-                float text_input_width, bool _selected);
+    TextSetting(std::string& label_string,
+                std::string& setting_str,
+                std::string& info_str,
+                sf::Vector2f pos,
+                TextSettingStyle* style,
+                float text_input_width,
+                bool _selected);
 
     TextSetting() = default;
 };

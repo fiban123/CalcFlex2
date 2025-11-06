@@ -30,6 +30,7 @@ struct TextArea {
 
     sf::RectangleShape rect;
 
+    void update_style();
     void update_text();
     void update_text_pos();
 
@@ -37,8 +38,12 @@ struct TextArea {
 
     void resize(sf::Vector2f new_size);
 
-    TextArea(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
-             TextAreaStyle* _style, XBound _xbound, YBound _ybound);
+    TextArea(std::string start_text,
+             sf::Vector2f pos,
+             sf::Vector2f size,
+             TextAreaStyle* _style,
+             XBound _xbound,
+             YBound _ybound);
 
     TextArea() = default;
 };

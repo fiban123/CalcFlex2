@@ -31,17 +31,35 @@ void TextInput::enter_text(std::string text, unsigned offset) {
 }
 
 void TextInput::move_cursor(bool sign) {
-    ssize_t new_pos = sign ? cursor_string_index + 1 : cursor_string_index - 1;
-    cursor_string_index = std::clamp(new_pos, 0ll, (ssize_t)text_area.string.length());
+    ssize_t new_pos =
+        sign ? cursor_string_index + 1 : cursor_string_index - 1;
+    cursor_string_index =
+        std::clamp(new_pos, 0ll, (ssize_t)text_area.string.length());
 
     update_cursor();
 }
 
+void TextInput::update_style() {
+    text_area.update_style();
+    update_cursor();
+}
+
+void TextInput::update_selected() {
+    if (selected) {
+        text_area.style = &style->selected_text_area_style;
+    }
+    else {
+        text_area.style = &style->text_area_style;
+    }
+    update_text();
+}
+
 void TextInput::update_text() {
     text_area.update_text();
-    character_width = style->text_area_style.font
-                          ->getGlyph('a', style->text_area_style.font_size, false)
-                          .advance;
+    character_width =
+        style->text_area_style.font
+            ->getGlyph('a', style->text_area_style.font_size, false)
+            .advance;
 
     if (cursor_string_index >= text_area.string.length()) {
         cursor_string_index = text_area.string.length();
@@ -78,13 +96,15 @@ void TextInput::update_cursor() {
     else {
         std::cout << "ka1\n";
         float left = text_area.text_lines[0].getPosition().x;
-        std::cout << left << " " << cursor_string_index << " " << character_width << "\n";
+        std::cout << left << " " << cursor_string_index << " "
+                  << character_width << "\n";
         x = left + cursor_string_index * character_width;
     }
 
     std::cout << x << "\n";
 
-    cursor_line_vertices[0].position = {x, bottom + text_area.rect.getSize().y};
+    cursor_line_vertices[0].position = {
+        x, bottom + text_area.rect.getSize().y};
     cursor_line_vertices[0].color = style->cursor_color;
     cursor_line_vertices[1].position = {x, bottom};
     cursor_line_vertices[1].color = style->cursor_color;
@@ -93,7 +113,8 @@ void TextInput::update_cursor() {
 void TextInput::draw(sf::RenderWindow& window) {
     text_area.draw(window);
     if (selected) {
-        window.draw(cursor_line_vertices.data(), cursor_line_vertices.size(),
+        window.draw(cursor_line_vertices.data(),
+                    cursor_line_vertices.size(),
                     sf::PrimitiveType::Lines);
     }
 }
@@ -103,12 +124,20 @@ void TextInput::resize(sf::Vector2f new_size) {
     update_cursor();
 }
 
-TextInput::TextInput(std::string start_text, sf::Vector2f pos, sf::Vector2f size,
-                     TextInputStyle* _style, bool _selected, XBound _xbound,
+TextInput::TextInput(std::string start_text,
+                     sf::Vector2f pos,
+                     sf::Vector2f size,
+                     TextInputStyle* _style,
+                     bool _selected,
+                     XBound _xbound,
                      YBound _ybound)
     : style(_style), selected(_selected) {
-    text_area =
-        TextArea(start_text, pos, size, &style->text_area_style, _xbound, _ybound);
+    text_area = TextArea(start_text,
+                         pos,
+                         size,
+                         &style->text_area_style,
+                         _xbound,
+                         _ybound);
     cursor_string_index = start_text.length();
     update_text();
     update_cursor();
