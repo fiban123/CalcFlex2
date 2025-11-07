@@ -1,12 +1,12 @@
 {
- "eval": {
-  "auto_sci": true,
-  "auto_sci_threshold_n_digits": 70,
-  "math_prec": 8192,
-  "out_prec": 128,
-  "representation_format": "sci",
-  "representation_type": "exact",
-  "sci_min_n_digits": 3,
-  "sci_representaion_n_digits": 12
- }
+    "eval": {
+        "auto_sci": true,
+        "auto_sci_threshold_n_digits": 70,
+        "math_prec": 8192,
+        "out_prec": 128,
+        "representation_format": "sci",
+        "representation_type": "exact",
+        "sci_min_n_digits": 3,
+        "sci_representaion_n_digits": 12
+    }
 }

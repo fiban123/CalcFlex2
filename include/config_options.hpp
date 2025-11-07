@@ -48,25 +48,23 @@ struct BiMap {
 template <typename EnumT>
 using EnumSettingBiMap = BiMap<std::string, EnumT>;
 
-template <typename ValueT>
 struct Setting {
     std::string label;
     std::string info;
     std::string value_str;
-    ValueT value;
 
     virtual std::string to_string() = 0;
     virtual bool set_from_string() = 0;
 
     virtual ~Setting() = default;
 
-    Setting(const std::string& _label,
-            const std::string& _info,
-            const ValueT _value)
-        : label(_label), info(_info), value(_value) {}
+    Setting(const std::string& _label, const std::string& _info)
+        : label(_label), info(_info) {}
 };
 
-struct DoubleSetting : Setting<double> {
+struct DoubleSetting : Setting {
+    double value;
+
     std::string to_string() override { return std::to_string(value); }
 
     bool set_from_string() override {
@@ -77,13 +75,14 @@ struct DoubleSetting : Setting<double> {
     DoubleSetting(const std::string _label,
                   const std::string _info,
                   const double _value)
-        : Setting<double>(_label, _info, _value) {
+        : Setting(_label, _info), value(_value) {
         value_str = to_string();
     }
 };
 
 template <typename EnumT>
-struct EnumSetting : Setting<EnumT> {
+struct EnumSetting : Setting {
+    EnumT value;
     const EnumSettingBiMap<EnumT>& bimap;
 
     std::string to_string() override {
@@ -103,12 +102,13 @@ struct EnumSetting : Setting<EnumT> {
                 const std::string _info,
                 const EnumT _value,
                 const EnumSettingBiMap<EnumT>& _bimap)
-        : Setting<EnumT>(_label, _info, _value), bimap(_bimap) {
+        : Setting(_label, _info), value(_value), bimap(_bimap) {
         this->value_str = this->to_string();
     }
 };
 
-struct SizeSetting : Setting<size_t> {
+struct SizeSetting : Setting {
+    size_t value;
     std::string to_string() override { return std::to_string(value); }
     bool set_from_string() override {
         value = stoull(value_str);
@@ -118,12 +118,13 @@ struct SizeSetting : Setting<size_t> {
     SizeSetting(const std::string _label,
                 const std::string _info,
                 const size_t _value)
-        : Setting<size_t>(_label, _info, _value) {
+        : Setting(_label, _info), value(_value) {
         value_str = to_string();
     }
 };
 
-struct BoolSetting : Setting<bool> {
+struct BoolSetting : Setting {
+    bool value;
     std::string to_string() override {
         if (value == true) {
             return "true";
@@ -148,7 +149,7 @@ struct BoolSetting : Setting<bool> {
     BoolSetting(const std::string _label,
                 const std::string _info,
                 const bool _value)
-        : Setting<bool>(_label, _info, _value) {
+        : Setting(_label, _info), value(_value) {
         value_str = to_string();
     }
 };
@@ -164,6 +165,68 @@ inline const EnumSettingBiMap<NumberRepresentationFormat>
         {"normal", REPRESENTATION_FORMAT_NORMAL}};
 
 struct Config {
+    BoolSetting auto_sci{
+        //
+        "Auto scientific mode [true, false]",
+        //
+        "if the length of a result is bigger than"
+        "Auto sci Threshold,"
+        "it will automatically switch to"
+        "scientific mode",
+        true
+        //
+    };
+
+    SizeSetting auto_sci_threshold_n_digits{
+        //
+        "Auto Sci Threshold [n digits]",
+        //
+        "if auto scientific mode is enabled, this"
+        "determines how long a result has to be"
+        "for auto sci to kick in.",
+        //
+        70};
+
+    SizeSetting math_prec{
+        //
+        "Math precision [bits]",
+        //
+        "the the amount of precision in bits"
+        "used during calculation for floating-"
+        "point operations. 64 bits is about"
+        "15 (base-10) digits of precision"
+        "must be below ~2^32-512 on Windows",
+        //
+        8192
+        //
+    };
+
+    SizeSetting out_prec{
+        //
+        "Result Precision [bits]",
+        //
+        "the amount of precision in bits"
+        "in which float results are"
+        "displayed. 64 bits is ~15"
+        "(base-10) digits.",
+        //
+        128,
+        //
+    };
+
+    EnumSetting<NumberRepresentationFormat> representation_format{
+        //
+        "Representation Format [sci, normal]",
+        //
+        "if the representation format is sci,"
+        "results will be displayed in scientific"
+        "notation.",
+        //
+        REPRESENTATION_FORMAT_SCI,
+        representation_format_bimap
+        //
+    };
+
     EnumSetting<NumberRepresentationType> representation_type{
         //
         "Result Representation Type [exact, float]",
@@ -178,4 +241,45 @@ struct Config {
         representation_type_bimap
         //
     };
+
+    SizeSetting sci_min_n_digits{
+        //
+        "Minimum digits for scientific mode [n digits]",
+        //
+        "if the log10 of a result"
+        "is below this number, it will never"
+        "be displayed as scientifix. even if"
+        "scientific mode is enabled. This is"
+        "not affected by auto scientific mode.",
+        //
+        3
+        //
+    };
+
+    SizeSetting sci_representaion_n_digits{
+        //
+        "Max. Mantissa length for scientific notation [n digits]",
+        //
+        "controls the maximum amount of digits"
+        "displayed in the mantissa of"
+        "scientific notation",
+        //
+        12,
+        //
+    };
+};
+
+inline Config config;
+
+inline std::vector<Setting*> setting_vec = {
+    //
+    &config.auto_sci,
+    &config.auto_sci_threshold_n_digits,
+    &config.math_prec,
+    &config.out_prec,
+    &config.representation_format,
+    &config.representation_type,
+    &config.sci_min_n_digits,
+    &config.sci_representaion_n_digits
+    //
 };

@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "config_options.hpp"
 #include "gui_config.hpp"
 #include "text_setting.hpp"
 
@@ -126,27 +127,26 @@ ConfigLayout::ConfigLayout(sf::Font* font,
         //
     };
 
-    std::string label = "Result Representation Type [exact, float]";
-    std::string setting = "float";
-    std::string info =
-        "if the representation type is exact, results\n"
-        "will be displayed as exact, rational numbers\n"
-        "if possible. if the representation type is\n"
-        "float, results will always be displayed as\n"
-        "sometimes imperfect, floating-point values.";
+    float x = 30;
+    float y = 30;
 
-    settings.emplace_back(  //
-        TextSetting(
+    for (Setting* s : setting_vec) {
+        settings.emplace_back(
             //
-            label,
-            setting,
-            info,
-            {50, 50},
-            &style,
-            200,
-            false
+            TextSetting(
+                //
+                s->label,
+                s->value_str,
+                s->info,
+                {x, y},
+                &style,
+                200,
+                false
+                //
+                )
             //
-            )
-        //
-    );
+        );
+
+        y += settings.back().rect.getLocalBounds().height + 50;
+    }
 }
