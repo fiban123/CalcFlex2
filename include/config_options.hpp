@@ -57,6 +57,13 @@ struct Setting {
 
     virtual std::string to_string() = 0;
     virtual bool set_from_string() = 0;
+
+    virtual ~Setting() = default;
+
+    Setting(const std::string& _label,
+            const std::string& _info,
+            const ValueT _value)
+        : label(_label), info(_info), value(_value) {}
 };
 
 struct DoubleSetting : Setting<double> {
@@ -66,28 +73,85 @@ struct DoubleSetting : Setting<double> {
         value = stod(value_str);
         return true;
     }
+
+    DoubleSetting(const std::string _label,
+                  const std::string _info,
+                  const double _value)
+        : Setting<double>(_label, _info, _value) {
+        value_str = to_string();
+    }
 };
 
 template <typename EnumT>
 struct EnumSetting : Setting<EnumT> {
-    EnumSettingBiMap<EnumT> bimap;
+    const EnumSettingBiMap<EnumT>& bimap;
 
     std::string to_string() override {
-        return bimap.find_left_r(value);
+        return bimap.find_left_r(this->value);
     }
     bool set_from_string() override {
-        EnumT & e;
-        bool s = bimap.find_right(value_str, e);
+        EnumT e;
+        bool s = bimap.find_right(this->value_str, e);
         if (!s) {
             return false;
         }
-        value = e;
+        this->value = e;
         return true;
+    }
+
+    EnumSetting(const std::string _label,
+                const std::string _info,
+                const EnumT _value,
+                const EnumSettingBiMap<EnumT>& _bimap)
+        : Setting<EnumT>(_label, _info, _value), bimap(_bimap) {
+        this->value_str = this->to_string();
     }
 };
 
 struct SizeSetting : Setting<size_t> {
-}
+    std::string to_string() override { return std::to_string(value); }
+    bool set_from_string() override {
+        value = stoull(value_str);
+        return true;
+    }
+
+    SizeSetting(const std::string _label,
+                const std::string _info,
+                const size_t _value)
+        : Setting<size_t>(_label, _info, _value) {
+        value_str = to_string();
+    }
+};
+
+struct BoolSetting : Setting<bool> {
+    std::string to_string() override {
+        if (value == true) {
+            return "true";
+        }
+        else {
+            return "false";
+        }
+    }
+    bool set_from_string() override {
+        if (value_str == "true") {
+            value = true;
+        }
+        else if (value_str == "false") {
+            value = false;
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    BoolSetting(const std::string _label,
+                const std::string _info,
+                const bool _value)
+        : Setting<bool>(_label, _info, _value) {
+        value_str = to_string();
+    }
+};
 
 inline const EnumSettingBiMap<NumberRepresentationType>
     representation_type_bimap = {
@@ -98,3 +162,20 @@ inline const EnumSettingBiMap<NumberRepresentationFormat>
     representation_format_bimap = {
         {"sci", REPRESENTATION_FORMAT_SCI},
         {"normal", REPRESENTATION_FORMAT_NORMAL}};
+
+struct Config {
+    EnumSetting<NumberRepresentationType> representation_type{
+        //
+        "Result Representation Type [exact, float]",
+        //
+        "if the representation type is exact, results\n"
+        "will be displayed as exact, rational numbers\n"
+        "if possible. if the representation type is\n"
+        "float, results will always be displayed as\n"
+        "sometimes imperfect, floating-point values.",
+        //
+        REPRESENTATION_TYPE_EXACT,
+        representation_type_bimap
+        //
+    };
+};
