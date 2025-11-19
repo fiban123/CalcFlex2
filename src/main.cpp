@@ -3,4 +3,8 @@
 #include "evaluator.hpp"
 #include "gui.hpp"
 
-int main() { start_gui(evaluate_string); }
+int main() {
+    std::cout << (1u << 6) + 3 << "\n";
+
+    start_gui(evaluate_string);
+}

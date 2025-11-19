@@ -6,12 +6,15 @@
 #include "button.hpp"
 #include "config_layout.hpp"
 #include "config_loader.hpp"
+#include "config_options.hpp"
 #include "eval_config.hpp"
 #include "evaluator.hpp"
 #include "gui_config.hpp"
+#include "key_handler.hpp"
+#include "layouts.hpp"
 
 void start_gui(std::function<Result(std::string)> callback) {
-    load_config("../config.json");
+    read_config("../config.json", eval_config, config);
 
     sf::RenderWindow window(sf::VideoMode({1200, 1200}), "CalcFlex2");
     window.setVerticalSyncEnabled(true);
@@ -20,8 +23,10 @@ void start_gui(std::function<Result(std::string)> callback) {
     sf::Font font;
     font.loadFromFile(FONT);
 
-    std::unique_ptr<LayoutBase> layout = std::make_unique<Layout>(
-        &font, window.getSize(), &window, callback);
+    make_layouts(&font, window.getSize(), &window, callback);
+
+    set_layout(Layouts::MAIN);
+    layout->enter();
 
     while (window.isOpen()) {
         sf::Event event;
@@ -63,22 +68,7 @@ void start_gui(std::function<Result(std::string)> callback) {
             }
 
             else if (event.type == sf::Event::KeyPressed) {
-                if (event.key.scancode == sf::Keyboard::Scan::F10) {
-                    layout = std::make_unique<ConfigLayout>(
-                        &font, window.getSize(), &window);
-                }
-                else if (event.key.scancode ==
-                         sf::Keyboard::Scan::F11) {
-                    save_config(eval_config, "../config.json");
-                }
-
-                if (event.key.scancode == sf::Keyboard::Scan::Left) {
-                    layout->move_cursor(0);
-                }
-                else if (event.key.scancode ==
-                         sf::Keyboard::Scan::Right) {
-                    layout->move_cursor(1);
-                }
+                key_press_handler(event.key.scancode);
             }
         }
 

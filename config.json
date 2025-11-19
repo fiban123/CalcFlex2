@@ -1,8 +1,8 @@
 {
     "eval": {
-        "auto_sci": true,
+        "auto_sci": false,
         "auto_sci_threshold_n_digits": 70,
-        "math_prec": 8192,
+        "math_prec": 12,
         "out_prec": 128,
         "representation_format": "sci",
         "representation_type": "exact",

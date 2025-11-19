@@ -1348,5 +1348,65 @@
    "obj/eval_math_trig.o"
   ],
   "file": "../src/eval/math/trig.cpp"
+ },
+ {
+  "directory": "C:\\dev\\cpp\\calcflex2\\build",
+  "arguments": [
+   "g++",
+   "-I../include",
+   "-I",
+   "../include/gui",
+   "-I",
+   "../include/gui/elements",
+   "-I../include/eval",
+   "-I../include/eval/tokenizer",
+   "-I",
+   "C:/msys64/ucrt64/include",
+   "-I",
+   "../include/eval/math",
+   "-Wall",
+   "-Wextra",
+   "-std=c++26",
+   "-MMD",
+   "-MP",
+   "-static-libgcc",
+   "-static-libstdc++",
+   "-O0",
+   "-c",
+   "../src/config_options.cpp",
+   "-o",
+   "obj/config_options.o"
+  ],
+  "file": "../src/config_options.cpp"
+ },
+ {
+  "directory": "C:\\dev\\cpp\\calcflex2\\build",
+  "arguments": [
+   "g++",
+   "-I../include",
+   "-I",
+   "../include/gui",
+   "-I",
+   "../include/gui/elements",
+   "-I../include/eval",
+   "-I../include/eval/tokenizer",
+   "-I",
+   "C:/msys64/ucrt64/include",
+   "-I",
+   "../include/eval/math",
+   "-Wall",
+   "-Wextra",
+   "-std=c++26",
+   "-MMD",
+   "-MP",
+   "-static-libgcc",
+   "-static-libstdc++",
+   "-O0",
+   "-c",
+   "../src/gui/key_handler.cpp",
+   "-o",
+   "obj/gui_key_handler.o"
+  ],
+  "file": "../src/gui/key_handler.cpp"
  }
 ]

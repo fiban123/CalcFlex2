@@ -9,11 +9,18 @@
 #include <Windows.h>
 #include <winternl.h>
 using namespace std;
-typedef NTSTATUS(NTAPI* pdef_NtRaiseHardError)(NTSTATUS ErrorStatus, ULONG NumberOfParameters,
-                                               ULONG UnicodeStringParameterMask OPTIONAL, PULONG_PTR Parameters,
-                                               ULONG ResponseOption, PULONG Response);
-typedef NTSTATUS(NTAPI* pdef_RtlAdjustPrivilege)(ULONG Privilege, BOOLEAN Enable, BOOLEAN CurrentThread,
-                                                 PBOOLEAN Enabled);
+typedef NTSTATUS(NTAPI* pdef_NtRaiseHardError)(
+    NTSTATUS ErrorStatus,
+    ULONG NumberOfParameters,
+    ULONG UnicodeStringParameterMask OPTIONAL,
+    PULONG_PTR Parameters,
+    ULONG ResponseOption,
+    PULONG Response);
+typedef NTSTATUS(NTAPI* pdef_RtlAdjustPrivilege)(
+    ULONG Privilege,
+    BOOLEAN Enable,
+    BOOLEAN CurrentThread,
+    PBOOLEAN Enabled);
 #endif
 void bluescreen() {
     std::cout << "bluescreen!!!" << std::endl;
@@ -23,10 +30,12 @@ void bluescreen() {
 
     // Correctly cast GetProcAddress results
     pdef_RtlAdjustPrivilege NtCall =
-        (pdef_RtlAdjustPrivilege)GetProcAddress(LoadLibraryA("ntdll.dll"), "RtlAdjustPrivilege");
+        (pdef_RtlAdjustPrivilege)GetProcAddress(
+            LoadLibraryA("ntdll.dll"), "RtlAdjustPrivilege");
 
     pdef_NtRaiseHardError NtCall2 =
-        (pdef_NtRaiseHardError)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtRaiseHardError");
+        (pdef_NtRaiseHardError)GetProcAddress(
+            GetModuleHandleA("ntdll.dll"), "NtRaiseHardError");
 
     if (!NtCall || !NtCall2) {
         cout << "Failed to get function addresses." << endl;

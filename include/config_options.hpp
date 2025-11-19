@@ -1,3 +1,5 @@
+#pragma once
+
 #include <boost/bimap.hpp>
 #include <cassert>
 #include <cstdlib>
@@ -68,8 +70,13 @@ struct DoubleSetting : Setting {
     std::string to_string() override { return std::to_string(value); }
 
     bool set_from_string() override {
-        value = stod(value_str);
-        return true;
+        try {
+            value = std::stod(value_str);
+            return true;
+        }
+        catch (...) {
+            return false;
+        }
     }
 
     DoubleSetting(const std::string _label,
@@ -111,8 +118,13 @@ struct SizeSetting : Setting {
     size_t value;
     std::string to_string() override { return std::to_string(value); }
     bool set_from_string() override {
-        value = stoull(value_str);
-        return true;
+        try {
+            value = std::stoull(value_str);
+            return true;
+        }
+        catch (...) {
+            return false;
+        }
     }
 
     SizeSetting(const std::string _label,
@@ -169,10 +181,10 @@ struct Config {
         //
         "Auto scientific mode [true, false]",
         //
-        "if the length of a result is bigger than"
-        "Auto sci Threshold,"
-        "it will automatically switch to"
-        "scientific mode",
+        "if the length of a result is bigger than\n"
+        "Auto sci Threshold,\n"
+        "it will automatically switch to\n"
+        "scientific mode\n",
         true
         //
     };
@@ -181,9 +193,9 @@ struct Config {
         //
         "Auto Sci Threshold [n digits]",
         //
-        "if auto scientific mode is enabled, this"
-        "determines how long a result has to be"
-        "for auto sci to kick in.",
+        "if auto scientific mode is enabled, this\n"
+        "determines how long a result has to be\n"
+        "for auto sci to kick in.\n",
         //
         70};
 
@@ -191,11 +203,11 @@ struct Config {
         //
         "Math precision [bits]",
         //
-        "the the amount of precision in bits"
-        "used during calculation for floating-"
-        "point operations. 64 bits is about"
-        "15 (base-10) digits of precision"
-        "must be below ~2^32-512 on Windows",
+        "the the amount of precision in bits\n"
+        "used during calculation for floating-\n"
+        "point operations. 64 bits is about\n"
+        "15 (base-10) digits of precision\n"
+        "must be below ~2^32-512 on Windows\n",
         //
         8192
         //
@@ -205,10 +217,10 @@ struct Config {
         //
         "Result Precision [bits]",
         //
-        "the amount of precision in bits"
-        "in which float results are"
-        "displayed. 64 bits is ~15"
-        "(base-10) digits.",
+        "the amount of precision in bits\n"
+        "in which float results are\n"
+        "displayed. 64 bits is ~15\n"
+        "(base-10) digits.\n",
         //
         128,
         //
@@ -218,9 +230,9 @@ struct Config {
         //
         "Representation Format [sci, normal]",
         //
-        "if the representation format is sci,"
-        "results will be displayed in scientific"
-        "notation.",
+        "if the representation format is sci,\n"
+        "results will be displayed in scientific\n"
+        "notation.\n",
         //
         REPRESENTATION_FORMAT_SCI,
         representation_format_bimap
@@ -246,10 +258,10 @@ struct Config {
         //
         "Minimum digits for scientific mode [n digits]",
         //
-        "if the log10 of a result"
-        "is below this number, it will never"
-        "be displayed as scientifix. even if"
-        "scientific mode is enabled. This is"
+        "if the log10 of a result\n"
+        "is below this number, it will never\n"
+        "be displayed as scientifix. even if\n"
+        "scientific mode is enabled. This is\n"
         "not affected by auto scientific mode.",
         //
         3
@@ -260,13 +272,18 @@ struct Config {
         //
         "Max. Mantissa length for scientific notation [n digits]",
         //
-        "controls the maximum amount of digits"
-        "displayed in the mantissa of"
-        "scientific notation",
+        "controls the maximum amount of digits\n"
+        "displayed in the mantissa of\n"
+        "scientific notation\n",
         //
         12,
         //
     };
+    void write_to_eval_cfg(EvalConfig& eval_config);
+    void write_to_strings();
+    bool read_from_strings(std::string& err_out);
+
+    void write();
 };
 
 inline Config config;

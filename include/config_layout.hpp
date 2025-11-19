@@ -1,3 +1,5 @@
+#pragma once
+
 #include "layout_base.hpp"
 #include "text_setting.hpp"
 
@@ -6,6 +8,8 @@ struct ConfigLayout : LayoutBase {
     std::vector<TextSetting> settings;
 
     TextSettingStyle style;
+
+    void enter();
 
     void resize_update(sf::Vector2u);
 
@@ -20,6 +24,8 @@ struct ConfigLayout : LayoutBase {
     void update_click(sf::Vector2i mouse_pos);
 
     void update_scroll(sf::Vector2i mouse_pos, float delta);
+
+    void update_config();
 
     ConfigLayout(sf::Font* _font,
                  sf::Vector2u _window_size,

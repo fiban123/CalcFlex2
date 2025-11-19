@@ -3,18 +3,26 @@
 #include <iostream>
 
 #include "bluescreen.hpp"
+#include "config_loader.hpp"
+#include "config_options.hpp"
 #include "gui_config.hpp"
 #include "info.hpp"
 
+void Layout::enter() {
+    read_config("../config.json", eval_config, config);
+}
 void Layout::evaluate() {
-    Result eval_result = on_evaluate(expression_input.text_input.text_area.string);
+    Result eval_result =
+        on_evaluate(expression_input.text_input.text_area.string);
 
-    result = std::make_pair(expression_input.text_input.text_area.string,
-                            std::move(eval_result));
+    result =
+        std::make_pair(expression_input.text_input.text_area.string,
+                       std::move(eval_result));
 
     std::string result_str = result.second.get_string();
     std::string history_entry =
-        expression_input.text_input.text_area.string + " = " + result_str;
+        expression_input.text_input.text_area.string + " = " +
+        result_str;
     result_bar.set_string(result_str);
     history.add_entry(history_entry);
 }
@@ -48,7 +56,8 @@ void Layout::main_button_callback(size_t bx, size_t by) {
     }
 }
 
-void Layout::func_button_callback(std::string string, unsigned offset) {
+void Layout::func_button_callback(std::string string,
+                                  unsigned offset) {
     expression_input.enter_text(string, offset);
 }
 
@@ -78,14 +87,16 @@ void Layout::text_entered(unsigned c) {
     else {
         expression_input.enter_unicode_char(c);
     }
-    info_bar.set_string(get_info(expression_input.text_input.text_area.string,
-                                 expression_input.text_input.cursor_string_index));
+    info_bar.set_string(
+        get_info(expression_input.text_input.text_area.string,
+                 expression_input.text_input.cursor_string_index));
 }
 
 void Layout::move_cursor(bool sign) {
     expression_input.move_cursor(sign);
-    info_bar.set_string(get_info(expression_input.text_input.text_area.string,
-                                 expression_input.text_input.cursor_string_index));
+    info_bar.set_string(
+        get_info(expression_input.text_input.text_area.string,
+                 expression_input.text_input.cursor_string_index));
 }
 
 void Layout::update(sf::Vector2i mouse_pos, bool left_click) {
@@ -122,18 +133,27 @@ void Layout::update_result() {
     result_bar.set_string(result_str);
 }
 
-Layout::Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window,
+Layout::Layout(sf::Font* _font,
+               sf::Vector2u _window_size,
+               sf::RenderWindow* _window,
                std::function<Result(std::string)> _on_evaluate)
     : LayoutBase(_font, _window_size, _window),
       on_evaluate(_on_evaluate),
       main_buttons(
-          &window_size, _font,
-          [this](size_t bx, size_t by) { main_button_callback(bx, by); }, _window),
-      func_buttons(_window, &window_size, _font,
+          &window_size,
+          _font,
+          [this](size_t bx, size_t by) {
+              main_button_callback(bx, by);
+          },
+          _window),
+      func_buttons(_window,
+                   &window_size,
+                   _font,
                    [this](std::string string, unsigned offset) {
                        func_button_callback(string, offset);
                    }),
-      aux_menu(&window_size, _font, _window, [this] { update_result(); }),
+      aux_menu(
+          &window_size, _font, _window, [this] { update_result(); }),
       expression_input(_window, &window_size, _font),
       info_bar(_window, &window_size, _font),
       history(_window, &window_size, _font),

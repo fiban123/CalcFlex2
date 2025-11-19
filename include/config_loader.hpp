@@ -1,7 +1,11 @@
 #include <string>
 
+#include "config_options.hpp"
 #include "eval_config.hpp"
 
-EvalConfig load_config(std::string path);
+void print_config(EvalConfig& config);
 
-void save_config(const EvalConfig& config, const std::string path);
+void read_config(std::string path,
+                 EvalConfig& eval_config,
+                 Config& main_config);
+void write_config(const Config& config, const std::string path);

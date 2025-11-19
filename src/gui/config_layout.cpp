@@ -4,11 +4,19 @@
 
 #include "config_options.hpp"
 #include "gui_config.hpp"
+#include "layouts.hpp"
 #include "text_setting.hpp"
+#include "textarea.hpp"
+
+void ConfigLayout::enter() {}
 
 void ConfigLayout::resize_update(sf::Vector2u size) {}
 
 void ConfigLayout::text_entered(unsigned c) {
+    if (c == 13) {
+        update_config();
+    }
+
     for (TextSetting& s : settings) {
         s.text_entered(c);
     }
@@ -40,6 +48,45 @@ void ConfigLayout::update_click(sf::Vector2i mouse_pos) {
 
 void ConfigLayout::update_scroll(sf::Vector2i mouse_pos,
                                  float delta) {}
+
+void ConfigLayout::update_config() {
+    config.auto_sci.value_str = settings[0].input.text_area.string;
+    config.auto_sci_threshold_n_digits.value_str =
+        settings[1].input.text_area.string;
+    config.math_prec.value_str = settings[2].input.text_area.string;
+    config.out_prec.value_str = settings[3].input.text_area.string;
+    config.representation_format.value_str =
+        settings[4].input.text_area.string;
+    config.representation_type.value_str =
+        settings[5].input.text_area.string;
+    config.sci_min_n_digits.value_str =
+        settings[6].input.text_area.string;
+    config.sci_representaion_n_digits.value_str =
+        settings[7].input.text_area.string;
+
+    std::string err_str;
+    bool err = config.read_from_strings(err_str);
+
+    config.write();
+
+    Layout* layout =
+        static_cast<Layout*>(layouts[Layouts::MAIN].get());
+
+    if (err) {
+        layout->info_bar.set_string(err_str);
+    }
+    else {
+        layout->info_bar.set_string("settings saved successfully!");
+    }
+
+    config.write_to_strings();
+
+    for (size_t i = 0; i < setting_vec.size(); i++) {
+        settings[i].input.text_area.string =
+            setting_vec[i]->value_str;
+        settings[i].input.update_text();
+    }
+}
 
 ConfigLayout::ConfigLayout(sf::Font* font,
                            sf::Vector2u window_size,

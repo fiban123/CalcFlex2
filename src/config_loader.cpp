@@ -20,44 +20,19 @@ void print_config(EvalConfig& config) {
               << "\nsci_min_n_digits: " << config.sci_min_n_digits
               << "\nauto_sci: " << config.auto_sci
               << "\nmath_prec: " << config.math_prec
-              << "\nout_prec: " << config.out_prec;
+              << "\nout_prec: " << config.out_prec << "sdisjhd";
 }
 
-bool str_to_representation_type(std::string& str,
-                                NumberRepresentationType& out) {
-    if (str == "float") {
-        out = REPRESENTATION_TYPE_FLOAT;
-        return true;
-    }
-    else if (str == "exact") {
-        out = REPRESENTATION_TYPE_EXACT;
-        return true;
-    }
-    return false;
-}
-
-bool str_to_representation_format(std::string& str,
-                                  NumberRepresentationFormat& out) {
-    if (str == "sci") {
-        out = REPRESENTATION_FORMAT_SCI;
-        return true;
-    }
-    else if (str == "normal") {
-        out = REPRESENTATION_FORMAT_NORMAL;
-        return true;
-    }
-    return false;
-}
-
-EvalConfig load_config(std::string path) {
-    EvalConfig config;
+void read_config(std::string path,
+                 EvalConfig& eval_config,
+                 Config& main_config) {
+    std::cout << "readddingg config\n\n\n";
 
     std::ifstream file(path);
-    ;
 
     if (!file.is_open()) {
         std::cout << std::format("file {} not found\n", path);
-        return config;
+        return;
     }
 
     nlohmann::json json;
@@ -79,31 +54,33 @@ EvalConfig load_config(std::string path) {
                        representation_format_bimap.find_left_r(
                            eval_config.out_representation_format));
 
-        config.sci_representation_n_digits =
+        main_config.sci_representaion_n_digits.value =
             eval.value("sci_representaion_n_digits",
                        eval_config.sci_representation_n_digits);
-        config.auto_sci_threshold_n_digits =
+        main_config.auto_sci_threshold_n_digits.value =
             eval.value("auto_sci_threshold_n_digits",
                        eval_config.auto_sci_threshold_n_digits);
-        config.sci_min_n_digits = eval.value(
+        main_config.sci_min_n_digits.value = eval.value(
             "sci_min_n_digits", eval_config.sci_min_n_digits);
-        config.auto_sci =
+        main_config.auto_sci.value =
             eval.value("auto_sci", eval_config.auto_sci);
-        config.math_prec =
+        main_config.math_prec.value =
             eval.value("math_prec", eval_config.math_prec);
-        config.out_prec =
+        main_config.out_prec.value =
             eval.value("out_prec", eval_config.out_prec);
 
         if (!representation_type_bimap.find_right(
                 representation_type_str,
-                config.out_representation_type)) {
+                main_config.representation_type.value)) {
             std::cout
                 << "config loader: invalid out_representation_type\n";
         }
 
+        std::cout << "math prec: " << config.math_prec.value << "\n";
+
         if (!representation_format_bimap.find_right(
                 representation_format_str,
-                config.out_representation_format)) {
+                config.representation_format.value)) {
             std::cout << "config loader: invalid "
                          "out_representation_format\n";
         }
@@ -113,36 +90,41 @@ EvalConfig load_config(std::string path) {
                   << std::endl;
     }
 
+    main_config.write_to_strings();
+    std::cout << "jjjj" << main_config.math_prec.value_str << "\n";
+
     std::cout << "loaded config: " << std::endl;
 
-    print_config(config);
+    main_config.write_to_eval_cfg(eval_config);
 
-    return config;
+    std::cout << "hhhhh" << eval_config.math_prec << "\n";
+
+    print_config(eval_config);
 }
 
-void save_config(const EvalConfig& config, const std::string path) {
+void write_config(const Config& config, const std::string path) {
     nlohmann::json json;
 
     // Convert enums back to strings using your BiMaps
     std::string representation_type_str =
         representation_type_bimap.find_left_r(
-            config.out_representation_type);
+            config.representation_type.value);
     std::string representation_format_str =
         representation_format_bimap.find_left_r(
-            config.out_representation_format);
+            config.representation_format.value);
 
     // Build the "eval" section
     json["eval"] = {
         {"representation_type", representation_type_str},
         {"representation_format", representation_format_str},
         {"sci_representaion_n_digits",
-         config.sci_representation_n_digits},
+         config.sci_representaion_n_digits.value},
         {"auto_sci_threshold_n_digits",
-         config.auto_sci_threshold_n_digits},
-        {"sci_min_n_digits", config.sci_min_n_digits},
-        {"auto_sci", config.auto_sci},
-        {"math_prec", config.math_prec},
-        {"out_prec", config.out_prec}};
+         config.auto_sci_threshold_n_digits.value},
+        {"sci_min_n_digits", config.sci_min_n_digits.value},
+        {"auto_sci", config.auto_sci.value},
+        {"math_prec", config.math_prec.value},
+        {"out_prec", config.out_prec.value}};
 
     // Write JSON to file (pretty printed)
     std::ofstream file(path);

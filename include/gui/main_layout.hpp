@@ -27,6 +27,8 @@ struct Layout : LayoutBase {
 
     std::function<Result(std::string)> on_evaluate;
 
+    void enter();
+
     void evaluate();
 
     void main_button_callback(size_t bx, size_t by);
@@ -45,6 +47,10 @@ struct Layout : LayoutBase {
 
     void update_result();
 
-    Layout(sf::Font* _font, sf::Vector2u _window_size, sf::RenderWindow* _window,
+    Layout(sf::Font* _font,
+           sf::Vector2u _window_size,
+           sf::RenderWindow* _window,
            std::function<Result(std::string)> _on_evaluate);
+
+    ~Layout() = default;
 };
